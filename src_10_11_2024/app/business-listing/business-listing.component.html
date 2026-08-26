@@ -1,0 +1,97 @@
+<div class="w-full p-4 bg-white shadow-md rounded-lg">
+    <!-- Header Section -->
+    <header class="flex items-center justify-between border-b pb-4 mb-4">
+      <div class="flex items-center space-x-4">
+        <img src="https://globalbusinesspages.com/img/logo.png" alt="Business Logo" class="w-16 h-16 rounded-full object-cover">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">{{businessName}}</h1>
+          <p class="text-sm text-gray-600">Category • Tags</p>
+        </div>
+      </div>
+      <div class="text-right">
+        <div class="flex items-center space-x-1 text-yellow-500">
+          <!-- Star Rating -->
+          <span *ngFor="let star of [1,2,3,4,5]" class="text-xl">★</span>
+          <span class="text-gray-700 text-sm">(4.5/5, 120 reviews)</span>
+        </div>
+      </div>
+    </header>
+  
+    <!-- Overview Section -->
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">About Us</h2>
+      <p class="text-gray-600">
+        Brief description about the business. Highlight the unique value proposition or primary offerings here.
+      </p>
+    </section>
+  
+    <!-- Gallery Section -->
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">Gallery</h2>
+      <div class="grid grid-cols-3 gap-2">
+        <img *ngFor="let image of images" [src]="image" alt="Gallery Image" class="w-full h-32 object-cover rounded">
+      </div>
+    </section>
+  
+    <!-- Contact Information -->
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">Contact Information</h2>
+      <ul class="text-gray-600 space-y-2">
+        <li><strong>Phone:</strong> <a href="tel:+1234567890" class="text-blue-500">+1 234 567 890</a></li>
+        <li><strong>Email:</strong> <a href="mailto:contact@business.com" class="text-blue-500">contact&#64;business.com</a></li>
+        <li><strong>Address:</strong> 123 Business St., City, Country</li>
+        <li><strong>Website:</strong> <a href="https://business.com" class="text-blue-500">www.business.com</a></li>
+      </ul>
+    </section>
+  
+    <!-- Operating Hours -->
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">Operating Hours</h2>
+      <ul class="text-gray-600 space-y-1">
+        <li *ngFor="let day of operatingHours">
+          <strong>{{ day.name }}:</strong> {{ day.hours }}
+        </li>
+      </ul>
+    </section>
+  
+    <!-- Services Section -->
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">Our Services</h2>
+      <ul class="text-gray-600 space-y-1">
+        <li *ngFor="let service of services" class="border p-2 rounded-lg">
+          <h3 class="font-semibold">{{ service.name }}</h3>
+          <p>{{ service.description }}</p>
+        </li>
+      </ul>
+    </section>
+  
+    <!-- Reviews and Testimonials -->
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">Reviews</h2>
+      <div *ngFor="let review of reviews" class="border-b pb-4 mb-4">
+        <p class="text-sm text-gray-700">“{{ review.text }}”</p>
+        <div class="text-yellow-500 text-sm mt-1">
+          <span *ngFor="let star of [1,2,3,4,5]" class="inline-block">★</span> 
+          <span class="text-gray-600">by {{ review.author }}</span>
+        </div>
+      </div>
+    </section>
+  
+    <!-- FAQ Section -->
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">Frequently Asked Questions</h2>
+      <ul class="space-y-3">
+        <li *ngFor="let faq of faqs" class="border p-2 rounded-lg">
+          <h3 class="font-semibold text-gray-800">{{ faq.question }}</h3>
+          <p class="text-gray-600">{{ faq.answer }}</p>
+        </li>
+      </ul>
+    </section>
+  
+    <!-- Call to Action Buttons -->
+    <section class="mt-6 flex justify-center space-x-4">
+      <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Call Now</button>
+      <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Get Directions</button>
+      <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">Visit Website</button>
+    </section>
+  </div>  

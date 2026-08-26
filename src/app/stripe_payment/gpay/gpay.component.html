@@ -1,0 +1,17 @@
+
+<google-pay-button
+  [environment]="'PRODUCTION'"
+  [buttonType]="'buy'"
+  [buttonColor]="'black'"
+  [paymentRequest]="paymentRequest"
+  (loadpaymentdata)="onLoadPaymentData($event)"
+  (error) = "onError($event)"
+  [paymentAuthorizedCallback]="onPaymentDataAuthorized"
+  >
+</google-pay-button>
+
+<!-- <div *ngIf="qrCodeDataUrl">
+  <h3>Scan the QR Code with Google Pay</h3>
+  <img [src]="qrCodeDataUrl" alt="Google Pay QR Code">
+  <a *ngIf="qrCodeDataUrl" [href]="qrCodeDataUrl" download="upi-qr-code.png">Download QR Code</a>
+</div> -->

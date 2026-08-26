@@ -1,0 +1,12 @@
+.active {
+    background-color: #e2e8f0; /* Light background for active item */
+    color: #3182ce; /* Text color for active item */
+  }
+.noscroll{
+  overflow: hidden;
+}
+div#drawer-navigation {
+  background: #dfe1e3;
+  z-index: 9999;
+  
+}

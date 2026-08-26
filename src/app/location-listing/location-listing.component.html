@@ -1,0 +1,778 @@
+<div class="min-h-screen bg-gray-50 overflow-x-hidden">
+
+    <!-- Main Content Area -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Search Bar and Dropdowns -->
+        <!-- <div class="mt-4 mb-8 w-full justify-between items-center">
+              <div class="w-full md:flex justify-center mb-4">
+                <div class="relative md:w-6/12">
+                 
+                  <div class="w-full mx-auto mb-4 md:mb-0">
+                    <div class="flex items-center border border-gray-300 rounded-full overflow-hidden bg-white shadow-md p-2.5">
+                  <input type="text" id="searchBox" class="w-full px-4 py-2 text-gray-700 focus:outline-none border-none"
+                        placeholder="Search" [(ngModel)]="searchQuery" (focus)="openDropdown()"
+                        (input)="onSearchInput()" />
+                      <button class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 flex items-center justify-center"
+                        (click)="performSearchQuery()">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                          stroke="currentColor" class="w-5 h-5">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    
+                    <div
+                      class="absolute w-full mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 overflow-y-auto"
+                      [ngStyle]="{'max-height': '200px'}"
+                      *ngIf="isDropdownOpen && searchQuery.trim() && searchResults?.length > 0">
+                      <div *ngFor="let result of searchResults"
+                        class="px-4 py-3 border-b border-gray-200 hover:bg-gray-100 last:border-b-0 cursor-pointer"
+                        (click)="onResultClick(result)">
+                        <h3 class="text-sm font-semibold text-gray-800">
+                          {{ result ? (result.length > 75 ? result.substring(0, 75) + '...' : result) : '' }}
+                        </h3>
+                      </div>
+                    </div>
+
+                   
+                    <div
+                      class="absolute w-full mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 text-center py-4 text-gray-500"
+                      *ngIf="isDropdownOpen && searchQuery.trim() && searchResults.length == 0">
+                      No results found.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-center items-center">
+                <div
+                  class="flex flex-wrap items-center bg-white border border-gray-300 md:rounded-full rounded-lg shadow-md px-4 py-2 md:space-y-0">
+                  
+                  <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="country" class="text-sm text-left font-medium text-gray-500 mb-1">Country</label>
+                    <div class="relative">
+                      <select id="country"
+                        class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+                        (change)="onCountryChange($event)" [(ngModel)]="selectedCountry">
+                        <option value="" disabled>Select a Country</option>
+                        <option *ngFor="let country of filteredCountries" [value]="country">{{ country }}</option>
+                      </select>
+                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+                        ▼
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+                  <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="state" class="text-sm text-left font-medium text-gray-500">State</label>
+                    <div class="relative w-full">
+                      <select id="state"
+                        class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+                        (change)="onStateChange($event)" [(ngModel)]="selectedState">
+                        <option value="" disabled>Select a state</option>
+                        <option *ngFor="let state of filteredStates" [value]="state">{{ state }}</option>
+                      </select>
+                      <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+                        ▼
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+                  <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="city" class="text-sm text-left font-medium text-gray-500">City</label>
+                    <div class="relative">
+                      <select id="city"
+                        class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+                        (change)="onCityChange($event)" [(ngModel)]="selectedCity">
+                        <option value="" disabled>Select a city</option>
+                        <option *ngFor="let city of filteredCities" [value]="city">{{ city }}</option>
+                      </select>
+                      <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+                        ▼
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+                  <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="zip" class="text-sm text-left font-medium text-gray-500">Zip</label>
+                    <div class="relative w-full">
+                      <select id="zip"
+                        class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+                        [(ngModel)]="searchzip">
+                        <option value="" [defaultSelected]="true" disabled>Select a zip</option>
+                        <option *ngFor="let zip of filteredZips" [value]="zip">{{ zip }}</option>
+                      </select>
+                      <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+                        ▼
+                      </span>
+                    </div>
+                  </div>
+
+                 
+                  <button
+                    class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 ml-4 flex items-center justify-center shadow-md w-full md:w-auto"
+                    (click)="performSearchQuery()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white"
+                      class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div> -->
+        <!-- Page Title and Filters -->
+        <div class="mb-6">
+
+            <!-- Breadcrumbs -->
+            <nav class="flex items-center py-3 text-sm">
+                <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">Home</a>
+                <span class="mx-2 text-gray-500">></span>
+                <!-- <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">{{ country }}</a>
+                <span class="mx-2 text-gray-500">></span>
+                <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">{{ city }}</a>
+                <span class="mx-2 text-gray-500">></span> -->
+                <span class="text-gray-900 font-medium">{{ fullcategory }}</span>
+            </nav>
+
+            <!-- <h1 class="text-3xl font-bold text-gray-900 mb-4">Top {{category}} in {{city}}, {{state}}</h1> -->
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Top {{totalItems}} {{fullcategory}} Businesses in
+                {{location}}</h1>
+        </div>
+
+
+
+
+        <!-- Main Layout Grid -->
+        <div class="flex flex-col lg:flex-row gap-6 items-start">
+            <!-- Left Column - Listings -->
+            <div class="flex-1 w-full min-w-0">
+                <!-- Skeleton Loader -->
+                <div *ngIf="loading" class="space-y-4">
+                    <div class="bg-white border border-gray-200 rounded-lg p-6 border-l-4 border-l-blue-600"
+                        *ngFor="let i of [].constructor(3)">
+                        <div class="flex gap-4">
+                            <div class="w-32 h-32 bg-gray-200 rounded-lg animate-pulse"></div>
+                            <div class="flex-1 space-y-3">
+                                <div class="h-6 bg-gray-200 rounded animate-pulse w-3/4"></div>
+                                <div class="h-4 bg-gray-200 rounded animate-pulse w-1/2"></div>
+                                <div class="h-4 bg-gray-200 rounded animate-pulse w-2/3"></div>
+                                <div class="flex gap-4">
+                                    <div class="h-4 bg-gray-200 rounded animate-pulse w-20"></div>
+                                    <div class="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="!loading && listings && listings.length === 0"
+                    class="bg-white border border-gray-200 rounded-lg p-6 mb-4 border-l-4 border-l-blue-600">
+
+                    <!-- <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                        No results found for {{ category }} in {{ city }}, {{ state }}
+                    </h3> -->
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                        No results found for {{ fullcategory }}
+                    </h3>
+                    <p class="text-gray-600 mb-3">
+                        No businesses are currently listed in this category.
+
+                        Be the first to list your business on Global Business Pages.
+                    </p>
+
+                    <p class="text-gray-600 mb-3">
+                        Suggestions for improving your results:
+                    </p>
+
+                    <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                        <!-- <li>Try a different location</li> -->
+                        <li>Check the spelling or try alternate spellings</li>
+                        <li>Try a more general search</li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <div class="flex justify-center mb-8 sm:mb-12">
+                        <button (click)="goToUpgrade()"
+                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-full font-semibold shadow-md flex items-center gap-2">
+                            <i class="fa-solid fa-crown"></i>
+                            Upgrade
+                        </button>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-6 text-white">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <!-- Left: Sales Message -->
+                            <div class="flex-1 text-center md:text-left">
+                                <div class="flex items-center justify-center md:justify-start mb-2">
+                                    <i class="fa-solid fa-megaphone text-xl"></i>
+                                    <h4 class="text-lg font-bold">Own a {{fullcategory}} business?</h4>
+                                </div>
+                                <p class="text-blue-100 text-sm mb-1">
+                                    List your {{fullcategory}} business in {{city || country}}
+                                </p>
+                                <p class="text-white font-bold text-lg">
+                                    For just $1.30/year
+                                </p>
+                            </div>
+
+                            <!-- Right: CTA Button -->
+                            <div class="flex-shrink-0">
+                                <button (click)="redirectregister()"
+                                    class="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-all duration-300 shadow-lg transform hover:scale-105 whitespace-nowrap">
+                                    Add Your Business
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Trust Badges -->
+                        <div
+                            class="flex flex-wrap justify-center md:justify-start items-center gap-4 mt-4 text-xs text-blue-100">
+                            <div class="flex items-center gap-1">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>Verified Listings</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fa-solid fa-globe"></i>
+                                <span>Global Reach</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fa-solid fa-bolt"></i>
+                                <span>Instant Setup</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6 mt-6">
+
+                    <!-- Slick Carousel -->
+                    <ngx-slick-carousel class="carousel mt-6" [config]="slideConfig">
+
+                        <div ngxSlickItem *ngFor="let category of topCategories" class="slide text-center">
+
+                            <div class="category-card p-3">
+                                <i [class]="category.icon" class="category-icon mb-2" (click)="redirectregister()"></i>
+                                <div class="category-name" (click)="redirectregister()">
+                                    {{ category.category }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </ngx-slick-carousel>
+
+
+                </div>
+
+                <!-- Regular Listings with EMBEDDED SALES CARD -->
+                <ng-container *ngIf="!loading && listings?.length > 0">
+
+                    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-4 border-l-4 border-l-blue-600"
+                        *ngFor="let listing of listings; let i = index">
+
+                        <div class="flex flex-col md:flex-row gap-4">
+
+                            <!-- LEFT: Logo -->
+                            <div class="w-48 h-48 rounded-lg overflow-hidden flex-shrink-0 mx-auto lg:mx-0">
+                                <img [src]="listing.logo ? processImage(listing.logo) : getFallbackImage(i)"
+                                    [alt]="listing.company_name" class="w-full h-full object-cover" />
+                            </div>
+
+                            <!-- CENTER: Main Content -->
+                            <div class="flex flex-col items-start justify-center text-left">
+                                <h3 class="text-xl font-bold text-gray-900 mb-1">
+                                    {{ formatTitle(listing.company_name) }}
+                                </h3>
+
+                                <p class="text-sm text-gray-600 mb-2">
+                                    {{
+                                    listing.industry &&
+                                    listing.industry.toLowerCase() !== 'nan'
+                                    ? listing.industry
+                                    : (listing.sic_description || listing.category)
+                                    }}
+                                </p>
+                            </div>
+
+                            <div class="flex-1">
+
+                                <!-- Links -->
+                                <div class="flex gap-4 mb-3 mt-3">
+                                    <a *ngIf="listing.website"
+                                        [href]="listing.website.startsWith('http') ? listing.website : 'https://' + listing.website"
+                                        target="_blank" rel="noopener noreferrer"
+                                        class="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium">
+                                        Website
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- RIGHT SIDE: How It Works Section -->
+                            <!-- <div class="w-full md:w-auto md:ml-6 flex-shrink-0">
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
+                                    <h4 class="font-bold text-gray-900 text-sm mb-3">How It Works</h4>
+
+                                    <div class="space-y-2 text-xs text-gray-700">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="w-5 h-5 flex items-center justify-center rounded-full bg-blue-500 text-white text-xs font-bold flex-shrink-0">1</span>
+                                            <span>Sign Up</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="w-5 h-5 flex items-center justify-center rounded-full bg-blue-500 text-white text-xs font-bold flex-shrink-0">2</span>
+                                            <span>Add Business Details</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="w-5 h-5 flex items-center justify-center rounded-full bg-blue-500 text-white text-xs font-bold flex-shrink-0">3</span>
+                                            <span>Go Live Globally</span>
+                                        </div>
+                                    </div>
+
+                                    <a (click)="redirectregister()"
+                                        class="block text-center cursor-pointer bg-blue-600 text-white px-3 py-2 rounded-lg font-semibold text-xs hover:bg-blue-700 transition mt-3">
+                                        Add Your Business for $1.30/year
+                                    </a>
+                                </div>
+                            </div> -->
+
+                        </div>
+
+                    </div>
+
+                </ng-container>
+
+                <!-- Why Choose Local Listings Section -->
+                <div
+                    class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-8 mt-12 mb-8">
+                    <div class="max-w-4xl mx-auto">
+                        <div class="text-center mb-8">
+                            <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
+                                About {{fullcategory}} in {{ city || country }}
+                            </h2>
+
+                            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                                {{city || country}} is home to many professional {{fullcategory}} businesses
+                                serving both residential and commercial customers.
+
+                                Global Business Pages connects customers with trusted
+                                {{fullcategory}} companies across {{city || country}} and nearby areas.
+
+                                Whether customers need all services, the directory helps them quickly find
+                                reliable businesses with verified contact details.
+                            </p>
+                        </div>
+                        <!-- 
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                           
+                            <div class="text-center">
+                                <div
+                                    class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                                    <div
+                                        class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fa-solid fa-check text-white text-lg"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 mb-2">Verified Details</h3>
+                                    <p class="text-sm text-gray-600">
+                                        All business information is verified and regularly updated for accuracy
+                                    </p>
+                                </div>
+                            </div>
+
+                          
+                            <div class="text-center">
+                                <div
+                                    class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                                    <div
+                                        class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fa-solid fa-star text-white text-lg"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 mb-2">Real Reviews</h3>
+                                    <p class="text-sm text-gray-600">
+                                        Authentic customer reviews help you make informed decisions
+                                    </p>
+                                </div>
+                            </div>
+
+                          
+                            <div class="text-center">
+                                <div
+                                    class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                                    <div
+                                        class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fa-solid fa-clock text-white text-lg"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 mb-2">Up-to-Date Info</h3>
+                                    <p class="text-sm text-gray-600">
+                                        Current contact information ensures you can reach businesses instantly
+                                    </p>
+                                </div>
+                            </div>
+
+                            
+                            <div class="text-center">
+                                <div
+                                    class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                                    <div
+                                        class="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fa-solid fa-bolt text-white text-lg"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-gray-900 mb-2">Find Services Faster</h3>
+                                    <p class="text-sm text-gray-600">
+                                        Quickly locate right services in your local area
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                        <div class="text-center mt-8">
+                            <p class="text-lg text-gray-700 mb-4">
+                                Global Business Pages helps you discover, compare, and connect with verified
+                                {{category}} providers in {{city}}, {{state}} all in one place.
+                            </p>
+                        </div> -->
+                    </div>
+                </div>
+
+
+                <!-- Enhanced Pagination -->
+                <div *ngIf="!loading" class="flex flex-col sm:flex-row justify-center items-center mt-8 mb-8 gap-4">
+                    <!-- Pagination Info -->
+                    <div class="text-sm text-gray-600 order-2 sm:order-1">
+                        <span *ngIf="totalPages > 0">
+                            Page {{ currentPage }} of {{ totalPages }}
+                        </span>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div class="flex flex-wrap justify-center items-center gap-1 sm:gap-2 order-1 sm:order-2">
+                        <!-- Previous Button -->
+                        <button (click)="performSearch(currentPage - 1)" [disabled]="currentPage === 1"
+                            class="px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-100 text-gray-400 cursor-not-allowed">
+                            Previous
+                        </button>
+
+                        <!-- Page Numbers -->
+                        <ng-container *ngFor="let page of getPageNumbers()">
+                            <button (click)="performSearch(page)" [disabled]="false" [class]="getPageButtonClass(page)">
+                                {{ page }}
+                            </button>
+                        </ng-container>
+
+                        <!-- Next Button -->
+                        <button (click)="performSearch(currentPage + 1)" [disabled]="currentPage === totalPages"
+                            class="px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-100 text-gray-400 cursor-not-allowed">
+                            Next
+                        </button>
+                    </div>
+
+                    <!-- Page Size Selector (Optional Enhancement) -->
+                    <div class="flex items-center gap-2 text-sm order-3">
+                        <label for="pageSize" class="text-gray-600">Show:</label>
+                        <select id="pageSize"
+                            class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            (change)="onPageSizeChange($event)">
+                            <option value="10" [selected]="pageSize === 10">10</option>
+                            <option value="20" [selected]="pageSize === 20">20</option>
+                            <option value="50" [selected]="pageSize === 50">50</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <!-- <div *ngIf="nearbyCities !== null"
+                    class="bg-white border border-gray-200 rounded-lg p-6 mb-4 border-l-4 border-l-blue-600">
+
+                    <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                        Places Near {{ city }}, {{ state }} with {{ category }}
+                    </h3>
+
+                    <div *ngIf="isLoadingNearbyCities" class="animate-pulse mt-3">
+                        <div class="space-y-2">
+                            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                            <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="!isLoadingNearbyCities">
+
+                        <ul *ngIf="nearbyCities?.length > 0; else noLocation" class="mt-3 space-y-2">
+                            <li *ngFor="let place of nearbyCities" class="text-blue-600 cursor-pointer hover:underline"
+                                (click)="navigateToNearbyCity(place)">
+                                {{ place }}
+                            </li>
+                        </ul>
+
+
+                        <ng-template #noLocation>
+                            <div class="mt-3 text-sm text-gray-500">
+                                No Location Found
+                            </div>
+                        </ng-template>
+
+                    </ng-container>
+                </div> -->
+
+
+                <div *ngIf="popularCategories?.length > 0"
+                    class="bg-white border border-gray-200 rounded-lg p-6 mb-4 border-l-4 border-l-blue-600">
+
+                    <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                        Popular Categories in {{ state|| country }}
+                    </h3>
+
+
+                    <div *ngIf="popularCategoriesLoading" class="mt-3">
+                        <div class="animate-pulse space-y-2">
+                            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                            <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+                        </div>
+                    </div>
+
+
+                    <ul *ngIf="!popularCategoriesLoading" class="mt-3 space-y-2">
+                        <li *ngFor="let category of popularCategories"
+                            class="text-blue-700 cursor-pointer hover:underline hover:text-blue-900 transition-colors duration-200"
+                            (click)="navigateToCategory(category)">
+                            {{ category }}
+                        </li>
+                    </ul>
+
+
+                    <div *ngIf="!popularCategoriesLoading && popularCategories?.length === 0 && popularCategoriesError"
+                        class="mt-3 text-gray-500 italic">
+                        No Categories Found
+                    </div>
+                </div>
+                <section class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+                    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-4">
+
+
+                        <!-- FAQ 1 -->
+                        <div class="border-b py-3">
+                            <button class="w-full text-left font-semibold flex justify-between items-center"
+                                (click)="toggleFAQ(0)">
+                                How do I list my {{fullcategory}} in {{state || country}}?
+                                <span>{{ activeIndex === 0 ? '-' : '+' }}</span>
+                            </button>
+
+                            <p *ngIf="activeIndex === 0" class="mt-2 text-gray-600">
+                                Create an account on Global Business Pages and submit your business details. Listings
+                                start at $1.30 per year.
+                            </p>
+                        </div>
+
+                        <!-- FAQ 2 -->
+
+                        <div class="py-3">
+                            <button class="w-full text-left font-semibold flex justify-between items-center"
+                                (click)="toggleFAQ(1)">
+                                How long does approval take?
+                                <span>{{ activeIndex === 1 ? '-' : '+' }}</span>
+                            </button>
+
+                            <p *ngIf="activeIndex === 1" class="mt-2 text-gray-600">
+                                Most listings are approved within 24 hours.
+                            </p>
+                        </div>
+
+
+                    </div>
+                </section>
+            </div>
+
+
+            <!-- Right Column - Sidebar -->
+            <div class="w-full lg:w-80 self-start lg:sticky lg:top-24">
+                <div *ngIf="loading" class="bg-white border border-gray-200 rounded-lg p-6 lg:sticky lg:top-24">
+                    <!-- Skeleton -->
+                </div>
+
+                <div *ngIf="!loading" class="relative  mb-4">
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-4">
+                            Manage your free listing
+                        </h2>
+
+                        <p class="text-sm text-gray-600 mb-4">
+                            Update your business information in a few steps.
+                        </p>
+
+                        <button
+                            class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors mb-3"
+                            (click)="redirectregister()">
+                            Claim Your Listing
+                        </button>
+
+                        <!-- <p class="text-sm text-gray-600 text-center">
+                            or call
+                            <a href="tel:1-866-794-0889"
+                                class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
+                                1-866-794-0889
+                            </a>
+                        </p> -->
+                    </div>
+                </div>
+
+                <div *ngIf="!loading" class="relative">
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+
+                        <h2 class="text-lg font-bold text-gray-900 mb-4">
+                            Add Your Business to a Global Directory for AI Search & Local SEO
+                        </h2>
+
+                        <p class="text-sm text-gray-600 mb-4">
+                            Global Business Pages® lets you list your business for $1.30 per year and get discovered in
+                            AI search engines, Google results, and local SEO queries worldwide. Structured for semantic
+                            search, entity recognition, and global visibility.
+                        </p>
+
+                        <a href="/register"
+                            class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors mb-6">
+                            Add Your Business Today
+                        </a>
+
+                        <!-- Section 1 -->
+                        <h2 class="text-lg font-bold text-gray-900 mb-3 mt-8">
+                            Why Add Your Business to a Global Directory?
+                        </h2>
+
+                        <ul class="text-sm text-gray-600 mb-6 list-disc pl-5 space-y-1">
+                            <li>AI search visibility</li>
+                            <li>Google local SEO rankings</li>
+                            <li>“Near me” search presence</li>
+                            <li>Global business discovery</li>
+                            <li>Semantic search indexing</li>
+                            <li>Online credibility</li>
+                        </ul>
+
+                        <p class="text-sm text-gray-600 mb-6">
+                            If customers search for your service, your business should appear.
+                        </p>
+
+                        <!-- Section 2 -->
+                        <h2 class="text-lg font-bold text-gray-900 mb-3">
+                            Built for Google Snippets & AI Answer Engines
+                        </h2>
+
+                        <ul class="text-sm text-gray-600 mb-6 list-disc pl-5 space-y-1">
+                            <li>Entity recognition</li>
+                            <li>Vector-based retrieval</li>
+                            <li>Intent matching</li>
+                            <li>Structured business data</li>
+                            <li>Location signals</li>
+                        </ul>
+
+                        <p class="text-sm text-gray-600 mb-6">
+                            Our directory helps your business align with how AI systems retrieve and summarize results —
+                            increasing your chances of being included in featured snippets, AI-generated answers, local
+                            map results, and industry-specific searches.
+                        </p>
+
+                        <!-- Section 3 -->
+                        <h2 class="text-lg font-bold text-gray-900 mb-3">
+                            Who Should List Their Business?
+                        </h2>
+
+                        <ul class="text-sm text-gray-600 mb-6 list-disc pl-5 space-y-1">
+                            <li>Local businesses</li>
+                            <li>Service providers</li>
+                            <li>Medical practices</li>
+                            <li>Law firms</li>
+                            <li>Restaurants</li>
+                            <li>Contractors</li>
+                            <li>E-commerce brands</li>
+                            <li>Global companies</li>
+                        </ul>
+
+                        <p class="text-sm text-gray-600 mb-6">
+                            Whether you serve one city or multiple countries, visibility starts with structured listing.
+                        </p>
+
+                        <!-- Section 4 -->
+                        <h2 class="text-lg font-bold text-gray-900 mb-3">
+                            How It Works
+                        </h2>
+
+                        <ul class="text-sm text-gray-600 mb-6 list-disc pl-5 space-y-1">
+                            <li>Add your business</li>
+                            <li>Enter your company details</li>
+                            <li>Verify your listing</li>
+                            <li>Get indexed for AI search and local SEO</li>
+                        </ul>
+
+                        <p class="text-sm text-gray-600 mb-6">
+                            Setup takes minutes.
+                        </p>
+
+                        <!-- Section 5 -->
+                        <h2 class="text-lg font-bold text-gray-900 mb-3">
+                            What You Get for $1.30/Year
+                        </h2>
+
+                        <ul class="text-sm text-gray-600 mb-6 space-y-1">
+                            <li>✔ Global directory placement</li>
+                            <li>✔ AI-search compatible structure</li>
+                            <li>✔ Local SEO support</li>
+                            <li>✔ Verified business listing</li>
+                            <li>✔ Industry category alignment</li>
+                            <li>✔ Worldwide exposure</li>
+                        </ul>
+
+                        <p class="text-sm text-gray-600 mb-6">
+                            Less than the cost of one paid ad click.
+                        </p>
+
+                        <!-- Final Section -->
+                        <h2 class="text-lg font-bold text-gray-900 mb-3">
+                            Get Found in AI Search, Google & Local Results
+                        </h2>
+
+                        <p class="text-sm text-gray-600 mb-6">
+                            Search has changed. Customers ask AI before they click websites.
+                            If your business isn’t structured for semantic search and entity-based indexing, competitors
+                            will take the visibility.</p>
+
+                        <h3> Add your business to Global Business Pages® today and get discovered worldwide.</h3>
+
+                        <p class="mb-6"></p>
+                        <a href="/register"
+                            class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors">
+                            Add Your Business Now
+                        </a>
+
+
+
+                    </div>
+                    <div class="flex justify-center mb-8 mt-8 sm:mb-12">
+                        <button (click)="goToUpgrade()"
+                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-full font-semibold shadow-md flex items-center gap-2">
+                            <i class="fa-solid fa-crown"></i>
+                            Upgrade
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</div>

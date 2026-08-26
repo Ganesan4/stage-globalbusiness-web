@@ -1,0 +1,55 @@
+// .animate-slide-up {
+//   animation: slideUp 0.3s ease-out;
+// }
+
+// @keyframes slideUp {
+//   from {
+//     transform: translateY(20px);
+//     opacity: 0;
+//   }
+//   to {
+//     transform: translateY(0);
+//     opacity: 1;
+//   }
+// }
+
+// .animate-bounce {
+//   animation: bounce 1.5s infinite;
+// }
+
+// @keyframes bounce {
+//   0%, 100% {
+//     transform: translateY(0);
+//   }
+//   50% {
+//     transform: translateY(-4px);
+//   }
+// }
+
+.animate-fade-in {
+  animation: fadeIn 0.35s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1.8s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}

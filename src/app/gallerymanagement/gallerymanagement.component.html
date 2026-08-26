@@ -1,0 +1,206 @@
+
+<div class="container mx-auto p-6">
+  <h1 class="text-base sm:text-2xl font-extrabold mb-6 text-gray-800">Gallery Management</h1>
+
+  <div
+class="uploader-container border-dashed border-2 border-gray-300 p-6 rounded-lg text-center relative mb-4"
+(dragover)="onDragOver($event)"
+(dragleave)="onDragLeave($event)"
+(drop)="onDrop($event)"
+>
+<!-- Drag-and-Drop Overlay -->
+<div
+  *ngIf="isDragging"
+  class="absolute inset-0 bg-blue-100 bg-opacity-50 flex items-center justify-center pointer-events-none"
+>
+  <p class="text-blue-500 font-semibold">Drop files to upload</p>
+</div>
+
+<!-- Instructions -->
+<p class="text-gray-500">Drop files here to start uploading</p>
+<p class="text-gray-400 my-2">or</p>
+
+<!-- File Input (Hidden) -->
+<input
+  type="file"
+  id="fileInput"
+  multiple
+  accept="image/*"
+  class="hidden"
+  (change)="onFileSelect($event)"
+/>
+
+<!-- File Selection Button -->
+<label
+  for="fileInput"
+  class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+>
+  Select File
+</label>
+
+<!-- Error Message -->
+<div *ngIf="errorMessage" class="mt-4 text-red-500 text-sm">
+  {{ errorMessage }}
+</div>
+
+<!-- Preview Section -->
+<div class="preview-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+  <div
+    *ngFor="let image of previewImages; let i = index"
+    class="relative w-full h-24 overflow-hidden border rounded-md"
+  >
+    <!-- Image Preview -->
+    <img
+      [src]="image"
+      alt="Preview of uploaded image {{ i + 1 }}"
+      class="w-full h-full object-cover"
+    />
+
+    <!-- Remove Button -->
+    <button
+      (click)="removeImage(i)"
+      class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs"
+      aria-label="Remove image"
+    >
+      ✕
+    </button>
+  </div>
+</div>
+<button
+class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+(click)="uploadFiles()"
+>
+Upload
+</button>
+
+<!-- Loading Spinner (Optional) -->
+<div *ngIf="isLoading" class="mt-4">
+  <p class="text-blue-500 text-sm">Uploading...</p>
+</div>
+</div>
+
+  <div class="overflow-x-auto">
+      <div *ngIf="notificationMessage" [ngClass]="{'success': notificationType === 'success', 'error': notificationType === 'error'}" 
+          class="notification fixed top-4 right-4 p-4 rounded-lg shadow-lg">
+          {{ notificationMessage }}
+      </div>
+      <table class="min-w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+          <thead>
+              <tr class="bg-gray-200 text-gray-700">
+                  <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">S.No</th>
+                  <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">Gallery</th>
+                  <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">Alt Text</th>
+                  <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold relative">
+                    Select Priority
+                    <span class="ml-2 text-black cursor-pointer group relative">
+                      <svg (mouseenter)="showTooltip()" (mouseleave)="hideTooltip()" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" class="h-4 w-4 inline" viewBox="0 0 26 26">
+                        <path d="M 13 1.1875 C 6.476563 1.1875 1.1875 6.476563 1.1875 13 C 1.1875 19.523438 6.476563 24.8125 13 24.8125 C 19.523438 24.8125 24.8125 19.523438 24.8125 13 C 24.8125 6.476563 19.523438 1.1875 13 1.1875 Z M 15.460938 19.496094 C 14.851563 19.734375 14.367188 19.917969 14.003906 20.042969 C 13.640625 20.167969 13.222656 20.230469 12.742188 20.230469 C 12.007813 20.230469 11.433594 20.050781 11.023438 19.691406 C 10.617188 19.335938 10.414063 18.878906 10.414063 18.324219 C 10.414063 18.109375 10.429688 17.890625 10.460938 17.667969 C 10.488281 17.441406 10.539063 17.191406 10.605469 16.90625 L 11.367188 14.21875 C 11.433594 13.960938 11.492188 13.71875 11.539063 13.488281 C 11.585938 13.257813 11.605469 13.046875 11.605469 12.855469 C 11.605469 12.515625 11.535156 12.273438 11.394531 12.140625 C 11.25 12.003906 10.980469 11.9375 10.582031 11.9375 C 10.386719 11.9375 10.183594 11.96875 9.976563 12.027344 C 9.769531 12.089844 9.59375 12.148438 9.445313 12.203125 L 9.648438 11.375 C 10.144531 11.171875 10.621094 11 11.078125 10.855469 C 11.53125 10.710938 11.964844 10.636719 12.367188 10.636719 C 13.097656 10.636719 13.664063 10.816406 14.058594 11.167969 C 14.453125 11.519531 14.652344 11.980469 14.652344 12.542969 C 14.652344 12.660156 14.640625 12.867188 14.613281 13.160156 C 14.585938 13.453125 14.535156 13.722656 14.460938 13.972656 L 13.703125 16.652344 C 13.640625 16.867188 13.585938 17.113281 13.535156 17.386719 C 13.488281 17.660156 13.464844 17.871094 13.464844 18.011719 C 13.464844 18.367188 13.542969 18.613281 13.703125 18.742188 C 13.859375 18.871094 14.136719 18.933594 14.53125 18.933594 C 14.714844 18.933594 14.921875 18.902344 15.15625 18.839844 C 15.386719 18.773438 15.554688 18.71875 15.660156 18.667969 Z M 15.324219 8.617188 C 14.972656 8.945313 14.546875 9.109375 14.050781 9.109375 C 13.554688 9.109375 13.125 8.945313 12.769531 8.617188 C 12.414063 8.289063 12.238281 7.890625 12.238281 7.425781 C 12.238281 6.960938 12.417969 6.558594 12.769531 6.226563 C 13.125 5.894531 13.554688 5.730469 14.050781 5.730469 C 14.546875 5.730469 14.972656 5.894531 15.324219 6.226563 C 15.679688 6.558594 15.855469 6.960938 15.855469 7.425781 C 15.855469 7.890625 15.679688 8.289063 15.324219 8.617188 Z"></path>
+                        </svg>
+                      <!-- Tooltip -->
+                      <span *ngIf="isTooltipVisible"
+                      class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-56 p-2 text-xs text-white bg-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                      Choose any two images. These images will be displayed on the search page.
+                      <span class="absolute left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45 -top-1"></span>
+                    </span>
+                  </span>
+                </th>
+                  
+                  <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">Actions</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let banner of galleryImages; let i = index" class="hover:bg-gray-50 transition-colors">
+                  <td class="py-3 px-6 border-b border-gray-300">{{ ((page-1)*pageSize) + i + 1 }}</td>
+                  <td class="py-3 px-6 border-b border-gray-300">
+                      <img [src]="getServerImageUrl(banner.file_path)" [alt]="banner.alt_text ? banner.alt_text:'' " class="w-32 h-32 object-cover rounded-md" />
+                  </td>
+                  <td class="py-3 px-6 border-b border-gray-300">{{ banner.alt_text }}</td>
+                  <td class="py-3 px-6 border-b border-gray-300">
+                    <div class="flex justify-center">
+                    <input type="checkbox" 
+                    [checked]="isChecked(banner.file_path) || banner.ischecked" 
+                    (change)="onCheckboxChange($event, banner.file_path, banner.userid)" 
+                    [disabled]="isMaxChecked() && !isChecked(banner.file_path)" /></div>
+                  </td>
+                  <td class="py-3 px-6 border-b border-gray-300">
+                      <button (click)="showEditForm(banner)" class="bg-blue-500 text-white hover:bg-blue-600 font-medium py-1 px-3 rounded transition-colors">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M19.5159 7.77706L19.5151 7.77791L6.93934 20.3536C6.84557 20.4474 6.71839 20.5001 6.58579 20.5001L4 20.5001C3.72386 20.5001 3.5 20.2763 3.5 20.0001V17.4143C3.5 17.2817 3.55268 17.1545 3.64645 17.0608L16.2197 4.48748L16.2214 4.48578L16.2214 4.48579L16.2239 4.48332C16.4272 4.28004 16.5587 4.14904 16.6668 4.05727C16.7705 3.96927 16.8193 3.94706 16.8455 3.93853C16.946 3.90591 17.0542 3.90591 17.1546 3.93853C17.1807 3.94704 17.2295 3.9692 17.333 4.05705C17.4409 4.14869 17.5723 4.27948 17.7753 4.48248L19.5151 6.22228C19.7189 6.42611 19.8503 6.55803 19.9423 6.66642C20.0305 6.77036 20.0528 6.81931 20.0614 6.84567C20.094 6.94606 20.094 7.05423 20.0614 7.15469C20.0528 7.18102 20.0306 7.22986 19.9425 7.3336C19.8512 7.44114 19.7211 7.57188 19.5197 7.77332L19.5197 7.77331L19.5159 7.77706Z" stroke="#f5f2f2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M13 11L17.5 6.5" stroke="#f5f2f2"/>
+                          </svg>
+                      </button>
+                      <button (click)="deleteBanner(banner.id)" class="bg-red-500 text-white hover:bg-red-600 font-medium py-1 px-3 rounded ml-0 lg:ml-2  transition-colors">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M8.99957 3H14.9996V2H8.99957V3ZM5.05667 5H18.9425L18.1585 19.1109C18.0997 20.1708 17.2231 21 16.1616 21H7.83753C6.77607 21 5.89949 20.1708 5.84061 19.1109L5.05667 5ZM4.05821 5.05547C4.02637 4.48227 4.48259 4 5.05667 4H18.9425C19.5166 4 19.9728 4.48227 19.9409 5.05547L19.157 19.1664C19.0687 20.7562 17.7538 22 16.1616 22H7.83753C6.24533 22 4.93047 20.7562 4.84215 19.1664L4.05821 5.05547ZM8.99957 16.5C8.99957 16.7761 9.22343 17 9.49957 17C9.77572 17 9.99957 16.7761 9.99957 16.5L9.99958 9.5C9.99958 9.22386 9.77572 9 9.49958 9C9.22343 9 8.99958 9.22386 8.99958 9.5L8.99957 16.5ZM14.4996 17C14.2234 17 13.9996 16.7761 13.9996 16.5L13.9996 9.5C13.9996 9.22386 14.2234 9 14.4996 9C14.7757 9 14.9996 9.22386 14.9996 9.5L14.9996 16.5C14.9996 16.7761 14.7757 17 14.4996 17Z" fill="#f5f2f2"/>
+                              </svg>                                
+                      </button>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      <div *ngIf="totalImages == 0" class="text-center text-gray-500 py-4">
+          No data available.
+      </div>
+      <div class="flex justify-center mt-4">
+        <button (click)="changePage(page - 1)" [disabled]="page === 1" class="mx-1 bg-gray-300 text-gray-700 px-3 py-1 rounded">Previous</button>
+        
+        <ng-container  *ngFor="let p of getDisplayedPages(); let i = index">
+          <ng-container *ngIf="p === -1">
+              <span class="mx-1 text-gray-500">...</span>
+          </ng-container>
+          <ng-container *ngIf="p !== -1">
+              <button (click)="changePage(p)" 
+                      [disabled]="p === page"
+                      [ngClass]="p === page ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'" 
+                      class="mx-1 px-3 py-1 rounded transition-colors duration-200 hidden sm:flex">
+                  {{ p }}
+              </button>
+          </ng-container>
+      </ng-container>
+    
+        <button (click)="changePage(page + 1)" [disabled]="page * pageSize >= totalImages" class="mx-1 bg-gray-300 text-gray-700 px-3 py-1 rounded">Next</button>
+    </div>
+    
+  </div>    
+</div>
+
+<!-- modal for edit -->
+<div *ngIf="showEditBannerForm" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+      <h2 class="text-xl font-bold mb-5 text-gray-800">Edit Gallery Text</h2>
+      <form [formGroup]="editBannerForm" (ngSubmit)="submitEditForm()">
+          <div class="mb-5">
+              <img *ngIf="editImagePreview" [src]="getServerImageUrl(editImagePreview)" class="mt-4 max-w-full max-h-24 object-contain border rounded-md shadow-sm">
+          </div>
+          <div class="mb-5">
+              <label for="editAltText" class="block text-sm font-medium text-gray-700 mb-2">Alternative Text</label>
+              <textarea formControlName="altText"
+                        class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Edit alternative text"></textarea>
+              <!-- <p *ngIf="editBannerForm.get('altText')?.invalid && editBannerForm.get('altText')?.touched" class="text-red-500 text-sm mt-1"> -->
+                  <!-- Alternative text is required.
+              </p> -->
+          </div>
+          <!-- <div class="mb-5">
+              <label for="editComments" class="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+              <textarea formControlName="comments"
+                        class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Edit comments..."></textarea>
+              <p *ngIf="editBannerForm.get('comments')?.invalid && editBannerForm.get('comments')?.touched" class="text-red-500 text-sm mt-1">
+                  Comments are required.
+              </p>
+          </div> -->
+          <div class="flex justify-end space-x-4">
+              <button type="button" (click)="closeEditForm()"
+                      class="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none shadow-md">
+                  Cancel
+              </button>
+              <button type="submit"
+                      class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none shadow-md transform transition-transform hover:scale-105">
+                  Update
+              </button>
+          </div>
+      </form>
+  </div>
+</div>
+

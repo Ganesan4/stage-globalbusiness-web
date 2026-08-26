@@ -1,0 +1,197 @@
+<div class="container mx-auto mt-4 max-w-6xl">
+    <!-- Services Section -->
+    <section class="mb-6">
+        <h2 class="text-2xl font-extrabold mb-6 text-gray-800">Listing Details</h2>
+        <ul class="text-gray-600 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <ng-container *ngFor="let field of fields">
+            <li 
+            class="border p-2 rounded-lg" 
+              *ngIf="listingdetails?.[field.key] !== 'NaN'">
+            <h3 class="font-semibold">{{ field.label }}</h3>
+            <p>{{ listingdetails?.[field.key] }}</p>
+            </li>
+        </ng-container>
+        </ul>
+    </section>
+    
+    
+    
+    <section class="mb-6">
+        <h2 class="text-2xl font-extrabold mb-6 text-gray-800">Get Location</h2>
+        <div class="mb-4">
+            <google-map
+            height="400px"
+            width="100%"
+            [center]="center"
+            [zoom]="zoom"
+            (mapClick)="moveMap($event)">
+            <map-marker
+          *ngFor="let marker of markers"
+            #mapMarker="mapMarker"
+            [position]="marker.position"
+            [title]="marker.title"
+            [options]="marker.options"
+            (mapClick)="openInfoWindow(marker.branch, mapMarker)"
+        ></map-marker>
+        <map-info-window>
+            <h3>{{ selectedBranch()?.name }}</h3>
+            <p>{{ selectedBranch()?.address }}</p>
+            <p>{{ selectedBranch()?.city }}</p>
+            <p>{{ selectedBranch()?.state }}, {{ selectedBranch()?.postCode }}</p>
+        </map-info-window>
+        </google-map>
+        </div>
+    </section> 
+
+
+    <section class="mb-6" #scrollTarget>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-extrabold mb-6 text-gray-800">Reviews</h2>
+        <!-- Add Review Button -->
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mt-4 mb-4 flex items-center" (click)="openModaladdreview()">
+          <i class="fa fa-pencil-alt mr-2"></i> Add Review
+        </button>
+      </div>
+    
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div *ngFor="let review of getreviewdata" class="flex items-center border-b pb-4">
+          <!-- Profile Initials -->
+          <div 
+            class="flex items-center justify-center w-10 h-10 rounded-full text-white font-semibold mr-3"
+            [style.backgroundColor]="review.profileColor">
+            {{ review.initials }}
+          </div>
+          <!-- Review Content -->
+          <div>
+            <p class="text-sm text-gray-700">“{{ review.text }}”</p>
+            <div class="text-yellow-500 text-sm mt-1">
+              <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" class="inline-block">
+                {{ i < review.rating ? '★' : '☆' }}
+              </span>
+              <span class="text-gray-600"> by {{ review.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div *ngIf="isModalOpenaddreview" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white p-6 rounded-lg w-11/12 sm:w-3/4 lg:w-1/2 relative">
+        <button
+            (click)="closeModaladdreview()"
+            class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl focus:outline-none"
+            aria-label="Close"
+          >
+            <i class="fa fa-times"></i> 
+          </button>
+    
+    
+        <!-- Review Submitted Message -->
+        <div *ngIf="reviewSubmitted" class="text-green-500 font-semibold text-sm mb-4 flex justify-center">
+          <b>Review submitted successfully</b>
+        </div>
+    
+        <!-- Modal Title -->
+        <h2 class="text-xl font-semibold mb-4">Add Review</h2>
+    
+        <!-- Review Form -->
+        <form (ngSubmit)="submitReview()" #reviewForm="ngForm" class="max-w-lg">
+          <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700">
+              Name <span class="text-red-500 ml-1">*</span>
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              [(ngModel)]="newReview.name"
+              class="border rounded w-full px-3 py-2 ng-pristine ng-invalid ng-touched"
+              required
+              #name="ngModel"
+            />
+            <p *ngIf="name.invalid && name.touched" class="text-red-500 text-sm">Name is required.</p>
+          </div>
+    
+          <!-- Email Field -->
+          <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700">
+              Email <span class="text-red-500 ml-1">*</span>
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              [(ngModel)]="newReview.email"
+              class="border rounded w-full px-3 py-2 ng-pristine ng-invalid ng-touched"
+              required
+              email
+              #email="ngModel"
+            />
+            <p *ngIf="email.invalid && email.touched" class="text-red-500 text-sm">Valid email is required.</p>
+          </div>
+    
+          <!-- Comments Field -->
+          <div class="mb-4">
+            <label for="comments" class="block text-sm font-medium text-gray-700">
+              Your Comments <span class="text-red-500 ml-1">*</span>
+            </label>
+            <textarea
+              id="comments"
+              name="comments"
+              [(ngModel)]="newReview.comments"
+              rows="4"
+              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+              required
+              #comments="ngModel"
+            ></textarea>
+            <p *ngIf="comments.invalid && comments.touched" class="text-red-500 text-sm">Comments are required.</p>
+          </div>
+    
+          <!-- Star Rating -->
+          <div class="mb-4 flex items-center">
+            <label for="rating" class="block text-sm font-medium text-gray-700 mr-2">
+              Rating <span class="text-red-500 ml-1">*</span>
+            </label>
+            <div class="flex items-center">
+              <span
+                *ngFor="let star of [1, 2, 3, 4, 5]"
+                (click)="setRating(star)"
+                [class.text-yellow-500]="star <= newReview.rating"
+                class="cursor-pointer text-xl"
+              >
+                ★
+              </span>
+            </div>
+          </div>
+    
+          <!-- Submit and Close Buttons -->
+          <div class="mt-4 flex justify-start space-x-4">
+            <button
+              type="submit"
+              [disabled]="!reviewForm.valid || !newReview.rating"
+              class="px-4 py-2 rounded-md text-white"
+              [class.bg-blue-500]="reviewForm.valid && newReview.rating"
+              [class.bg-gray-300]="!reviewForm.valid || !newReview.rating"
+            >
+              Submit Review
+            </button>
+            <!-- <button
+              (click)="closeModaladdreview()"
+              class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+            >
+              Close
+            </button> -->
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    </div>  
+
+  <!-- <div *ngIf="isModalOpenedmetrics" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white p-4 rounded-lg shadow-lg max-w-lg">
+        <h3 class="text-lg font-semibold mb-4">Detailed Information</h3>
+        <p class="text-gray-700 mb-4">{{ selectedContent }}</p>
+        <button (click)="closeModalmetrics()" class="bg-red-500 text-white px-4 py-2 rounded-md">Close</button>
+    </div>
+    </div>  -->

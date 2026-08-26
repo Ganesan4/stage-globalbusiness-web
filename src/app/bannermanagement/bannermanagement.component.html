@@ -1,0 +1,150 @@
+
+<div class="container mx-auto p-6">
+    <h1 class="text-base sm:text-2xl font-extrabold mb-6 text-gray-800">Banner Management</h1>
+    <button (click)="showForm()" 
+            class="mb-6 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center space-x-2">
+        Add New Banner
+    </button>
+
+    <div class="overflow-x-auto">
+        <div *ngIf="notificationMessage" [ngClass]="{'success': notificationType === 'success', 'error': notificationType === 'error'}" 
+            class="notification fixed top-4 right-4 p-4 rounded-lg shadow-lg">
+            {{ notificationMessage }}
+        </div>
+        <table class="min-w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+            <thead>
+                <tr class="bg-gray-200 text-gray-700">
+                    <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">S.No</th>
+                    <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">Banner</th>
+                    <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">Alt Text</th>
+                    <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let banner of banners; let i = index" class="hover:bg-gray-50 transition-colors">
+                    <td class="py-3 px-6 border-b border-gray-300">{{ i + 1 }}</td>
+                    <td class="py-3 px-6 border-b border-gray-300">
+                        <img [src]="banner.image" [alt]="banner.altText" class="w-32 h-32 object-cover rounded-md" />
+                    </td>
+                    <td class="py-3 px-6 border-b border-gray-300">{{ banner.altText }}</td>
+                    <td class="py-3 px-6 border-b border-gray-300">
+                        <button (click)="showEditForm(banner)" class="bg-blue-500 text-white hover:bg-blue-600 font-medium py-1 px-3 rounded transition-colors">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.5159 7.77706L19.5151 7.77791L6.93934 20.3536C6.84557 20.4474 6.71839 20.5001 6.58579 20.5001L4 20.5001C3.72386 20.5001 3.5 20.2763 3.5 20.0001V17.4143C3.5 17.2817 3.55268 17.1545 3.64645 17.0608L16.2197 4.48748L16.2214 4.48578L16.2214 4.48579L16.2239 4.48332C16.4272 4.28004 16.5587 4.14904 16.6668 4.05727C16.7705 3.96927 16.8193 3.94706 16.8455 3.93853C16.946 3.90591 17.0542 3.90591 17.1546 3.93853C17.1807 3.94704 17.2295 3.9692 17.333 4.05705C17.4409 4.14869 17.5723 4.27948 17.7753 4.48248L19.5151 6.22228C19.7189 6.42611 19.8503 6.55803 19.9423 6.66642C20.0305 6.77036 20.0528 6.81931 20.0614 6.84567C20.094 6.94606 20.094 7.05423 20.0614 7.15469C20.0528 7.18102 20.0306 7.22986 19.9425 7.3336C19.8512 7.44114 19.7211 7.57188 19.5197 7.77332L19.5197 7.77331L19.5159 7.77706Z" stroke="#f5f2f2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M13 11L17.5 6.5" stroke="#f5f2f2"/>
+                            </svg>
+                        </button>
+                        <button (click)="deleteBanner(banner.id)" class="bg-red-500 text-white hover:bg-red-600 font-medium py-1 px-3 rounded lg:ml-4 md:ml-4  transition-colors">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.99957 3H14.9996V2H8.99957V3ZM5.05667 5H18.9425L18.1585 19.1109C18.0997 20.1708 17.2231 21 16.1616 21H7.83753C6.77607 21 5.89949 20.1708 5.84061 19.1109L5.05667 5ZM4.05821 5.05547C4.02637 4.48227 4.48259 4 5.05667 4H18.9425C19.5166 4 19.9728 4.48227 19.9409 5.05547L19.157 19.1664C19.0687 20.7562 17.7538 22 16.1616 22H7.83753C6.24533 22 4.93047 20.7562 4.84215 19.1664L4.05821 5.05547ZM8.99957 16.5C8.99957 16.7761 9.22343 17 9.49957 17C9.77572 17 9.99957 16.7761 9.99957 16.5L9.99958 9.5C9.99958 9.22386 9.77572 9 9.49958 9C9.22343 9 8.99958 9.22386 8.99958 9.5L8.99957 16.5ZM14.4996 17C14.2234 17 13.9996 16.7761 13.9996 16.5L13.9996 9.5C13.9996 9.22386 14.2234 9 14.4996 9C14.7757 9 14.9996 9.22386 14.9996 9.5L14.9996 16.5C14.9996 16.7761 14.7757 17 14.4996 17Z" fill="#f5f2f2"/>
+                                </svg>                                
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="banners.length === 0" class="text-center text-gray-500 py-4">
+            No data available.
+        </div>
+    </div>    
+</div>
+
+<!-- Modal for Add New Banner Form -->
+<div *ngIf="showBannerForm" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-xl font-bold mb-5 text-gray-800">Add New Banner</h2>
+        <form [formGroup]="bannerForm" (ngSubmit)="submitForm()">
+            <div class="mb-5">
+                <label for="imageUpload" class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+                <input type="file" (change)="onImageChange($event)"
+                       class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                       <img *ngIf="imagePreview" [src]="imagePreview" class="mt-4 max-w-full max-h-24 object-contain border rounded-md shadow-sm">
+                <p *ngIf="bannerForm.get('image')?.errors?.['invalidFile']" class="text-red-500 text-sm mt-1">
+                    Please upload a valid image file.
+                </p>
+                <p *ngIf="bannerForm.get('image')?.errors?.['required'] && bannerForm.get('image')?.touched" class="text-red-500 text-sm mt-1">
+                    Image is required.
+                </p>
+                <p *ngIf="bannerForm.get('image')?.errors?.['invalidSize']" class="text-red-500 text-sm mt-1">
+                    Image Dimension must be 1500 x 550.
+                </p>
+                
+            </div>
+            <div class="mb-5">
+                <label for="altText" class="block text-sm font-medium text-gray-700 mb-2">Alternative Text</label>
+                <textarea formControlName="altText"
+                          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Add alternative text"></textarea>
+                <p *ngIf="bannerForm.get('altText')?.invalid && bannerForm.get('altText')?.touched" class="text-red-500 text-sm mt-1">
+                    Alternative text is required.
+                </p>
+            </div>
+            <!-- <div class="mb-5">
+                <label for="comments" class="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+                <textarea formControlName="comments"
+                          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Add comments..."></textarea>
+                <p *ngIf="bannerForm.get('comments')?.invalid && bannerForm.get('comments')?.touched" class="text-red-500 text-sm mt-1">
+                    Comments are required.
+                </p>
+            </div> -->
+            <div class="flex justify-end space-x-4">
+                <button type="button" (click)="closeForm()"
+                        class="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none shadow-md">
+                    Cancel
+                </button>
+                <button type="submit"
+                        class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none shadow-md transform transition-transform hover:scale-105">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- modal for edit -->
+<div *ngIf="showEditBannerForm" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-xl font-bold mb-5 text-gray-800">Edit Banner</h2>
+        <form [formGroup]="editBannerForm" (ngSubmit)="submitEditForm()">
+            <div class="mb-5">
+                <label for="editImageUpload" class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+                <input type="file" (change)="onEditImageChange($event)"
+                       class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <img *ngIf="editImagePreview" [src]="editImagePreview" class="mt-4 max-w-full max-h-24 object-contain border rounded-md shadow-sm">
+                <p *ngIf="editBannerForm.get('image')?.errors?.['invalidFile']" class="text-red-500 text-sm mt-1">
+                    Please upload a valid image file.
+                </p>
+            </div>
+            <div class="mb-5">
+                <label for="editAltText" class="block text-sm font-medium text-gray-700 mb-2">Alternative Text</label>
+                <textarea formControlName="altText"
+                          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Edit alternative text"></textarea>
+                <p *ngIf="editBannerForm.get('altText')?.invalid && editBannerForm.get('altText')?.touched" class="text-red-500 text-sm mt-1">
+                    Alternative text is required.
+                </p>
+            </div>
+            <!-- <div class="mb-5">
+                <label for="editComments" class="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+                <textarea formControlName="comments"
+                          class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Edit comments..."></textarea>
+                <p *ngIf="editBannerForm.get('comments')?.invalid && editBannerForm.get('comments')?.touched" class="text-red-500 text-sm mt-1">
+                    Comments are required.
+                </p>
+            </div> -->
+            <div class="flex justify-end space-x-4">
+                <button type="button" (click)="closeEditForm()"
+                        class="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none shadow-md">
+                    Cancel
+                </button>
+                <button type="submit"
+                        class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none shadow-md transform transition-transform hover:scale-105">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

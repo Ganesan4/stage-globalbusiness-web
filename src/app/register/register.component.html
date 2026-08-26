@@ -1,0 +1,426 @@
+<!-- registration.component.html -->
+<div *ngIf="!showsuccessmessage; else successMessage"
+  class="container mx-auto p-6 border border-gray-300 rounded-md shadow-lg mb-14 mt-2 max-w-5xl">
+  <div class="flex justify-between mb-8">
+    <div class="relative flex-1 text-center" *ngFor="let s of [1, 2]; let i = index">
+      <div [class]="step >= s ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'"
+        class="w-10 h-10 rounded-full mx-auto flex items-center justify-center">{{ s }}</div>
+      <p class="mt-2 text-sm" [class.text-blue-500]="step >= s">{{ stepLabels[i] }}</p>
+
+
+      <div *ngIf="i < 1" class="absolute right-[-15px] top-[50%] transform -translate-y-[50%] arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-head"></div>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Step 1: Basic Information -->
+    <div *ngIf="step === 1">
+      <h2 class="text-lg font-bold mb-4">Basic Business Information</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <label>Business Name <span class="text-red-500">*</span></label>
+          <input type="hidden" name="listingId" formControlName="listingId">
+          <input formControlName="businessName" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter your Business Name" />
+          <div *ngIf="registerForm.get('businessName')?.invalid && registerForm.get('businessName')?.touched">
+            <small class="text-red-500">Business Name is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Country <span class="text-red-500">*</span></label>
+          <select formControlName="country" (change)="onCountryChange($event)" class="w-full p-2 border rounded-md">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countries" [value]="country.iso3">{{ country.name }}</option>
+          </select>
+          <div *ngIf="registerForm.get('country')?.invalid && registerForm.get('country')?.touched">
+            <small class="text-red-500">Country is required</small>
+          </div>
+        </div>
+
+        <div>
+          <label>Street Address<span class="text-red-500">*</span></label>
+          <input formControlName="region" type="text" class="w-full p-2 border rounded-md"
+            placeholder="eg: physical address" />
+          <div *ngIf="registerForm.get('region')?.invalid && registerForm.get('region')?.touched">
+            <small class="text-red-500">Region is required</small>
+          </div>
+        </div>
+        <div>
+          <label>State <span class="text-red-500">*</span></label>
+          <select formControlName="state" class="w-full p-2 border rounded-md">
+            <option value="">Select State</option>
+            <option *ngFor="let state of states" [value]="state.state_code">{{ state.name }}</option>
+          </select>
+          <div *ngIf="registerForm.get('state')?.invalid && registerForm.get('state')?.touched">
+            <small class="text-red-500">State is required</small>
+          </div>
+        </div>
+        <div>
+          <label>City <span class="text-red-500">*</span></label>
+          <input formControlName="city" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter your City" />
+          <div *ngIf="registerForm.get('city')?.invalid && registerForm.get('city')?.touched">
+            <small class="text-red-500">City is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Zip/Post Code <span class="text-red-500">*</span></label>
+          <input formControlName="zipCode" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter your Zipcode" />
+          <div *ngIf="registerForm.get('zipCode')?.invalid && registerForm.get('zipCode')?.touched">
+            <small class="text-red-500">Zip/Post Code is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Phone Number(s) <span class="text-red-500">*</span></label>
+          <input formControlName="phone" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter phone numbers separated by commas"
+            pattern="^(\+?1[-. ]?)?(\(?\d{3}\)?[-. ]?)?\d{3}[-. ]?\d{4}(,\s*(\+?1[-. ]?)?(\(?\d{3}\)?[-. ]?)?\d{3}[-. ]?\d{4})*$" />
+          <div *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+            <small class="text-red-500">Please enter valid phone numbers (e.g., 123-456-7890, 987-654-3210)</small>
+          </div>
+        </div>
+
+        <div>
+          <label>QR Payment Screenshot</label>
+          <input type="file" (change)="onFileChangeqrcode($event)" class="w-full p-2 border rounded-md"
+            accept="image/*" />
+          <div *ngIf="screenshotPreview">
+            <img [src]="screenshotPreview" alt="Uploaded Screenshot"
+              class="mt-2 w-32 h-32 object-cover border rounded-md" />
+            <button type="button" (click)="removeScreenshot()" class="text-red-500 text-sm mt-2">Remove</button>
+          </div>
+          <!-- <button *ngIf="isScreenshotUploaded" type="submit" (click)="onSubmitScreenshot()" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">
+            Submit
+          </button> -->
+        </div>
+      </div>
+      <div class="grid grid-cols-1 gap-4 mb-6">
+        <div>
+          <label class="text-lg font-medium">Payment Options</label>
+          <div class="text-red-500 text-sm mt-1 mb-3">* Please choose one of the three payment options</div>
+
+          <div class="payment-options flex gap-6">
+            <!-- PayPal Button -->
+            <div class="w-40 h-14 flex items-center justify-center border border-gray-300 bg-white
+                        rounded-xl shadow-md cursor-pointer transition-all duration-300
+                        hover:border-blue-500 hover:shadow-lg hover:scale-105 active:scale-95"
+              [ngClass]="{'border-blue-500': selectedPayment === 'paypal'}" (click)="selectPayment('paypal')">
+              <img src="assets/img/paypay9.png" alt="PayPal" class="w-full h-full object-contain" />
+            </div>
+
+            <!-- Stripe Button -->
+            <div class="w-40 h-14 flex items-center justify-center border border-gray-300 bg-white
+                        rounded-xl shadow-md cursor-pointer transition-all duration-300
+                        hover:border-blue-500 hover:shadow-lg hover:scale-105 active:scale-95"
+              [ngClass]="{'border-blue-500': selectedPayment === 'stripe'}" (click)="selectPayment('stripe')">
+              <img src="assets/img/Stripe.png" alt="Stripe" class="w-full h-full object-contain" />
+            </div>
+
+            <!-- GPay Button -->
+            <div class="w-40 h-14 flex items-center justify-center border border-gray-300 bg-white
+                        rounded-xl shadow-md cursor-pointer transition-all duration-300
+                        hover:border-blue-500 hover:shadow-lg hover:scale-105 active:scale-105 active:scale-95"
+              [ngClass]="{'border-blue-500': selectedPayment === 'gpay'}" (click)="selectPayment('gpay')">
+              <img src="assets/img/gggpay.png" alt="Gpay" class="w-full h-full object-contain" />
+            </div>
+            <div class="w-40 h-14 flex items-center justify-center border border-gray-300 bg-white
+                        rounded-xl shadow-md cursor-pointer transition-all duration-300
+                        hover:border-blue-500 hover:shadow-lg hover:scale-105 active:scale-95"
+              [ngClass]="{'border-blue-500': selectedPayment === 'qrcode'}" (click)="selectPayment('qrcode')">
+              <img src="assets/img/qr.jpg" alt="Gpay" class="w-full h-full object-contain" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="showValidationPayment" class="text-red-500 mt-2">
+        Please select a payment method.
+      </div>
+      <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6">
+        <p class="font-semibold">Alternative Payment Methods:</p>
+        <p class="font-thin">
+          Payment for Annual Registration of $1.30 can be sent by check, money order, cash. Mail them to GBP: <strong
+            class="font-semibold">6820 Atmore Dr. Richmond VA, 23225, USA.</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 2: Products & Services -->
+    <div *ngIf="step === 2">
+      <div *ngIf="showToast"
+        class="fixed top-5 right-5 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in-out">
+        <p>Your payment is still pending. Please select a payment method and complete the payment.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div>
+          <label>Email Address <span class="text-red-500">*</span></label>
+          <input formControlName="email" type="email" class="w-full p-2 border rounded-md"
+            placeholder="Enter your Email Address" />
+          <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            <small *ngIf="registerForm.get('email')?.errors?.['required']" class="text-red-500">Email is
+              required</small>
+            <small *ngIf="registerForm.get('email')?.errors?.['email']" class="text-red-500">Please provide a valid
+              email address</small>
+            <small *ngIf="registerForm.get('email')?.errors?.['emailExists']" class="text-red-500">Email id already
+              exists</small>
+          </div>
+        </div>
+        <div>
+          <label>Password <span class="text-red-500">*</span></label>
+          <input formControlName="password" type="password" class="w-full p-2 border rounded-md"
+            placeholder="Enter your Password" />
+          <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            <small *ngIf="registerForm.get('password')?.errors?.['required']" class="text-red-500">Password is
+              required</small>
+            <small *ngIf="registerForm.get('password')?.errors?.['minlength']" class="text-red-500">
+              Please provide a password more than 8 characters
+            </small>
+          </div>
+        </div>
+        <div>
+          <label>Confirm Password <span class="text-red-500">*</span></label>
+          <input formControlName="confirmpassword" type="password" class="w-full p-2 border rounded-md"
+            placeholder="Enter your  Confirm Password" />
+          <div *ngIf="registerForm.get('confirmpassword')?.touched">
+            <small *ngIf="registerForm.get('confirmpassword')?.errors?.['required']" class="text-red-500">
+              Confirm Password is required
+            </small>
+            <small *ngIf="registerForm.errors?.['mismatch']" class="text-red-500">
+              Password and Confirm Password do not match
+            </small>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Referral Code Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
+  <div>
+    <label>Referral Code <span class="text-gray-500">(Optional)</span></label>
+
+    <input 
+      formControlName="referral_code" 
+      type="text" 
+      [readonly]="isReferralReadonly"
+      [class.bg-gray-100]="isReferralReadonly"
+      [class.cursor-not-allowed]="isReferralReadonly"
+      class="w-full p-2 border rounded-md"
+      [placeholder]="isReferralReadonly ? 'Referral code from link (readonly)' : 'Enter referral code if you have one'"
+      (input)="onReferralCodeChange(registerForm.get('referral_code')?.value || '')"
+    />
+
+    <div *ngIf="referralCodeValidationStatus === 'valid'" class="mt-1 text-green-600 text-sm">
+      ✅ Valid
+    </div>
+
+    <div *ngIf="referralCodeValidationStatus === 'invalid'" class="mt-1 text-red-600 text-sm">
+      ❌ Invalid
+    </div>
+
+    <div *ngIf="referralCodeValidationStatus === 'checking'" class="mt-1 text-gray-600 text-sm">
+      Checking...
+    </div>
+
+  </div>
+
+        <div>
+          <p class="text-sm text-gray-700 mt-8">
+            Have a referral code? Enter it here to be associated with the person who referred you.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-between mt-4 items-center">
+      <button *ngIf="step > 1" type="button" (click)="prevStep()"
+        class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">Previous</button>
+      <button *ngIf="step < 2" type="button" [disabled]="!isStepValid(step)" (click)="nextStep()"
+        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Next</button>
+      <button *ngIf="step === 2"
+
+      
+        [disabled]="registerForm.invalid || (!registerForm.get('transaction_id')?.value && !registerForm.get('screenshot')?.value) || registerForm.errors?.['mismatch']"
+        type="submit"
+        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed">
+        Submit
+      </button>
+      <div *ngIf="step === 1" class="text-center md:text-right w-full md:w-auto">
+        <a routerLink="/login" class="text-black-600 text-sm md:text-base font-medium transition-colors duration-200">
+          Already registered? <span class="font-semibold text-blue-600 hover:underline">Login here</span>
+        </a>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<!-- QR Code Modal (Only Visible When showQrCodeModal is True) -->
+<div *ngIf="showQrCodeModal"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+  <div class="bg-white w-96 p-6 rounded-xl shadow-lg relative animate-fade-in">
+    <!-- Close Button -->
+    <button (click)="closeQrCodeModal()" class="absolute top-3 right-3 text-gray-600 hover:text-red-500">
+      ✖
+    </button>
+
+    <!-- Modal Content -->
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Scan QR Code</h2>
+    <div class="flex justify-center">
+      <img src="assets/img/qrcode.jpeg" alt="QR Code" class="w-60 h-60 object-contain" />
+    </div>
+
+    <div class="mt-4 text-center">
+      <p class="text-gray-600">Scan the QR code above to proceed with the payment.</p>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showPayPalModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg relative addscroll">
+
+    <div *ngIf="transactionSuccessPaypal" class="mb-4 text-center text-green-500 font-bold">
+      Payment successful!
+    </div>
+
+    <h3 class="text-lg font-bold mb-4">Pay with PayPal</h3>
+    <div id="paypal-button-container" class="mb-4"></div> <!-- Ensure this container is always present -->
+
+    <div class="flex justify-end">
+      <button (click)="onCancelPayPal()"
+        class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 mr-2">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showStripeModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg relative">
+    <div *ngIf="transactionSuccessStripe" class="mb-4 text-center text-green-500 font-bold">
+      Payment successful!
+    </div>
+    <div>
+      <app-stripe [strname]="this.registerForm.get('businessName')?.value" (onCloseEvent)="onCancelStripe()">
+      </app-stripe>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showSquareModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg relative">
+
+    <div *ngIf="transactionSuccess" class="mb-4 text-center text-green-500 font-bold">
+      Payment successful!
+    </div>
+
+    <h3 class="text-lg font-bold mb-4">Pay with Square</h3>
+    <div id="square-button-container">
+
+      <form id="payment-form">
+        <div id="card-container"></div>
+      </form>
+      <div id="payment-status-container"></div>
+    </div>
+
+    <div class="flex justify-end">
+      <button (click)="onCancelSquare()"
+        class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 mr-2">Cancel</button>
+      <button (click)="sendPaymentToBackend()"
+        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mr-2">Pay now</button>
+
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showGpayModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg relative">
+    <div class="mb-4 text-center text-green-500 font-bold">
+      {{ transactionGpayStatus }}
+    </div>
+    <h3 class="text-lg font-bold mb-4">Pay with Gpay</h3>
+    <div>
+      <!-- <app-stripe (onCloseEvent)="onCancelStripe()"></app-stripe> -->
+      <app-gpay (onCloseEvent)="onCancelGpay()" (transactionGpay)="onPaymentSuccess($event)">
+      </app-gpay>
+      <button (click)="onCancelGpay()"
+        class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 mr-2 mt-4 rgt">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg">
+    <h3 class="text-lg font-bold mb-4">{{ selectedAmenityTitle }}</h3>
+    <textarea [(ngModel)]="description" placeholder="Enter description"
+      class="w-full border border-gray-300 rounded-md p-2 mb-4"></textarea>
+
+    <label class="flex items-center mb-2" *ngIf="cost === null || cost <= 0">
+      <input type="checkbox" [(ngModel)]="isFree" (change)="onToggleCost()" class="mr-2" />
+      <span class="text-md font-semibold">Free</span>
+    </label>
+    <div *ngIf="!isFree && (cost === null || cost <= 0)">
+      <small class="text-red-500">Check free if no cost is needed!</small>
+    </div>
+
+    <div *ngIf="!isFree">
+      <input type="number" [(ngModel)]="cost" (input)="onAmountChange()" placeholder="Enter amount"
+        class="border border-gray-300 rounded-md p-2 mb-2" />
+      <div *ngIf="cost === null || cost <= 0">
+        <small class="text-red-500">Enter the cost if it is not a free service!</small>
+      </div>
+    </div>
+
+   <div class="flex justify-end mb-2" *ngIf="showOkButton">
+    <button 
+        (click)="onOk()"
+        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">
+        OK
+    </button>
+</div>
+  </div>
+</div>
+
+<ng-template #successMessage>
+  <div class="flex items-center justify-center h-75vh">
+    <div class="col-span-12 md:col-span-6 flex flex-col items-center">
+      <div class="w-full max-w-md p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
+        <div class="text-lg font-semibold text-blue-900">
+          <a href="#">
+            GLOBAL BUSINESS PAGES
+          </a>
+        </div>
+        <p class="mt-4 text-gray-700">
+          You have registered successfully on GlobalBusiness Pages. A notification has been sent to the administrator.
+          Once your account is verified and approved, it will be activated, and you will be notified
+        </p>
+        <!-- Referral Warning Alert -->
+        <div *ngIf="referralWarning" class="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded-md">
+          <div class="flex items-start">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium text-yellow-800">
+                ⚠️ {{ referralWarning }}
+              </p>
+              <p class="mt-1 text-xs text-yellow-700">
+                A new referral code has been created for you instead.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Right-aligned Login link -->
+        <!-- <div class="mt-3 flex justify-end">
+          <a routerLink="/login" class="text-blue-600 hover:underline font-medium">
+            Click here to login
+          </a>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</ng-template>

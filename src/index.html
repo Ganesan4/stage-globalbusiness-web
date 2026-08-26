@@ -1,0 +1,104 @@
+<!-- <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GlobalBusinessPage</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="mat-typography">
+  <app-root></app-root>
+</body>
+</html> -->
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>STAGING / TEST — GlobalBusinessPage</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="canonical" href="">
+  <link rel="icon" type="image/x-icon" href="assets/img/favico.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvfG8gk8bhzwEPN4PxZMT1grLNgSpsWZQ"></script>
+
+
+  <div id="google_translate_element" style="display: none"></div>
+
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        {
+          pageLanguage: "en",
+          autoDisplay: false,
+        },
+        "google_translate_element"
+      );
+    }
+
+    function moveGoogleTranslate() {
+      const element = document.getElementById("google_translate_element");
+      const desktop = document.getElementById("desktop-menu");
+      const mobile = document.getElementById("mobile-menu");
+
+      if (!element) return;
+
+      // Desktop View
+      if (window.innerWidth >= 1024 && desktop) {
+        if (!desktop.contains(element)) {
+          desktop.appendChild(element);
+          element.style.display = "block";
+        }
+      }
+
+      // Mobile View
+      if (window.innerWidth < 1024 && mobile) {
+        if (!mobile.contains(element)) {
+          mobile.appendChild(element);
+          element.style.display = "block";
+        }
+      }
+    }
+
+    const observer = new MutationObserver(() => {
+      moveGoogleTranslate();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    window.addEventListener("load", moveGoogleTranslate);
+    window.addEventListener("resize", moveGoogleTranslate);
+  </script>
+
+
+
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <script>
+    document.addEventListener("click", function (e) {
+      if (e.target.closest("#google_translate_element a")) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
+</html>

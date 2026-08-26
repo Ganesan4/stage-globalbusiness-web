@@ -1,0 +1,836 @@
+<!-- registration.component.html -->
+<div *ngIf="notificationMessage"
+  [ngClass]="{'success': notificationType === 'success', 'error': notificationType === 'error'}"
+  class="notification fixed top-4 right-4 p-4 rounded-lg shadow-lg">
+  {{ notificationMessage }}
+</div>
+
+<div class="container">
+  <!-- <div class="flex justify-between mb-8">
+      <div class="relative flex-1 text-center" *ngFor="let s of [1, 2, 3, 4]; let i = index">
+        <div [class]="step >= s ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'"
+          class="w-10 h-10 rounded-full mx-auto flex items-center justify-center">{{ s }}</div>
+        <p class="mt-2 text-sm" [class.text-blue-500]="step >= s">{{ stepLabels[i] }}</p>
+  
+        <div *ngIf="i < 3" class="absolute right-[-15px] top-[50%] transform -translate-y-[50%] arrow">
+          <div class="arrow-line"></div>
+          <div class="arrow-head"></div>
+        </div>
+      </div>
+    </div> -->
+
+  <form [formGroup]="registerForm" (ngSubmit)="onallbusinessSubmit()">
+    <!-- Step 1: Basic Information -->
+    <!-- <div *ngIf="step === 1"> -->
+    <h2 class="text-base sm:text-2xl font-extrabold mb-6 text-gray-800">All Business Information</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+      <!-- <div class="flex items-center justify-evenly">
+            <div class="w-24 h-24 bg-gray-200 rounded-md overflow-hidden flex items-center justify-center">
+              <img [src]="logoUrl" alt="Logo" class="object-cover w-full h-full" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Logo</label>
+              <input 
+                type="file" 
+                (change)="onFileChange($event)" 
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-md cursor-pointer bg-gray-50 focus:outline-none"
+              />
+            </div>
+          </div> -->
+
+      <div>
+        <label>Business Category<span class="text-red-500">*</span></label>
+        <input formControlName="category" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Category" />
+        <div *ngIf="
+            registerForm.get('category')?.invalid &&
+            registerForm.get('category')?.touched
+          ">
+          <!-- <small class="text-red-500">Business Category is required</small> -->
+        </div>
+      </div>
+      <!-- <div>
+        <label>Business Description <span class="text-red-500">*</span></label>
+        <input
+          formControlName="description"
+          type="text"
+          class="w-full p-2 border rounded-md"
+          placeholder="Enter your Description"
+        />
+        <div
+          *ngIf="
+            registerForm.get('description')?.invalid &&
+            registerForm.get('description')?.touched
+          "
+        >
+        </div>
+      </div> -->
+
+      <div>
+        <label>Business Description <span class="text-red-500">*</span></label>
+        @if (Editor) {
+        <ckeditor formControlName="description" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Description">
+        </ckeditor>
+        }
+        <div *ngIf="registerForm.get('description')?.invalid && registerForm.get('description')?.touched">
+          <small class="text-red-500">Business Description is required</small>
+        </div>
+      </div>
+
+      <div>
+        <label>Fax Number</label>
+        <input formControlName="fax" type="number" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Fax Number" />
+      </div>
+
+      <div>
+        <label>Business Start Date</label>
+        <input formControlName="start_date" type="date" class="w-full p-2 border rounded-md" placeholder="dd-mm-yyyy" />
+      </div>
+
+      <div>
+        <label>Website URL</label>
+        <input formControlName="website" type="url" class="w-full p-2 border rounded-md"
+          placeholder="Enter your website URL" />
+      </div>
+
+      <div>
+        <label>Annual Sales</label>
+        <input formControlName="annual_sales" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Annual Sales" />
+      </div>
+
+      <div>
+        <label>Products / Services Offered<span class="text-red-500">*</span></label>
+        @if (Editor) {
+        <ckeditor formControlName="products_services" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Products / Services Offered">
+        </ckeditor>
+        }
+        <!-- <input formControlName="products_services" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Products / Services Offered" /> -->
+        <div *ngIf="
+            registerForm.get('products_services')?.invalid &&
+            registerForm.get('products_services')?.touched
+          ">
+          <!-- <small class="text-red-500">products is required</small> -->
+        </div>
+      </div>
+
+      <div>
+        <label>Pricing Information</label>
+        <input formControlName="pricing" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Pricing Information" />
+      </div>
+
+      <div>
+        <label>Industry / Sector</label>
+        @if (Editor) {
+        <ckeditor formControlName="industry" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Industry / Sector">
+        </ckeditor>
+        }
+        <!-- <input formControlName="industry" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Industry / Sector" /> -->
+      </div>
+      <div>
+        <label>Operating Hours</label>
+        <input formControlName="operating_hours" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Operating Hours" />
+      </div>
+      <div>
+        <label>Location Details</label>
+        <input formControlName="location_details" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Location Details" />
+      </div>
+      <div>
+        <label>Service Areas</label>
+        <input formControlName="service_areas" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Service Areas" />
+      </div>
+      <div>
+        <label>Target Market</label>
+        @if (Editor) {
+        <ckeditor formControlName="target_market" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Target Market">
+        </ckeditor>
+        }
+        <!-- <input formControlName="target_market" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Target Market" /> -->
+      </div>
+      <!-- <div>
+        <label>Social Media Links</label>
+        <input
+          formControlName="social_media_links"
+          type="url"
+          class="w-full p-2 border rounded-md"
+          placeholder="Enter your Social Media Links"
+        />
+      </div> -->
+      <div>
+        <label>Certifications and Accreditations</label>
+        @if (Editor) {
+        <ckeditor formControlName="certifications" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Certifications and Accreditations">
+        </ckeditor>
+        }
+        <!-- <input formControlName="certifications" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Certifications and Accreditations" /> -->
+      </div>
+
+      <!-- <div>
+        <label>Client Testimonials</label>
+        <input
+          formControlName="client_testimonials"
+          type="text"
+          class="w-full p-2 border rounded-md"
+          placeholder="Enter your Client Testimonials"
+        />
+      </div> -->
+      <!-- <div>
+            <label>Case Studies or Success Stories</label>
+            <input formControlName="case_studies" type="text" class="w-full p-2 border rounded-md" placeholder="Enter your case_studies" />
+          </div> -->
+      <div>
+        <label>Market Positioning</label>
+        @if (Editor) {
+        <ckeditor formControlName="market_positioning" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Market Positioning">
+        </ckeditor>
+        }
+        <!-- <input formControlName="market_positioning" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Market Positioning" /> -->
+      </div>
+      <div>
+        <label>Global Reach</label>
+        @if (Editor) {
+        <ckeditor formControlName="global_reach" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Global Reach">
+        </ckeditor>
+        }
+        <!-- <input formControlName="global_reach" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Global Reach" /> -->
+      </div>
+      <!-- <div>
+            <label>Sustainability Practices</label>
+            <input formControlName="sustainability_practices" type="text" class="w-full p-2 border rounded-md" placeholder="Enter your Sustainability Practices" />
+          </div> -->
+      <div>
+        <label>News and Updates</label>
+        @if (Editor) {
+        <ckeditor formControlName="news_updates" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your News and Updates">
+        </ckeditor>
+        }
+        <!-- <input formControlName="news_updates" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your News and Updates" /> -->
+      </div>
+      <div>
+        <label>Promotions or Special Offers</label>
+        @if (Editor) {
+        <ckeditor formControlName="promotions" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Promotions or Special Offers">
+        </ckeditor>
+        }
+        <!-- <input formControlName="promotions" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Promotions or Special Offers" /> -->
+      </div>
+      <div>
+        <label>Networking Opportunities</label>
+        @if (Editor) {
+        <ckeditor formControlName="networking_opportunities" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Networking Opportunities">
+        </ckeditor>
+        }
+        <!-- <input formControlName="networking_opportunities" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Networking Opportunities" /> -->
+      </div>
+      <div>
+        <label>Visual Content</label>
+        @if (Editor) {
+        <ckeditor formControlName="visual_content" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Visual Content">
+        </ckeditor>
+        }
+        <!-- <input formControlName="visual_content" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Visual Content" /> -->
+      </div>
+      <div>
+        <label>Community Involvement</label>
+        @if (Editor) {
+        <ckeditor formControlName="community_involvement" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Community Involvement">
+        </ckeditor>
+        }
+        <!-- <input formControlName="community_involvement" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Community Involvement" /> -->
+      </div>
+      <div>
+        <label>FAQ Section</label>
+        @if (Editor) {
+        <ckeditor formControlName="faq" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your FAQ Section">
+        </ckeditor>
+        }
+        <!-- <input formControlName="faq" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your FAQ Section" /> -->
+      </div>
+      <div>
+        <label>Call to Action</label>
+        @if (Editor) {
+        <ckeditor formControlName="call_to_action" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Call to Action">
+        </ckeditor>
+        }
+        <!-- <input formControlName="call_to_action" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Call to Action" /> -->
+      </div>
+      <div>
+        <label>Mobile-Friendly Features</label>
+        @if (Editor) {
+        <ckeditor formControlName="mobile_friendly_features" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Mobile-Friendly Features">
+        </ckeditor>
+        }
+        <!-- <input formControlName="mobile_friendly_features" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Mobile-Friendly Features" /> -->
+      </div>
+      <div>
+        <label>Legal Information</label>
+        @if (Editor) {
+        <ckeditor formControlName="legal_information" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Legal Information">
+        </ckeditor>
+        }
+        <!-- <input formControlName="legal_information" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Legal Information" /> -->
+      </div>
+      <div>
+        <label>Unique Value Proposition</label>
+          @if (Editor) {
+        <ckeditor formControlName="uvp" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Unique Value Proposition">
+        </ckeditor>
+        }
+        <!-- <input formControlName="uvp" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Unique Value Proposition" /> -->
+      </div>
+      <div>
+        <label>Multilingual Support</label>
+        @if (Editor) {
+        <ckeditor formControlName="multilingual_support" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Multilingual Support">
+        </ckeditor>
+        }
+        <!-- <input formControlName="multilingual_support" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Multilingual Support" /> -->
+      </div>
+
+      <div>
+        <label>Customer Satisfaction Metrics</label>
+        @if (Editor) {
+        <ckeditor formControlName="customer_satisfaction" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Customer Satisfaction Metrics">
+        </ckeditor>
+        }
+        <!-- <input formControlName="customer_satisfaction" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Customer Satisfaction Metrics" /> -->
+      </div>
+      <div>
+        <label>Employee Satisfaction Insights</label>
+          @if (Editor) {
+        <ckeditor formControlName="employee_satisfaction" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Employee Satisfaction Insights">
+        </ckeditor>
+        }
+        <!-- <input formControlName="employee_satisfaction" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Employee Satisfaction Insights" /> -->
+      </div>
+      <div>
+        <label>Sustainability Practices</label>
+        @if (Editor) {
+        <ckeditor formControlName="sustainability_practices" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Sustainability Practices">
+        </ckeditor>
+        }
+        <!-- <input formControlName="sustainability_practices" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Sustainability Practices" /> -->
+      </div>
+      <div>
+        <label>Social Impact Scores</label>
+        @if (Editor) {
+        <ckeditor formControlName="social_impact_scores" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Social Impact Scores">
+        </ckeditor>
+        }
+        <!-- <input formControlName="social_impact_scores" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Social Impact Scores" /> -->
+      </div>
+      <div>
+        <label>Operational Transparency</label>
+        @if (Editor) {
+        <ckeditor formControlName="operational_transparency" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Operational Transparency">
+        </ckeditor>
+        }
+        <!-- <input formControlName="operational_transparency" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Operational Transparency" /> -->
+      </div>
+      <div>
+        <label>Industry Comparisons</label>
+        @if (Editor) {
+        <ckeditor formControlName="industry_comparisons" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Industry Comparisons">
+        </ckeditor>
+        }
+        <!-- <input formControlName="industry_comparisons" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Industry Comparisons" /> -->
+      </div>
+      <div>
+        <label>Unique Selling Proposition (USP) Analysis</label>
+        @if (Editor) {
+        <ckeditor formControlName="usp_analysis" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Unique Selling Proposition (USP) Analysis">
+        </ckeditor>
+        }
+        <!-- <input formControlName="usp_analysis" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Unique Selling Proposition (USP) Analysis" /> -->
+      </div>
+      <div>
+        <label>Product Lifecycle</label>
+        @if (Editor) {
+        <ckeditor formControlName="product_lifecycle" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Product Lifecycle">
+        </ckeditor>
+        }
+        <!-- <input formControlName="product_lifecycle" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Product Lifecycle" /> -->
+      </div>
+      <div>
+        <label>Case Studies or Success Stories</label>
+          @if (Editor) {
+        <ckeditor formControlName="case_studies" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Case Studies or Success Stories">
+        </ckeditor>
+        }
+        <!-- <input formControlName="case_studies" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Case Studies or Success Stories" /> -->
+      </div>
+      <div>
+        <label>Community Engagement Metrics</label>
+        @if (Editor) {
+        <ckeditor formControlName="community_engagement" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Community Engagement Metrics">
+        </ckeditor>
+        }
+        <!-- <input formControlName="community_engagement" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Community Engagement Metrics" /> -->
+      </div>
+      <div>
+        <label>Visual & Interactive Elements</label>
+        @if (Editor) {
+        <ckeditor formControlName="visual_interactive" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Visual & Interactive Elements">
+        </ckeditor>
+        }
+        <!-- <input formControlName="visual_interactive" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Visual & Interactive Elements" /> -->
+      </div>
+      <div>
+        <label>User-generated Q&A</label>
+        @if (Editor) {
+        <ckeditor formControlName="user_generated_qa" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your User-generated Q&A">
+        </ckeditor>
+        }
+        <!-- <input formControlName="user_generated_qa" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your User-generated Q&A" /> -->
+      </div>
+      <div>
+        <label>Dynamic Pricing Information</label>
+        @if (Editor) {
+        <ckeditor formControlName="dynamic_pricing" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Dynamic Pricing Information">
+        </ckeditor>
+        }
+        <!-- <input formControlName="dynamic_pricing" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Dynamic Pricing Information" /> -->
+      </div>
+      <div>
+        <label>Expert Opinions or Reviews</label>
+        @if (Editor) {
+        <ckeditor formControlName="expert_opinions" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Expert Opinions or Reviews">
+        </ckeditor>
+        }
+        <!-- <input formControlName="expert_opinions" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Expert Opinions or Reviews" /> -->
+      </div>
+      <div>
+        <label>Crisis Management History</label>
+        @if (Editor) {
+        <ckeditor formControlName="crisis_management" [editor]="Editor" [config]="editorConfig"
+          class="w-full rounded-md no-tailwindcss-base" placeholder="Enter your Crisis Management History">
+        </ckeditor>
+        }
+        <!-- <input formControlName="crisis_management" type="text" class="w-full p-2 border rounded-md"
+          placeholder="Enter your Crisis Management History" /> -->
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-lg font-bold mb-4">Social Media Links</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label>Facebook</label>
+          <input formControlName="facebook" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter Facebook Link" />
+          <!-- <p *ngIf="registerForm.get('facebook')?.hasError('invalidLink')" class="text-red-500 text-sm">
+              Invalid Facebook link. eg. https://www.facebook.com/username"
+            </p> -->
+        </div>
+        <div>
+          <label>Instagram</label>
+          <input formControlName="instagram" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter Instagram Link" />
+          <!-- <p *ngIf="registerForm.get('instagram')?.hasError('invalidLink')" class="text-red-500 text-sm">
+              Invalid Instagram link. eg. https://www.instagram.com/username"
+            </p> -->
+        </div>
+        <div>
+          <label>Twitter/X</label>
+          <input formControlName="twitter" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter Twitter Link" />
+          <!-- <p *ngIf="registerForm.get('twitter')?.hasError('invalidLink')" class="text-red-500 text-sm">
+              Invalid Twitter link. eg. https://twitter.com/username"
+            </p> -->
+        </div>
+        <div>
+          <label>YouTube</label>
+          <input formControlName="youtube" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter youtube Link" />
+          <!-- <p *ngIf="registerForm.get('youtube')?.hasError('invalidLink')" class="text-red-500 text-sm">
+              Invalid YouTube link. eg. https://www.youtube.com/username"
+            </p> -->
+        </div>
+        <div>
+          <label>Tiktok</label>
+          <input formControlName="tiktok" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter tiktok Links" />
+          <!-- <p *ngIf="registerForm.get('tiktok')?.hasError('invalidLink')" class="text-red-500 text-sm">
+              Invalid Tiktok link. eg. https://www.tiktok.com/username"
+            </p> -->
+        </div>
+        <div>
+          <label>LinkedIn</label>
+          <input formControlName="linkedin" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter LinkedIn Link" />
+          <!-- <p *ngIf="registerForm.get('linkedin')?.hasError('invalidLink')" class="text-red-500 text-sm">
+              Invalid LinkedIn link. eg. https://www.linkedin.com/username"
+            </p> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-lg font-bold mb-4">Client Testimonials</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label>Client Testimonials 1</label>
+          <textarea formControlName="clienttestimonials1" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter Client Testimonials1"></textarea>
+        </div>
+        <div>
+          <label>Client Testimonials 2</label>
+          <textarea formControlName="clienttestimonials2" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter Client Testimonials2"></textarea>
+        </div>
+        <div>
+          <label>Client Testimonials 3</label>
+          <textarea formControlName="clienttestimonials3" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter Client Testimonials3"></textarea>
+        </div>
+        <div>
+          <label>Client Testimonials 4</label>
+          <textarea formControlName="clienttestimonials4" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter Client Testimonials4"></textarea>
+        </div>
+        <div>
+          <label>Client Testimonials 5</label>
+          <textarea formControlName="clienttestimonials5" type="text" class="w-full p-2 border rounded-md"
+            placeholder="Enter Client Testimonials5"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="text-lg font-bold mb-4">Amenities</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <!-- general -->
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>General Amenities</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div *ngFor="let amenity of general_amenities; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" [checked]="isChecked(amenity.title)" name="amenities"
+                (change)="onAmenityChange(amenity, i, $event, 'General_Amenities')"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <span class="text-gray-800">{{ amenity.title }}</span>
+
+              <!-- Edit icon -->
+              <svg *ngIf="amenity.status || isChecked(amenity.title)" class="h-6 w-6 text-gray-400 cursor-pointer"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" (click)="editAmenity(amenity.title)">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </div>
+          </div>
+
+        </div>
+        <!-- hospitality -->
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Hospitality and Dining</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div *ngFor="let amenity of hospitality; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" [checked]="isChecked(amenity.title)" name="amenities"
+                (change)="onAmenityChange(amenity, i, $event, 'Hospitality_&_Dining')"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <span class="text-gray-800">{{ amenity.title }}</span>
+
+              <!-- Edit icon -->
+              <svg *ngIf="amenity.status || isChecked(amenity.title)" class="h-6 w-6 text-gray-400 cursor-pointer"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" (click)="editAmenity(amenity.title)">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- health -->
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Health and Fitness</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div *ngFor="let amenity of health; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" [checked]="isChecked(amenity.title)" name="amenities"
+                (change)="onAmenityChange(amenity, i, $event, 'Health_&_Fitness')"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <span class="text-gray-800">{{ amenity.title }}</span>
+
+              <!-- Edit icon -->
+              <svg *ngIf="amenity.status || isChecked(amenity.title)" class="h-6 w-6 text-gray-400 cursor-pointer"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" (click)="editAmenity(amenity.title)">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- business_services -->
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Business Services</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div *ngFor="let amenity of business_services; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" [checked]="isChecked(amenity.title)" name="amenities"
+                (change)="onAmenityChange(amenity, i, $event, 'Business_Services')"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <span class="text-gray-800">{{ amenity.title }}</span>
+
+              <!-- Edit icon -->
+              <svg *ngIf="amenity.status || isChecked(amenity.title)" class="h-6 w-6 text-gray-400 cursor-pointer"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" (click)="editAmenity(amenity.title)">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- entertainment -->
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Entertainment and Leisure</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div *ngFor="let amenity of entertainment; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" [checked]="isChecked(amenity.title)" name="amenities"
+                (change)="onAmenityChange(amenity, i, $event, 'Entertainment_&_Leisure')"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <span class="text-gray-800">{{ amenity.title }}</span>
+
+              <!-- Edit icon -->
+              <svg *ngIf="amenity.status || isChecked(amenity.title)" class="h-6 w-6 text-gray-400 cursor-pointer"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" (click)="editAmenity(amenity.title)">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- safety -->
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Safety and Security</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div *ngFor="let amenity of safety; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" [checked]="isChecked(amenity.title)" name="amenities"
+                (change)="onAmenityChange(amenity, i, $event, 'Safety_&_Security')"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <span class="text-gray-800">{{ amenity.title }}</span>
+
+              <!-- Edit icon -->
+              <svg *ngIf="amenity.status || isChecked(amenity.title)" class="h-6 w-6 text-gray-400 cursor-pointer"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" (click)="editAmenity(amenity.title)">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- location -->
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Location-Specific Amenities</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div *ngFor="let amenity of location_specific; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" [checked]="isChecked(amenity.title)" name="amenities"
+                (change)="onAmenityChange(amenity, i, $event, 'Location_Specific')"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <span class="text-gray-800">{{ amenity.title }}</span>
+
+              <!-- Edit icon -->
+              <svg *ngIf="amenity.status || isChecked(amenity.title)" class="h-6 w-6 text-gray-400 cursor-pointer"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" (click)="editAmenity(amenity.title)">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- eco_friendly -->
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Eco-Friendly Features</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div *ngFor="let amenity of eco_friendly; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" [checked]="isChecked(amenity.title)" name="amenities"
+                (change)="onAmenityChange(amenity, i, $event, 'Eco_Friendly_Features')"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <span class="text-gray-800">{{ amenity.title }}</span>
+
+              <!-- Edit icon -->
+              <svg *ngIf="amenity.status || isChecked(amenity.title)" class="h-6 w-6 text-gray-400 cursor-pointer"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" (click)="editAmenity(amenity.title)">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- additional_features -->
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Additional Features</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div *ngFor="let amenity of additional_features; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" [checked]="isChecked(amenity.title)" name="amenities"
+                (change)="onAmenityChange(amenity, i, $event, 'Additional_Features')"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <span class="text-gray-800">{{ amenity.title }}</span>
+
+              <!-- Edit icon -->
+              <svg *ngIf="amenity.status || isChecked(amenity.title)" class="h-6 w-6 text-gray-400 cursor-pointer"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round" (click)="editAmenity(amenity.title)">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- </div> -->
+
+    <div class="flex justify-between mt-4">
+      <button type="submit"
+        class="mb-6 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center space-x-2">
+        Save Changes
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="showModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg relative">
+      <button class="absolute top-2 right-2 text-gray-500 hover:text-red-500 transition duration-200 text-3xl"
+        (click)="closeShowModal()">
+        &times;
+      </button>
+      <h3 class="text-lg font-bold mb-4">{{ selectedAmenityTitle }}</h3>
+      <textarea [(ngModel)]="description" placeholder="Enter description"
+        class="w-full border border-gray-300 rounded-md p-2 mb-4"></textarea>
+
+      <label class="flex items-center mb-2" *ngIf="cost === null || cost <= 0">
+        <input type="checkbox" [(ngModel)]="isFree" (change)="onToggleCost()" class="mr-2" />
+        <span class="text-md font-semibold">Free</span>
+      </label>
+      <div *ngIf="!isFree && (cost === null || cost <= 0)">
+        <small class="text-red-500">Check free if no cost is needed!</small>
+      </div>
+
+      <div *ngIf="!isFree">
+        <input type="number" [(ngModel)]="cost" (input)="onAmountChange()" placeholder="Enter amount"
+          class="border border-gray-300 rounded-md p-2 mb-2" />
+        <div *ngIf="cost === null || cost <= 0">
+          <small class="text-red-500">Enter the cost if it is not a free service!</small>
+        </div>
+      </div>
+
+      <div class="flex justify-end mb-2" *ngIf="showOkButton">
+        <button (click)="onOk()"
+          class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

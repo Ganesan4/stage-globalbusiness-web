@@ -1,0 +1,139 @@
+/* Existing Slick Slider Styles */
+::ng-deep .slick-prev:before,
+::ng-deep .slick-next:before {
+  content: ''; 
+}
+
+::ng-deep .slick-track {
+  margin-left: 0px !important; 
+  margin-right: 0px !important; 
+}
+
+.btnclr {
+  background: white;
+}
+
+::ng-deep .slick-prev,
+::ng-deep .slick-next {
+  display: block !important;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  background-color: rgba(30, 58, 138, 0.7) !important; 
+  color: rgba(255, 255, 255, 1) !important; 
+  border-radius: 50%; 
+  cursor: pointer;
+  text-align: center;
+  line-height: 40px; 
+}
+
+::ng-deep .slick-prev {
+  left: 15px !important;
+}
+
+::ng-deep .slick-next {
+  right: 15px !important;
+}
+
+::ng-deep .slick-prev:after {
+  content: '‹'; 
+  font-size: 24px;
+  color: white;
+}
+
+::ng-deep .slick-next:after {
+  content: '›'; 
+  font-size: 24px;
+  color: white;
+}
+
+/* Overlay Buttons on Images */
+.carousel {
+  position: relative;
+}
+
+.slide {
+  position: relative;
+  overflow: hidden;
+}
+
+.btnsslide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the buttons in the middle of the image */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* Spacing between buttons */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.slide:hover .btnsslide {
+  opacity: 1; /* Show buttons on hover */
+}
+
+.btnclr {
+  background-color: transparent;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px; /* Padding for buttons */
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.btnclr:hover {
+  background-color: white;
+  color: black;
+}
+
+/* Adjustments for Slick Navigation Arrows and Buttons */
+::ng-deep .slick-prev,
+::ng-deep .slick-next {
+  z-index: 1; /* Ensure arrows are above the overlay */
+}
+
+.btnsslide {
+  z-index: 100; /* Ensure buttons are beneath navigation arrows */
+}
+
+.paddingbtn{
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.amen-icon{
+  width: 1.6rem; 
+  height: 1.3rem; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    justify-items: center;
+  }
+  .flex {
+    justify-content: center;
+    // align-items: center;
+  }
+  .space-x-2 {
+    gap: 0.5rem; 
+  }
+}
+
+.gallery-carousel {
+  position: relative;
+}
+
+:host ::ng-deep .gallery-carousel .slick-arrow, 
+:host ::ng-deep .gallery-carousel .slick-prev {
+  display: none !important;
+}

@@ -1,0 +1,29 @@
+<div class="full-height flex items-center justify-center">
+    <div *ngIf="loaded; else loading" class="bg-white rounded-2xl shadow-lg max-w-sm w-full px-6 py-12 text-center">
+        <div class="flex justify-center">
+            <img src="assets/img/image.png" alt="Success" class="rounded-full w-24 h-24 object-cover" />
+        </div>
+
+        <div *ngIf="success; else failure">
+            <h2 class="mt-4 text-xl font-semibold text-gray-800">
+                Unsubscribed Successfully!!
+            </h2>
+
+            <p class="mt-2 text-gray-600 text-sm">
+                You've been unsubscribed from our mailing list. <br />
+                If you'd like to rejoin, please
+                <a class="link" href="mailto:contact@globalbusinesspages.com">email us</a>.
+            </p>
+        </div>
+        <ng-template #failure>
+            <h2 class="mt-4 text-xl font-semibold text-gray-800">
+                Something went wrong!! <br /> Please try again.
+            </h2>
+        </ng-template>
+    </div>   
+    <ng-template #loading>
+        <div id="loadingSpinner" class="fixed inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="loader border-t-4 border-b-4 border-blue-500 rounded-full w-16 h-16 animate-spin"></div>
+        </div>
+    </ng-template>
+</div>

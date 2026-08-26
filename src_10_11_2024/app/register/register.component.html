@@ -1,0 +1,752 @@
+<!-- registration.component.html -->
+<div *ngIf="!showsuccessmessage; else successMessage"
+  class="container mx-auto p-6 border border-gray-300 rounded-md shadow-lg mb-14 mt-2 max-w-5xl">
+  <div class="flex justify-between mb-8">
+    <div class="relative flex-1 text-center" *ngFor="let s of [1, 2, 3, 4]; let i = index">
+      <div [class]="step >= s ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'"
+        class="w-10 h-10 rounded-full mx-auto flex items-center justify-center">{{ s }}</div>
+      <p class="mt-2 text-sm" [class.text-blue-500]="step >= s">{{ stepLabels[i] }}</p>
+
+      <!-- Arrow design -->
+      <div *ngIf="i < 3" class="absolute right-[-15px] top-[50%] transform -translate-y-[50%] arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-head"></div>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Step 1: Basic Information -->
+    <div *ngIf="step === 1">
+      <h2 class="text-lg font-bold mb-4">Basic Business Information</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div>
+          <label>Business Name <span class="text-red-500">*</span></label>
+          <input formControlName="businessName" type="text" class="w-full p-2 border rounded-md"  placeholder="Enter your Business Name" />
+          <div *ngIf="registerForm.get('businessName')?.invalid && registerForm.get('businessName')?.touched">
+            <small class="text-red-500">Business Name is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Logo</label>
+          <input type="file" (change)="onFileChange($event)" class="w-full p-2 border rounded-md ng-untouched ng-pristine ng-invalid"/>
+        </div>
+        <div>
+          <label>Tagline</label>
+          <input formControlName="tagline" type="text" class="w-full p-2 border rounded-md" placeholder="eg: Innovate. Empower. Succeed"/>
+        </div>
+        <div>
+          <label>Country <span class="text-red-500">*</span></label>
+          <select formControlName="country" class="w-full p-2 border rounded-md" (change)="onCountryChange($event)">
+            <option value="">Select your country</option>
+            <option *ngFor="let country of countries" [value]="country.code">
+              {{ country.name }}
+            </option>
+          </select>
+          <div *ngIf="registerForm.get('country')?.invalid && registerForm.get('country')?.touched">
+            <small class="text-red-500">Country is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Region <span class="text-red-500">*</span></label>
+          <input formControlName="region" type="text" class="w-full p-2 border rounded-md" placeholder="eg: Sub-Saharan Africa"/>
+          <div *ngIf="registerForm.get('region')?.invalid && registerForm.get('region')?.touched">
+            <small class="text-red-500">Region is required</small>
+          </div>
+        </div>
+        <div>
+          <label>State <span class="text-red-500">*</span></label>
+          <input formControlName="state" type="text" class="w-full p-2 border rounded-md" placeholder="Enter your State"/>
+          <div *ngIf="registerForm.get('state')?.invalid && registerForm.get('state')?.touched">
+            <small class="text-red-500">State is required</small>
+          </div>
+        </div>
+        <div>
+          <label>City <span class="text-red-500">*</span></label>
+          <input formControlName="city" type="text" class="w-full p-2 border rounded-md" placeholder="Enter your City"/>
+          <div *ngIf="registerForm.get('city')?.invalid && registerForm.get('city')?.touched">
+            <small class="text-red-500">City is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Zip/Post Code <span class="text-red-500">*</span></label>
+          <input formControlName="zipCode" type="text" class="w-full p-2 border rounded-md" placeholder="Enter your Zipcode"/>
+          <div *ngIf="registerForm.get('zipCode')?.invalid && registerForm.get('zipCode')?.touched">
+            <small class="text-red-500">Zip/Post Code is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Phone Number(s) <span class="text-red-500">*</span></label>
+          <input 
+            formControlName="phone" 
+            type="text" 
+            class="w-full p-2 border rounded-md" 
+            placeholder="Enter phone numbers separated by commas" 
+            pattern="^(\+?1[-. ]?)?(\(?\d{3}\)?[-. ]?)?\d{3}[-. ]?\d{4}(,\s*(\+?1[-. ]?)?(\(?\d{3}\)?[-. ]?)?\d{3}[-. ]?\d{4})*$" 
+          />
+          <div *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+            <small class="text-red-500">Please enter valid phone numbers (e.g., 123-456-7890, 987-654-3210)</small>
+          </div>
+        </div>
+        <div>
+          <label>Email Address <span class="text-red-500">*</span></label>
+          <input 
+            formControlName="email" 
+            type="email" 
+            class="w-full p-2 border rounded-md" 
+            placeholder="Enter your Email Address"
+          />
+          <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            <small *ngIf="registerForm.get('email')?.errors?.['required']" class="text-red-500">Email is required</small>
+            <small *ngIf="registerForm.get('email')?.errors?.['email']" class="text-red-500">Please provide a valid email address</small>
+            <small *ngIf="registerForm.get('email')?.errors?.['emailExists']" class="text-red-500">Email id already exists</small>
+          </div>
+        </div>
+        <div>
+          <label>Password <span class="text-red-500">*</span></label>
+          <input formControlName="password" type="password" class="w-full p-2 border rounded-md" placeholder="Enter your Password"/>
+          <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            <small *ngIf="registerForm.get('password')?.errors?.['required']" class="text-red-500">Password is required</small>
+            <small *ngIf="registerForm.get('password')?.errors?.['minlength']" class="text-red-500">
+              Please provide a password more than 8 characters
+            </small>
+          </div>
+        </div>
+        <div>
+          <label>Confirm Password <span class="text-red-500">*</span></label>
+          <input formControlName="confirmpassword" type="password" class="w-full p-2 border rounded-md" placeholder="Enter your  Confirm Password"/>
+          <div *ngIf="registerForm.get('confirmpassword')?.touched">
+            <small *ngIf="registerForm.get('confirmpassword')?.errors?.['required']" class="text-red-500">
+              Confirm Password is required
+            </small>
+           
+            <small *ngIf="registerForm.errors?.['mismatch']" class="text-red-500">
+              Password and Confirm Password do not match
+            </small>
+          </div>
+        </div>
+        
+
+        <div>
+          <label>Fax Number</label>
+          <input formControlName="fax" type="text" class="w-full p-2 border rounded-md" placeholder="eg: (123) 456-7891"/>
+        </div>
+        <div>
+          <label>Website URL</label>
+          <input formControlName="website" type="text" class="w-full p-2 border rounded-md"  placeholder="Enter your Website URL"/>
+        </div>
+        <div>
+          <label>Business Category <span class="text-red-500">*</span></label>
+          <input formControlName="category" type="text" class="w-full p-2 border rounded-md" placeholder="eg: Consulting Services Firm"/>
+          <div *ngIf="registerForm.get('category')?.invalid && registerForm.get('category')?.touched">
+            <small class="text-red-500">Business Category is required</small>
+          </div>
+        </div>
+
+        <div>
+          <label>Business Start Date</label>
+          <input formControlName="startDate" type="date" class="w-full p-2 border rounded-md"/>
+        </div>
+
+        <div>
+          <label>Annual Sales</label>
+          <input formControlName="annualSales" type="text" class="w-full p-2 border rounded-md" placeholder="Enter your Profitable Growth Achieved" />
+        </div>
+
+        <div>
+          <label>Business Description <span class="text-red-500">*</span></label>
+          <textarea formControlName="description" class="w-full p-2 border rounded-md" placeholder="Enter your Business Description"></textarea>
+          <div *ngIf="registerForm.get('description')?.invalid && registerForm.get('description')?.touched">
+            <small class="text-red-500">Business Description is required</small>
+          </div>
+        </div>
+
+        <div>
+          <label>Products / Services Offered <span class="text-red-500">*</span></label>
+          <textarea formControlName="productsServices" class="w-full p-2 border rounded-md" placeholder="Enter your list of products or services"></textarea>
+          <div *ngIf="registerForm.get('productsServices')?.invalid && registerForm.get('productsServices')?.touched">
+            <small class="text-red-500">This field is required</small>
+          </div>
+        </div>
+
+        <div>
+          <label>Pricing Information</label>
+          <textarea formControlName="pricing" class="w-full p-2 border rounded-md" placeholder="Enter your  general pricing ranges"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Products & Services -->
+    <div *ngIf="step === 2">
+      <h2 class="text-lg font-bold mb-4">Amenities</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>General Amenities</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Wi-Fi Access')" name="amenities" (click)="onAmenityClick('Wi-Fi Access', $event, 'general')"/> Wi-Fi Access
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Parking Facilities')" name="amenities" (click)="onAmenityClick('Parking Facilities', $event, 'general')"/> Parking Facilities
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Accessibility Features')" name="amenities" (click)="onAmenityClick('Accessibility Features', $event, 'general')"/> Accessibility Features
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Air Conditioning/Heating')" name="amenities" (click)="onAmenityClick('Air Conditioning/Heating', $event, 'general')"/> Air Conditioning/Heating
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Pet-Friendly Options')" name="amenities" (click)="onAmenityClick('Pet-Friendly Options', $event, 'general')"/> Pet-Friendly Options
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Restrooms')" name="amenities" (click)="onAmenityClick('Restrooms', $event, 'general')"/> Restrooms
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Outdoor Seating')" name="amenities" (click)="onAmenityClick('Outdoor Seating', $event, 'general')"/> Outdoor Seating
+            </div>
+          </div>
+          <!-- <p *ngIf="hoverText">{{ hoverText }}</p> -->
+        </div>
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Hospitality and Dining</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Takeout Options')" name="amenities" (click)="onAmenityClick('Takeout Options', $event, 'hospitality')"/> Takeout Options
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Kid-Friendly Menu')" name="amenities" (click)="onAmenityClick('Kid-Friendly Menu', $event, 'hospitality')"/> Kid-Friendly Menu
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Breakfast Available')" name="amenities" (click)="onAmenityClick('Breakfast Available', $event, 'hospitality')"/> Breakfast Available
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Vegetarian/Vegan Options')" name="amenities" (click)="onAmenityClick('Vegetarian/Vegan Options', $event, 'hospitality')"/> Vegetarian/Vegan Options
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Catering Services')" name="amenities" (click)="onAmenityClick('Catering Services', $event, 'hospitality')"/> Catering Services
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Health and Fitness</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Gym/Fitness Center')" name="amenities" (click)="onAmenityClick('Gym/Fitness Center', $event, 'health')"/> Gym/Fitness Center
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Pool Facilities')" name="amenities" (click)="onAmenityClick('Pool Facilities', $event, 'health')"/> Pool Facilities
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Spa Services')" name="amenities" (click)="onAmenityClick('Spa Services', $event, 'health')"/> Spa Services
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Personal Trainers Available')" name="amenities" (click)="onAmenityClick('Personal Trainers Available', $event, 'health')"/> Personal Trainers Available
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Business Services</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Conference Rooms')" name="amenities" (click)="onAmenityClick('Conference Rooms', $event, 'business_services')"/> Conference Rooms
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Printing/Copying Services')" name="amenities" (click)="onAmenityClick('Printing/Copying Services', $event, 'business_services')"/> Printing/Copying Services
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('High-Speed Internet')" name="amenities" (click)="onAmenityClick('High-Speed Internet', $event, 'business_services')"/> High-Speed Internet
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Business Center')" name="amenities" (click)="onAmenityClick('Business Center', $event, 'business_services')"/> Business Center
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Event Planning Services')" name="amenities" (click)="onAmenityClick('Event Planning Services', $event, 'business_services')"/> Event Planning Services
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Entertainment and Leisure</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Live Music/Entertainment')" name="amenities" (click)="onAmenityClick('Live Music/Entertainment', $event, 'entertainment')"/> Live Music/Entertainment
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Game Room')" name="amenities" (click)="onAmenityClick('Game Room', $event, 'entertainment')"/> Game Room
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Sports Facilities')" name="amenities" (click)="onAmenityClick('Sports Facilities', $event, 'entertainment')"/> Sports Facilities
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Library/Reading Area')" name="amenities" (click)="onAmenityClick('Library/Reading Area', $event, 'entertainment')"/> Library/Reading Area
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Safety and Security</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('24/7 Security')" name="amenities" (click)="onAmenityClick('24/7 Security', $event, 'safety')"/> 24/7 Security
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('CCTV Surveillance')" name="amenities" (click)="onAmenityClick('CCTV Surveillance', $event, 'safety')"/> CCTV Surveillance
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Safe Deposit Boxes')" name="amenities" (click)="onAmenityClick('Safe Deposit Boxes', $event, 'safety')"/> Safe Deposit Boxes
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Emergency Exits')" name="amenities" (click)="onAmenityClick('Emergency Exits', $event, 'safety')"/> Emergency Exits
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Location-Specific Amenities</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Proximity to Public Transportation')" (click)="onAmenityClick('Proximity to Public Transportation', $event, 'location_specific')" />
+              Proximity to Public Transportation
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Nearby Attractions')" name="amenities" (click)="onAmenityClick('Nearby Attractions', $event, 'location_specific')"/> Nearby Attractions
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Local Tours/Guided Services')" name="amenities" (click)="onAmenityClick('Local Tours/Guided Services', $event, 'location_specific')"/> Local Tours/Guided Services
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Eco-Friendly Features</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Recycling Programs')" name="amenities" (click)="onAmenityClick('Recycling Programs', $event, 'eco_friendly')"/> Recycling Programs
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Sustainable Practices')" name="amenities" (click)="onAmenityClick('Sustainable Practices', $event, 'eco_friendly')"/> Sustainable Practices
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Electric Vehicle Charging Stations')" name="amenities" (click)="onAmenityClick('Electric Vehicle Charging Stations', $event, 'eco_friendly')"/> Electric Vehicle
+              Charging Stations
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-sm font-bold mb-4">
+            <h5>Additional Features</h5>
+          </div>
+          <div class="grid grid-cols-1 gap-2">
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Loyalty Programs')" name="amenities" (click)="onAmenityClick('Loyalty Programs', $event, 'additional_features')"/> Loyalty Programs
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Gift Shop')" name="amenities" (click)="onAmenityClick('Gift Shop', $event, 'additional_features')"/> Gift Shop
+            </div>
+            <div>
+              <input type="checkbox" [checked]="isAmenitySelected('Shuttle Services')" name="amenities" (click)="onAmenityClick('Shuttle Services', $event, 'additional_features')"/> Shuttle Services
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+
+        <div>
+          <label>Industry / Sector</label>
+          <input formControlName="industry" type="text" class="w-full p-2 border rounded-md" placeholder="Enter your  Industry or Sector"/>
+        </div>
+      
+        <div>
+          <label>Operating Hours</label>
+          <input formControlName="operatingHours" type="text" class="w-full p-2 border rounded-md"
+            placeholder="e.g., Mon-Fri 9 AM - 5 PM" />
+        </div>
+      
+        <div>
+          <label>Location Details</label>
+          <textarea formControlName="locationDetails" class="w-full p-2 border rounded-md" placeholder="Enter your serving multiple locations globally"></textarea>
+        </div>
+      
+        <div>
+          <label>Service Areas</label>
+          <textarea formControlName="serviceAreas" class="w-full p-2 border rounded-md" placeholder="Enter your serving City or Region"></textarea>
+        </div>
+      
+        <div>
+          <label>Target Market</label>
+          <textarea formControlName="targetMarket" class="w-full p-2 border rounded-md" placeholder="Describe your target audience and needs"></textarea>
+        </div>
+
+        <div>
+          <label>Social Media Links</label>
+          <textarea formControlName="socialMediaLinks" class="w-full p-2 border rounded-md"
+            placeholder="e.g., Facebook, LinkedIn, Instagram" placeholder="Enter your social media links"></textarea>
+        </div>
+
+        <div>
+          <label>Certifications and Accreditations</label>
+          <textarea formControlName="certifications" class="w-full p-2 border rounded-md" placeholder="Enter your Certifications and Accreditations"></textarea>
+        </div>
+
+        <div>
+          <label>Client Testimonials</label>
+          <textarea formControlName="clientTestimonials" class="w-full p-2 border rounded-md" placeholder="Enter your Client Testimonials"></textarea>
+        </div>
+      </div>
+
+      
+    </div>
+   
+    <div *ngIf="step === 3">
+      <h2 class="text-lg font-bold mb-4">Business Insights & Features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+        <!-- <div>
+          <label>Case Studies or Success Stories</label>
+          <textarea formControlName="caseStudies" class="w-full p-2 border rounded-md"></textarea>
+        </div> -->
+
+        <div>
+          <label>Market Positioning</label>
+          <textarea formControlName="marketPositioning" class="w-full p-2 border rounded-md" placeholder="Enter your market position and competitive landscape"></textarea>
+        </div>
+
+        <div>
+          <label>Global Reach</label>
+          <textarea formControlName="globalReach" class="w-full p-2 border rounded-md" placeholder="Enter international operations or partnerships"></textarea>
+        </div>
+
+        <!-- <div>
+          <label>Sustainability Practices</label>
+          <textarea formControlName="sustainabilityPractices" class="w-full p-2 border rounded-md"></textarea>
+        </div> -->
+
+        <div>
+          <label>News and Updates</label>
+          <textarea formControlName="newsUpdates" class="w-full p-2 border rounded-md" placeholder="Enter Enter news, updates, milestones..."></textarea>
+        </div>
+
+        <div>
+          <label>Promotions or Special Offers</label>
+          <textarea formControlName="promotions" class="w-full p-2 border rounded-md" placeholder="Enter promo code here"></textarea>
+        </div>
+
+        <div>
+          <label>Networking Opportunities</label>
+          <textarea formControlName="networkingOpportunities" class="w-full p-2 border rounded-md" placeholder="Enter event or webinar details"></textarea>
+        </div>
+
+        <div>
+          <label>Visual Content</label>
+          <textarea formControlName="visualContent" class="w-full p-2 border rounded-md"
+            placeholder="Include images or videos of your products, services, or team"></textarea>
+        </div>
+
+        <div>
+          <label>Community Involvement</label>
+          <textarea formControlName="communityInvolvement" class="w-full p-2 border rounded-md" placeholder="Enter details of community involvement"></textarea>
+        </div>
+
+        <div>
+          <label>FAQ Section</label>
+          <textarea formControlName="faq" class="w-full p-2 border rounded-md" placeholder="Enter your question here.."></textarea>
+        </div>
+
+        <div>
+          <label>Call to Action</label>
+          <textarea formControlName="callToAction" class="w-full p-2 border rounded-md" placeholder="Enter your contact details"></textarea>
+        </div>
+
+        <div>
+          <label>Mobile-Friendly Features</label>
+          <textarea formControlName="mobileFriendlyFeatures" class="w-full p-2 border rounded-md" placeholder="Enter mobile optimization details"></textarea>
+        </div>
+
+        <div>
+          <label>Legal Information</label>
+          <textarea formControlName="legalInformation" class="w-full p-2 border rounded-md" placeholder="Enter legal disclaimers or policies"></textarea>
+        </div>
+
+        <div>
+          <label>Unique Value Proposition (UVP)</label>
+          <textarea formControlName="uvp" class="w-full p-2 border rounded-md" placeholder="Enter your unique value proposition"></textarea>
+        </div>
+
+        <div>
+          <label>Multilingual Support</label>
+          <input formControlName="multilingualSupport" type="text" class="w-full p-2 border rounded-md"
+            placeholder="e.g., English, Spanish, etc." />
+        </div>
+
+      </div>
+    </div>
+
+    <div *ngIf="step === 4">
+      <h2 class="text-lg font-bold mb-4">Business Metrics & Insights</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+        <div>
+          <label>Customer Satisfaction Metrics</label>
+          <textarea formControlName="customerSatisfaction" class="w-full p-2 border rounded-md"
+            placeholder="Enter customer satisfaction scores or NPS"></textarea>
+        </div>
+
+        <div>
+          <label>Employee Satisfaction Insights</label>
+          <textarea formControlName="employeeSatisfaction" class="w-full p-2 border rounded-md"
+            placeholder="Enter employee engagement scores"></textarea>
+        </div>
+
+        <div>
+          <label>Sustainability Practices</label>
+          <textarea formControlName="sustainabilityPractices" class="w-full p-2 border rounded-md"
+            placeholder="Describe sustainability initiatives"></textarea>
+        </div>
+
+        <div>
+          <label>Social Impact Scores</label>
+          <textarea formControlName="socialImpactScores" class="w-full p-2 border rounded-md"
+            placeholder="Describe contributions to social causes"></textarea>
+        </div>
+
+        <div>
+          <label>Operational Transparency</label>
+          <textarea formControlName="operationalTransparency" class="w-full p-2 border rounded-md"
+            placeholder="Provide details on supply chain practices"></textarea>
+        </div>
+
+        <div>
+          <label>Industry Comparisons</label>
+          <textarea formControlName="industryComparisons" class="w-full p-2 border rounded-md"
+            placeholder="Enter benchmarks against industry standards"></textarea>
+        </div>
+
+        <div>
+          <label>Unique Selling Proposition (USP) Analysis</label>
+          <textarea formControlName="uspAnalysis" class="w-full p-2 border rounded-md"
+            placeholder="Highlight what sets your business apart"></textarea>
+        </div>
+
+        <div>
+          <label>Case Studies or Success Stories</label>
+          <textarea formControlName="caseStudies" class="w-full p-2 border rounded-md"
+            placeholder="Describe successful projects or partnerships"></textarea>
+        </div>
+
+        <div>
+          <label>Product Lifecycle Information</label>
+          <textarea formControlName="productLifecycle" class="w-full p-2 border rounded-md"
+            placeholder="Provide details on product development and recycling options"></textarea>
+        </div>
+
+        <div>
+          <label>Community Engagement Metrics</label>
+          <textarea formControlName="communityEngagement" class="w-full p-2 border rounded-md"
+            placeholder="Detail local event participation"></textarea>
+        </div>
+
+        <div>
+          <label>Visual & Interactive Elements</label>
+          <textarea formControlName="visualInteractive" class="w-full p-2 border rounded-md"
+            placeholder="Describe any interactive content"></textarea>
+        </div>
+
+        <div>
+          <label>User-generated Q&A</label>
+          <textarea formControlName="userGeneratedQA" class="w-full p-2 border rounded-md"
+            placeholder="Explain how customers can ask questions"></textarea>
+        </div>
+
+        <div>
+          <label>Dynamic Pricing Information</label>
+          <textarea formControlName="dynamicPricing" class="w-full p-2 border rounded-md"
+            placeholder="Provide real-time pricing information"></textarea>
+        </div>
+
+        <div>
+          <label>Expert Opinions or Reviews</label>
+          <textarea formControlName="expertOpinions" class="w-full p-2 border rounded-md"
+            placeholder="Summarize insights from industry experts"></textarea>
+        </div>
+
+        <div>
+          <label>Crisis Management History</label>
+          <textarea formControlName="crisisManagement" class="w-full p-2 border rounded-md"
+            placeholder="Detail past crises and responses"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 mb-6">
+          <div>
+            <label>Payment Options </label>
+            <div class="text-red-500" style="font-size: 12px;margin-bottom: 6px;">* Please choose one of the four payment options</div>
+            <div class="payment-options flex gap-4 containerwrap">
+              <img src="assets/img/Paypal.webp" alt="PayPal"
+                class="w-full max-w-[150px] h-auto border p-2 rounded-md cursor-pointer"
+                [ngClass]="{'border-blue-500': selectedPayment === 'paypal'}"
+                (click)="selectPayment('paypal')" />
+              <img src="assets/img/Stripe.png" alt="Stripe"
+                class="w-full max-w-[150px] h-auto border p-2 rounded-md cursor-pointer"
+                [ngClass]="{'border-blue-500': selectedPayment === 'stripe'}"
+                (click)="selectPayment('stripe')" />
+              <img src="assets/img/Square.png" alt="Square"
+                class="w-full max-w-[150px] h-auto border p-2 rounded-md cursor-pointer"
+                [ngClass]="{'border-blue-500': selectedPayment === 'square'}"
+                (click)="selectPayment('square')" />
+                <img src="assets/img/gpay.png" alt="Gpay"
+                class="w-full max-w-[150px] h-auto border p-2 rounded-md cursor-pointer"
+                [ngClass]="{'border-blue-500': selectedPayment === 'gpay'}"
+                (click)="selectPayment('gpay')" />
+            </div>
+          </div>
+        
+          <div *ngIf="showValidationPayment">
+            <small class="text-red-500">Please choose one of the three payment options.</small>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <div class="flex justify-between mt-4">
+      <button *ngIf="step > 1" type="button" (click)="prevStep()"
+        class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">Previous</button>
+      <button *ngIf="step < 4" type="button" [disabled]="!isStepValid(step) || registerForm.errors?.['mismatch']" (click)="nextStep()"
+        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Next</button>
+      <button *ngIf="step === 4" [disabled]="registerForm.invalid || !registerForm.get('transaction_id')?.value" type="submit"
+  class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed">
+  Submit
+</button>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="showPayPalModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg relative addscroll">
+    
+    <div *ngIf="transactionSuccessPaypal" class="mb-4 text-center text-green-500 font-bold">
+      Payment successful!
+    </div>
+    
+    <h3 class="text-lg font-bold mb-4">Pay with PayPal</h3>
+    <div id="paypal-button-container" class="mb-4"></div> <!-- Ensure this container is always present -->
+
+    <div class="flex justify-end">
+      <button (click)="onCancelPayPal()" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 mr-2">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showStripeModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg relative">
+    <div *ngIf="transactionSuccessStripe" class="mb-4 text-center text-green-500 font-bold">
+      Payment successful!
+    </div>
+    <h3 class="text-lg font-bold mb-4">Pay with Stripe</h3>
+    <div>
+      <app-stripe (onCloseEvent)="onCancelStripe()"></app-stripe>
+      <button (click)="onCancelStripe()" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 mr-2 mt-4 rgt">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showSquareModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg relative">
+    
+    <div *ngIf="transactionSuccess" class="mb-4 text-center text-green-500 font-bold">
+      Payment successful!
+    </div>
+    
+    <h3 class="text-lg font-bold mb-4">Pay with Square</h3>
+    <div id="square-button-container">
+
+      <form id="payment-form">
+        <div id="card-container"></div>
+    </form>
+    <div id="payment-status-container"></div>
+    </div>
+
+    <div class="flex justify-end">
+      <button (click)="onCancelSquare()" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 mr-2">Cancel</button>
+      <button (click)="sendPaymentToBackend()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mr-2">Pay now</button>
+      
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showGpayModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg relative">
+    <div class="mb-4 text-center text-green-500 font-bold">
+      {{ transactionGpayStatus }}
+    </div>
+    <h3 class="text-lg font-bold mb-4">Pay with Gpay</h3>
+    <div>
+      <!-- <app-stripe (onCloseEvent)="onCancelStripe()"></app-stripe> -->
+      <app-gpay 
+        (onCloseEvent)="onCancelGpay()" 
+        (transactionGpay)="onPaymentSuccess($event)"
+        >
+      </app-gpay>
+      <button (click)="onCancelGpay()" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 mr-2 mt-4 rgt">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showModal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="modal-content w-full md:w-1/3 bg-white p-6 rounded-md shadow-lg">
+    <h3 class="text-lg font-bold mb-4">{{ selectedAmenityTitle }}</h3>
+    <textarea [(ngModel)]="description" placeholder="Enter description" class="w-full border border-gray-300 rounded-md p-2 mb-4"></textarea>
+
+    <label class="flex items-center mb-2" *ngIf="cost === null || cost <= 0">
+      <input type="checkbox" [(ngModel)]="isFree" (change)="onToggleCost()" class="mr-2" />
+      <span class="text-md font-semibold">Free</span>
+    </label>
+    <div *ngIf="!isFree && (cost === null || cost <= 0)">
+      <small class="text-red-500">Check free if no cost is needed!</small>
+    </div>
+
+    <div *ngIf="!isFree">
+      <input type="number" [(ngModel)]="cost" (input)="onAmountChange()" placeholder="Enter amount" class="border border-gray-300 rounded-md p-2 mb-2" />
+      <div *ngIf="cost === null || cost <= 0">
+        <small class="text-red-500">Enter the cost if it is not a free service!</small>
+      </div>
+    </div>
+
+    <div class="flex justify-end mb-2" *ngIf="showOkButton">
+      <button (click)="onOk()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">OK</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #successMessage>
+  <div class="flex items-center justify-center h-75vh">
+    <div class="col-span-12 md:col-span-6 flex flex-col items-center">
+      <div class="w-full max-w-md p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
+        <div class="text-lg font-semibold text-blue-900">
+          <a href="#">
+            GLOBAL BUSINESS PAGES
+          </a>
+        </div>
+        <p class="mt-4 text-gray-700">
+          Thank you for registering! We have sent you an email to verify your account. Please check your inbox and follow the instructions to activate your account.
+        </p>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,17 @@
+:host {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.active {
+  background-color: #e2e8f0;
+  color: #3182ce;
+}
+
+.noscroll {
+  overflow: hidden;
+}
+
+div#drawer-navigation {
+  background: #dfe1e3;
+  z-index: 9999;
+}

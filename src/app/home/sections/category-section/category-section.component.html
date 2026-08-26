@@ -1,0 +1,33 @@
+<div class="mt-16 mb-8 border-t border-gray-300"></div>
+<section class="category-section py-8 px-4">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Slick Carousel -->
+    <ngx-slick-carousel class="carousel" [config]="slideConfig">
+
+      <div ngxSlickItem *ngFor="let category of categories" class="category-item">
+
+        <!-- Category Circle -->
+        <div class="category-circle" (click)="onCategoryClick(category)">
+          <img
+            class="category-icon-img"
+            *ngIf="category.iconUrl"
+            [src]="category.iconUrl!"
+            [alt]="category.label"
+            loading="lazy"
+            width="52"
+            height="52"
+            (error)="iconBroken(category, $event)"
+          />
+          <i *ngIf="!category.iconUrl" [class]="category.icon" class="category-icon"></i>
+        </div>
+
+        <!-- Category Label -->
+        <span class="category-label" (click)="onCategoryClick(category)">{{ category.label }}</span>
+
+      </div>
+
+    </ngx-slick-carousel>
+
+  </div>
+</section>

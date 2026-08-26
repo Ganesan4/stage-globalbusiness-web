@@ -1,0 +1,264 @@
+<div class="content-container px-4 md:px-8">
+  <img class="center img-responsive mx-auto py-8" src="assets/img/logo.png" alt="Logo" />
+
+  <div class="mt-4 mb-8 w-full">
+    <div class="relative mt-6">
+      <!-- Search Input -->
+      <div class="w-full md:w-1/2 mx-auto">
+        <div class="flex items-center border border-gray-300 rounded-full overflow-hidden bg-white shadow-md p-2.5">
+          <input
+            type="text"
+            id="searchBox"
+            class="w-full px-4 py-2 text-gray-700 focus:outline-none border-none"
+            placeholder="Search"
+            [(ngModel)]="searchQuery"
+            (focus)="openDropdown()"
+            (input)="performSearch()"
+          />
+          <button
+            class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 flex items-center justify-center"
+            (click)="performSearch()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"
+              />
+            </svg>
+          </button>
+        </div>
+    
+        <!-- Search Results Dropdown -->
+        <!-- Dropdown Results -->
+          <div
+          class="absolute w-full md:w-1/2 mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 overflow-y-auto"
+          [ngStyle]="{'max-height': '200px'}"
+          *ngIf="isDropdownOpen && searchQuery.trim() && searchResults.length > 0"
+          >
+          <div
+            *ngFor="let result of searchResults"
+            class="px-4 py-3 border-b border-gray-200 hover:bg-gray-100 last:border-b-0 cursor-pointer"
+            (click)="onResultClick(result)"
+          >
+            <h3 class="text-sm font-semibold text-gray-800">{{ result.display_data }}</h3>
+          </div>
+          </div>
+
+          <!-- No Results Message -->
+          <div
+          class="absolute w-full md:w-1/2 mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 text-center py-4 text-gray-500"
+          *ngIf="isDropdownOpen && searchQuery.trim() && searchResults.length === 0"
+          >
+          No results found.
+          </div>
+
+      </div>
+    </div>
+    
+      <!-- Search Results Dropdown -->
+    
+      <!-- No Results Message -->
+    
+      
+    <!-- <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-center items-center">
+      <div class="flex flex-wrap items-center bg-white border border-gray-300 md:rounded-full rounded-lg shadow-md px-4 py-2 w-full max-w-4xl space-y-4 md:space-y-0"> -->
+        <!-- Country -->
+        <!-- <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="country" class="text-sm text-left font-medium text-gray-500 mb-1">Country</label>
+          <div class="relative">
+            <select
+              id="country"
+              class="text-xs text-gray-500 custom-select cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+              (change)="onCountryChange($event)"
+            >
+              <option value="">Select a Country</option>
+              <option *ngFor="let country of filteredCountries" [value]="country">{{ country }}</option>
+            </select>
+            <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div> -->
+        
+
+        <!-- <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div> -->
+
+        <!-- State -->
+        <!-- <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="state" class="text-sm text-left font-medium text-gray-500">State</label>
+          <div class="relative w-full">
+            <select
+              id="state"
+              class="text-xs text-gray-500 custom-select cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onStateChange($event)"
+            >
+              <option value="">Select a State</option>
+              <option *ngFor="let state of filteredStates" [value]="state">{{ state }}</option>
+            </select>
+            <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+        
+
+        <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div> -->
+
+        <!-- City -->
+        <!-- <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="city" class="text-sm text-left font-medium text-gray-500">City</label>
+          <div class="relative">
+            <select
+              id="city"
+              class="text-xs text-gray-500 custom-select cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+              (change)="onCityChange($event)"
+            >
+              <option value="">Select a City</option>
+              <option *ngFor="let city of filteredCities" [value]="city">{{ city }}</option>
+            </select>
+            <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+        
+
+        <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div> -->
+
+        <!-- Zip -->
+        <!-- <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="zip" class="text-sm text-left font-medium text-gray-500">Zip</label>
+          <div class="relative w-full">
+            <select
+              id="zip"
+              class="text-xs text-gray-500 custom-select cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+            >
+              <option value="">Select a Zip</option>
+              <option *ngFor="let zip of filteredZips" [value]="zip">{{ zip }}</option>
+            </select>
+            <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div> -->
+        
+
+        <!-- Search Button -->
+        <!-- <button
+          class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 flex items-center justify-center shadow-md w-full md:w-auto md:ml-4"
+          (click)="performSearch()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="white"
+            class="w-4 h-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div> -->
+  </div>
+
+  <!-- Loading Spinner -->
+  <div
+    *ngIf="loading"
+    id="loadingSpinner"
+    class="fixed inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <div class="loader border-t-4 border-b-4 border-blue-500 rounded-full w-16 h-16 animate-spin"></div>
+  </div>
+
+  <div class="results-container mt-6">
+    <!-- Search Results -->
+    <div
+      id="productPlaceholder"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+    >
+    <div *ngFor="let item of datas">
+      <div class="flex justify-center items-center">
+        <div>
+          <div class="carousel-container w-64">
+            <ngx-slick-carousel
+              class="carousel"
+              [config]="slideConfig"
+            >
+              <div
+                ngxSlickItem
+                *ngFor="let image of item.banner_images"
+                class="slide"
+              >
+                <img
+                  [src]="image ? image :'assets/img/preview.png'"
+                  alt="Image Slide"
+                  class="object-cover w-60 h-60" (click)="redirectToListing(item.id, item.business_name, item.category)"
+                />
+              </div>
+            </ngx-slick-carousel>
+          </div>
+          <div class="w-60">
+          <h5 class="text-lg font-semibold text-gray-800">{{item.business_name}}</h5>
+          <p class="text-sm text-gray-600 flex gap-2">
+            <ng-container *ngIf="item?.website; else noWebsite">
+              <!-- <span class="font-medium">Website:</span> -->
+              <a [href]="item.website" target="_blank" 
+                class="text-blue-600 inline-block max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis text-blue-600 no-underline hover:underline">
+                {{ item.website }}
+              </a>
+            </ng-container>
+            <ng-template #noWebsite></ng-template>
+          </p>
+          <!-- <p class="text-sm text-gray-600 mb-1"><span class="font-medium">Phone:</span> {{ item.phone }}</p> -->
+          <!-- <p class="text-sm text-gray-600 mb-1"><span class="font-medium">Email:</span> {{item.email}}</p> -->
+          <p class="text-sm text-gray-600">
+            <span class="font-medium"></span> {{ item.state}}, {{ item.country}}
+          </p>
+          <p class="text-sm text-black-600">
+            <span class="font-medium">★</span> {{ item.avg_rating || 0 }} ({{item.count || 0}})
+          </p>
+          <!-- <span class="text-gray-700 text-sm">
+            ({{ averageRating.toFixed(1) }}/5, {{ totalReviews }} reviews)
+          </span> -->
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Pagination -->
+    <div id="paginate" class="flex justify-center items-center mt-8 space-x-2 mb-8"></div>
+  </div>
+</div>  
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Scan to Download</h4>
+    </div>
+    <div class="modal-body">
+      <img src="assets/img/appqr.svg" class="img-responsive mx-auto" style="width: 250px; margin: auto;" alt="QR Code" />
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>

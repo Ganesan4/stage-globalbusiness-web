@@ -1,0 +1,18 @@
+.logo-slider-container {
+    width: 100%;
+    overflow: hidden;
+
+    .carousel {
+        :ng-deep .slick-track {
+            display: flex;
+            align-items: center;
+        }
+
+        :ng-deep .slick-slide {
+            float: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

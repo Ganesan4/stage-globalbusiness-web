@@ -1,0 +1,121 @@
+/* Mobile-friendly spacing tweaks for SEO landing grids */
+.seo-landing__container {
+  min-height: 50vh;
+}
+
+/*
+ * Sidebar “Page reference” block: Tailwind mb-* was not reliably separating this from
+ * <app-seo-internal-links> (custom-element display + margin collapse with space-y-*).
+ */
+.seo-sidebar-page-ref {
+  margin-bottom: 2rem !important;
+}
+
+/* Top category slick carousel — aligned with location-listing.component.scss */
+.category-card {
+  position: relative;
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  z-index: 1;
+  overflow: hidden;
+  width: 90%;
+  border: 1px solid #2a5298;
+}
+
+.category-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: conic-gradient(
+    from 0deg,
+    #1e3c72,
+    #2a5298,
+    #4a7db5,
+    #6a9ad9,
+    #1e3c72
+  );
+  border-radius: 12px;
+  z-index: -1;
+  animation: rotateBorder 5s linear infinite;
+  opacity: 0;
+  animation-play-state: paused;
+}
+
+.category-card::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: white;
+  border-radius: 8px;
+  z-index: -1;
+  opacity: 0;
+  border: 1px solid white;
+}
+
+.category-card:hover::before,
+.category-card:hover::after {
+  opacity: 1;
+  animation-play-state: running;
+  border: 1px solid white;
+}
+
+.category-card:hover {
+  border: 1px solid white;
+  margin-top: 5px;
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(63, 155, 230, 0.836);
+}
+
+@keyframes rotateBorder {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.category-icon {
+  font-size: 28px;
+  color: blue;
+}
+
+.category-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+:host ::ng-deep .carousel .slick-prev,
+:host ::ng-deep .carousel .slick-next {
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  // width: 40px;
+  // height: 40px;
+}
+
+:host ::ng-deep .carousel .slick-prev {
+  left: -12px !important;
+}
+
+:host ::ng-deep .carousel .slick-next {
+  right: -12px !important;
+}
+
+:host ::ng-deep .carousel .slick-prev:before,
+:host ::ng-deep .carousel .slick-next:before {
+  color: #2a5298 !important;
+  font-size: 23px;
+}
+
+:host ::ng-deep .carousel.slick-initialized .slick-slide {
+  justify-content: center !important;
+  display: flex !important;
+  align-items: center !important;
+}

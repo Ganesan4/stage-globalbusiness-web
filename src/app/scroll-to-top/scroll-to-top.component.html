@@ -1,0 +1,9 @@
+<!-- scroll-to-top.component.html -->
+<button *ngIf="isVisible" (click)="scrollToTop()"
+    class="fixed bottom-6 right-6 z-50 text-white p-3 md:p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" style="background-color: rgba(79, 129, 240, 1);"
+    aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+</button>

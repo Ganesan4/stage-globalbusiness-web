@@ -1,0 +1,202 @@
+<!-- <section id="why-choose-us" class="py-20 bg-white text-center">
+    <div class="max-w-6xl">
+        <div class="flex justify-center mb-6">
+            <span
+                class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium shadow-sm flex justify-center items-center gap-2">
+                <span class="text-yellow-500 text-lg">✦</span>
+                Why Choose Us
+            </span>
+        </div>
+
+        <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3">
+            Global reach. Local results
+        </h2>
+
+        <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto mb-14 leading-relaxed">
+            Global coverage with local discoverability — clear categories, map-based
+            search, and contact options that convert.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div
+                class="rounded-2xl bg-gray-50 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center p-8 hover:-translate-y-1">
+                <div class="flex items-center justify-center gap-2 mb-3">
+                    <img src="assets/img/iconn.png" alt="Icon" class="" />
+                    <h3 class="text-xl font-semibold text-gray-900">Worldwide Reach</h3>
+                </div>
+                <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                    Get discovered by customers in any city, any country. Our platform connects local businesses to
+                    global audiences.
+                </p>
+                <div class="w-full flex justify-center">
+                    <img src="assets/img/worldwide-reach.png" alt="Worldwide Reach"
+                        class="w-[410px] h-[341px] object-contain" />
+                </div>
+            </div>
+
+            <div
+                class="rounded-2xl bg-gray-50 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center p-8 hover:-translate-y-1">
+                <div class="flex items-center justify-center gap-2 mb-3">
+                    <img src="assets/img/iconn.png" alt="Icon" class="" />
+                    <h3 class="text-xl font-semibold text-gray-900">Incredibly Affordable</h3>
+                </div>
+                <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                    It’s the most cost-effective way to boost your online presence. Less
+                    than a cup of coffee for 12 months of visibility.
+                </p>
+                <div class="w-full flex justify-center">
+                    <img src="assets/img/incredibly-affordable.png" alt="Incredibly Affordable"
+                        class="w-[410px] h-[341px] object-contain" />
+                </div>
+            </div>
+
+            <div
+                class="rounded-2xl bg-gray-50 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center p-8 hover:-translate-y-1">
+                <div class="flex items-center justify-center gap-2 mb-3">
+                    <img src="assets/img/iconn.png" alt="Icon" class="" />
+                    <h3 class="text-xl font-semibold text-gray-900">Quick & Easy Setup</h3>
+                </div>
+                <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                    Create your complete business profile in under 2 minutes. No technical
+                    skills required — start getting found today.
+                </p>
+                <div class="w-full flex justify-center">
+                    <img src="assets/img/quick-easy-setup.png" alt="Quick & Easy Setup"
+                        class="w-[410px] h-[341px] object-contain" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<section id="why-choose-us" class="bg-white text-center">
+    <div class="max-w-[76rem] mx-auto px-6 text-center">
+        <!-- Top Badge -->
+        <div class="flex justify-center mb-6">
+            <span
+                class="bg-white border border-gray-300 text-gray-700 px-4 rounded-full text-xs sm:text-sm font-medium shadow-sm flex justify-center items-center gap-2">
+                <span class="text-yellow-500 text-lg">✦</span>
+              Why Local Businesses Choose Global Business Pages
+            </span>
+        </div>
+
+        <!-- <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3">
+            Global reach. Local results
+        </h2>
+
+        <p class="text-gray-600 text-sm sm:text-base max-w-xl mx-auto mb-14 leading-relaxed">
+            Global coverage with local discoverability — clear categories, map-based search, and contact options that
+            convert.
+        </p> -->
+
+        <!-- Dynamic Content Skeleton -->
+        <ngx-skeleton-loader *ngIf="!contentLoaded" count="3"
+            [theme]="{ height: '18px', width: '80%', margin: '10px auto' }">
+        </ngx-skeleton-loader>
+
+        <div *ngIf="contentLoaded" [innerHTML]="safeContent"></div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
+
+            <!-- Card 1 -->
+            <div
+                class="relative rounded-2xl bg-gray-50 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col px-6 pt-6 hover:-translate-y-1 overflow-hidden">
+
+                <!-- Title Skeleton -->
+                <div *ngIf="!contentLoaded" class="mb-3">
+                    <ngx-skeleton-loader [theme]="{ height: '20px', width: '60%', margin: '0 auto' }">
+                    </ngx-skeleton-loader>
+                </div>
+
+                <div class="flex items-center gap-2 mb-3 text-left" *ngIf="contentLoaded">
+                    <img src="assets/img/iconn.png" class="w-8 h-8" />
+                    <h3 class="text-2xl font-semibold text-gray-900">{{whyChooseUsData?.card_title1}}</h3>
+                </div>
+
+                <!-- Description Skeleton -->
+                <ngx-skeleton-loader *ngIf="!contentLoaded" count="2"
+                    [theme]="{ height: '14px', width: '90%', margin: '6px 0' }">
+                </ngx-skeleton-loader>
+
+                <p *ngIf="contentLoaded" class="text-gray-600 text-sm lg:text-xs leading-relaxed text-left">
+                    {{whyChooseUsData?.card_description1}}
+                </p>
+
+                <!-- Image Skeleton -->
+                <ngx-skeleton-loader *ngIf="!contentLoaded" class="w-full h-36 md:h-16 lg:h-48 mt-4"
+                    [theme]="{ 'border-radius': '8px', width: '100%', height: '100%' }">
+                </ngx-skeleton-loader>
+
+                <div *ngIf="contentLoaded" class="relative w-full h-36 md:h-16 lg:h-48 overflow-hidden mt-4">
+                    <img [src]="httpUrl + 'uploads/why-choose-us-image/' + whyChooseUsData?.card_img1"
+                        class="absolute bottom-[-7rem] left-0 w-full object-cover scale-105" />
+                </div>
+            </div>
+
+
+            <!-- ✅ Repeat the same logic for Card 2 & Card 3 (with dynamic fields) -->
+
+            <!-- Card 2 -->
+            <div
+                class="relative rounded-2xl bg-gray-50 shadow-sm flex flex-col px-6 pt-6 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+
+                <div *ngIf="!contentLoaded" class="mb-3">
+                    <ngx-skeleton-loader
+                        [theme]="{ height: '20px', width: '60%', margin: '0 auto' }"></ngx-skeleton-loader>
+                </div>
+
+                <div *ngIf="contentLoaded" class="flex items-center gap-2 mb-3 text-left">
+                    <img src="assets/img/iconn.png" class="w-8 h-8" />
+                    <h3 class="text-2xl font-semibold text-gray-900">{{whyChooseUsData?.card_title2}}</h3>
+                </div>
+
+                <ngx-skeleton-loader *ngIf="!contentLoaded" count="2"
+                    [theme]="{ height: '14px', width: '90%', margin: '6px 0' }">
+                </ngx-skeleton-loader>
+                <p *ngIf="contentLoaded" class="text-gray-600 text-sm lg:text-xs leading-relaxed text-left">
+                    {{whyChooseUsData?.card_description2}}
+                </p>
+
+                <ngx-skeleton-loader *ngIf="!contentLoaded" class="w-full h-36 md:h-16 lg:h-48 mt-4"
+                    [theme]="{ 'border-radius': '8px', width: '100%', height: '100%' }">
+                </ngx-skeleton-loader>
+                <div *ngIf="contentLoaded" class="relative w-full h-36 md:h-16 lg:h-48 overflow-hidden mt-4">
+                    <img [src]="httpUrl + 'uploads/why-choose-us-image/' + whyChooseUsData?.card_img2"
+                        class="absolute bottom-[-7rem] left-0 w-full object-cover scale-105" />
+                </div>
+
+            </div>
+
+            <!-- Card 3 -->
+            <div
+                class="relative rounded-2xl bg-gray-50 shadow-sm flex flex-col px-6 pt-6 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+
+                <div *ngIf="!contentLoaded" class="mb-3">
+                    <ngx-skeleton-loader
+                        [theme]="{ height: '20px', width: '60%', margin: '0 auto' }"></ngx-skeleton-loader>
+                </div>
+
+                <div *ngIf="contentLoaded" class="flex items-center gap-2 mb-3 text-left">
+                    <img src="assets/img/iconn.png" class="w-8 h-8" />
+                    <h3 class="text-2xl font-semibold text-gray-900">{{whyChooseUsData?.card_title3}}</h3>
+                </div>
+
+                <ngx-skeleton-loader *ngIf="!contentLoaded" count="2"
+                    [theme]="{ height: '14px', width: '90%', margin: '6px 0' }"></ngx-skeleton-loader>
+                <p *ngIf="contentLoaded" class="text-gray-600 text-sm lg:text-xs leading-relaxed text-left">
+                    {{whyChooseUsData?.card_description3}}
+                </p>
+
+                <ngx-skeleton-loader *ngIf="!contentLoaded" class="w-full h-36 md:h-16 lg:h-48 mt-4"
+                    [theme]="{ 'border-radius': '8px', width: '100%', height: '100%' }"></ngx-skeleton-loader>
+                <div *ngIf="contentLoaded" class="relative w-full h-36 md:h-16 lg:h-48 overflow-hidden mt-4">
+                    <img [src]="httpUrl + 'uploads/why-choose-us-image/' + whyChooseUsData?.card_img3"
+                        class="absolute bottom-[-7rem] left-0 w-full object-cover scale-105" />
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>

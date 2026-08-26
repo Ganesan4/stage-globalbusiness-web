@@ -1,0 +1,135 @@
+
+<div class="container mx-auto p-6">
+    <h1 class="text-base sm:text-2xl font-extrabold mb-6 text-gray-800">Review List</h1>
+    <!-- <button (click)="showForm()" 
+            class="mb-6 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-lg transform transition-transform hover:scale-105">
+        Add New Banner
+    </button> -->
+
+    <div class="overflow-x-auto">
+        <div *ngIf="notificationMessage" [ngClass]="{'success': notificationType === 'success', 'error': notificationType === 'error'}" 
+            class="notification fixed top-4 right-4 p-4 rounded-lg shadow-lg">
+            {{ notificationMessage }}
+        </div>
+        <table class="min-w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+            <thead>
+                <tr class="bg-gray-200 text-gray-700">
+                    <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">S.No</th>
+                    <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">Email</th>
+                    <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">Comments</th>
+                    <th class="py-3 px-6 border-b border-gray-300 text-left text-sm font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let review of review_data; let i = index" class="hover:bg-gray-50 transition-colors">
+                    <td class="py-3 px-6 border-b border-gray-300">{{ i + 1 }}</td>
+                    <td class="py-3 px-6 border-b border-gray-300">{{ review.email }}</td>
+                    <td class="py-3 px-6 border-b border-gray-300">{{ review.comments }}</td>
+                    <td class="py-3 px-6 border-b border-gray-300">
+                        <button (click)="showReview(review)" class="bg-green-500 text-white hover:bg-green-600 font-medium py-1 px-3 rounded transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" style="fill: white;" xml:space="preserve" 
+                                width="24" height="24" viewBox="0 0 50 50" id="eye">
+                                <path d="M25 39c13.036 0 23.352-12.833 23.784-13.379l.491-.621-.491-.621C48.352 23.833 38.036 11 25 11S1.648 23.833 1.216 24.379L.725 25l.491.621C1.648 26.167 11.964 39 25 39zm0-26c10.494 0 19.47 9.46 21.69 12C44.473 27.542 35.509 37 25 37 14.506 37 5.53 27.54 3.31 25 5.527 22.458 14.491 13 25 13z"></path>
+                                <path d="M25 34c4.963 0 9-4.038 9-9s-4.037-9-9-9-9 4.038-9 9 4.037 9 9 9zm0-16c3.859 0 7 3.14 7 7s-3.141 7-7 7-7-3.14-7-7 3.141-7 7-7z"></path>
+                              </svg>                               
+                        </button>
+                        <button (click)="changeActive(review)" [ngClass]="{
+                            'bg-blue-500 hover:bg-blue-600': review.status == 1, 
+                            'bg-red-500 hover:bg-red-600': review.status == 0
+                        }" class="text-white font-medium py-1 px-3 rounded lg:ml-4 md:ml-4 transition-colors ">
+                            <svg *ngIf="review.status == 1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,255.99431,255.99431">
+                                <g fill="#fafafa" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M41.9375,8.625c-0.66406,0.02344 -1.27344,0.375 -1.625,0.9375l-18.8125,28.78125l-12.1875,-10.53125c-0.52344,-0.54297 -1.30859,-0.74609 -2.03125,-0.51953c-0.71875,0.22266 -1.25391,0.83203 -1.37891,1.57422c-0.125,0.74609 0.17578,1.49609 0.78516,1.94531l13.9375,12.0625c0.4375,0.37109 1.01563,0.53516 1.58203,0.45313c0.57031,-0.08594 1.07422,-0.41016 1.38672,-0.89062l20.09375,-30.6875c0.42969,-0.62891 0.46484,-1.44141 0.09375,-2.10547c-0.37109,-0.66016 -1.08594,-1.05469 -1.84375,-1.01953z"></path></g></g>
+                                </svg>
+                                <svg *ngIf="review.status == 0" fill="#ffffff" height="24" width="24" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-147 -147 784.00 784.00" xml:space="preserve" stroke="#ffffff" stroke-width="14.209999999999999"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 489.292,457.678 277.331,245.004 489.292,32.337 "></polygon> </g></svg>                            
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="review_data.length === 0" class="text-center text-gray-500 py-4">
+            No data available.
+        </div>
+    </div>    
+</div>
+<!-- modal for edit -->
+<div *ngIf="showReviewForm" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
+    <!-- Modal Container -->
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-2xl relative">
+      <!-- Close Button -->
+      <button
+        type="button"
+        (click)="closeReviewForm()"
+        class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 focus:outline-none"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+  
+      <!-- Modal Header -->
+      <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">Review</h2>
+  
+      <!-- Content Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- Name -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <p class="w-full px-4 py-2 bg-gray-100 rounded-md border border-gray-300">{{ name }}</p>
+        </div>
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <p class="w-full px-4 py-2 bg-gray-100 rounded-md border border-gray-300">{{ email }}</p>
+        </div>
+      </div>
+
+      <!-- Comments -->
+      <div class="mt-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Comments</label>
+        <p class="w-full px-4 py-2 bg-gray-100 rounded-md border border-gray-300">{{ comments }}</p>
+      </div>
+  
+      <!-- Status -->
+      <div class="mt-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+        <p class="w-full px-4 py-2 bg-gray-100 rounded-md border border-gray-300">{{ status }}</p>
+      </div>
+  
+      <!-- Ratings -->
+      <div class="mt-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Ratings</label>
+        <div class="flex items-center space-x-1">
+          <!-- Filled Stars -->
+          <span 
+            *ngFor="let star of [].constructor(ratings)" 
+            class="text-yellow-500 text-2xl"
+          >
+            ★
+          </span>
+          <!-- Empty Stars -->
+          <span 
+            *ngFor="let star of [].constructor(5 - ratings)" 
+            class="text-gray-300 text-2xl"
+          >
+            ☆
+          </span>
+        </div>
+      </div>
+  
+      
+  
+      <!-- Footer Buttons -->
+      <div class="flex justify-end mt-8">
+        <button
+          type="button"
+          (click)="closeReviewForm()"
+          class="px-6 py-2 rounded-lg bg-gray-500 text-white hover:bg-gray-600 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-transform transform hover:scale-105 shadow-md"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+  
+
+

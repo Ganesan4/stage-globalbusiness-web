@@ -1,0 +1,712 @@
+<div>
+  <ngx-slick-carousel
+  class="carousel relative"
+  #slickModal="slick-carousel"
+  [config]="slideConfig"
+  (init)="slickInit($event)"
+  (breakpoint)="breakpoint($event)"
+  (afterChange)="afterChange($event)"
+  (beforeChange)="beforeChange($event)"
+>
+  <!-- Loop through slides -->
+  <div ngxSlickItem *ngFor="let slide of slides" class="slide relative">
+    <!-- Slide Image -->
+    <img
+      [src]="slide.img"
+      [alt]="slide.altText || 'Slide Image'"
+      class="block w-full h-auto"
+    />
+
+    <!-- Buttons Overlay -->
+    <div
+      class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center space-y-2 bg-black bg-opacity-50 btnsslide"
+    >
+      <a
+        [href]="'mailto:' + slide.email"
+        class="px-4 py-2 text-sm text-white paddingbtn btnclr border border-white rounded-lg hover:bg-opacity-70 hover:bg-white hover:text-black"
+      >
+        E-Mail
+      </a>
+      <a
+        [href]="'tel:' + slide.phone"
+        class="px-4 py-2 text-sm text-white paddingbtn btnclr border border-white rounded-lg hover:bg-opacity-70 hover:bg-white hover:text-black"
+      >
+        Phone
+      </a>
+      <a
+        [href]="slide.website"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-4 py-2 text-sm text-white btnclr border border-white rounded-lg hover:bg-opacity-70 hover:bg-white hover:text-black"
+      >
+        Visit Website
+      </a>
+    </div>
+  </div>
+</ngx-slick-carousel>
+</div>
+
+
+<div class="container mx-auto  max-w-6xl">
+
+  
+  <!-- Gallery Section -->
+  <!-- <section class="mb-6 flex justify-between items-center">
+    <h2 class="text-lg font-bold text-gray-700 mb-2">{{ profile.category }}</h2>
+    
+    
+    <div class="flex items-center cursor-pointer text-gray-700 mb-2">
+      <i class="fas fa-heart mr-2"></i>
+       <span>Save</span>
+    </div>
+  </section> -->
+  
+  
+
+
+
+
+  
+  <section class="mb-6 mt-6">
+    <h2 class="text-2xl font-extrabold mb-6 text-gray-800">About Us</h2>
+    <p class="text-gray-600">
+      {{ userdetails[0][13] }}
+    </p>
+  </section>
+
+  <header class="flex flex-col sm:flex-row items-center justify-between border-b border-t pt-4 pb-4 mt-4 mb-4">
+    <!-- Left Section -->
+    <div class="flex items-center space-x-4 mb-4 sm:mb-0">
+      <img [src]="userdetails[0][1]" alt="Business Logo" class="w-16 h-16 rounded-full object-cover">
+      <div>
+        <h1 class="text-lg font-semibold text-gray-700 mb-2">{{ userdetails[0][0] }}</h1>
+        <p class="text-sm text-gray-600">
+          {{ userdetails[0][12] }} • {{ userdetails[0][2] }}
+        </p>
+        <!-- Stars Rating (Moved Here) -->
+        <div class="flex items-center space-x-1 text-yellow-500 cursor-pointer mt-2" (click)="scrollToSection()">
+          <ng-container *ngFor="let star of stars; let i = index">
+            <span [class.text-yellow-500]="i < roundedRating" [class.text-gray-300]="i >= roundedRating" class="text-xl">★</span>
+          </ng-container>
+          <span class="text-gray-700 text-sm">
+            ({{ averageRating.toFixed(1) }} / 5  • {{ totalReviews }} reviews)
+          </span>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Right Section -->
+    <div class="text-right w-full sm:w-auto">
+      <button
+        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center space-x-2"
+        (click)="openModalfeedback()"
+      >
+        <i class="fa fa-paper-plane"></i>
+        <span>Send Feedback</span>
+      </button>
+    </div>
+    
+  </header>
+  
+  <div class="flex items-center justify-between mt-4 mb-4">
+    <div>
+      <h1 class="text-2xl font-extrabold mb-6 text-gray-800">What this Place Offers</h1>
+    </div>
+  </div>
+  
+  <!-- Amenities List -->
+  <div class="grid grid-cols-3 gap-6">
+    <div *ngFor="let amenity of displayedAmenities1" class="flex items-center space-x-2">
+      <i [class]="amenity.icon + ' mr-2 text-gray-600'"></i>
+      <span class="text-sm text-gray-800">{{ amenity.name }}</span>
+    </div>
+  </div>
+  
+  
+  <!-- Centered Show All Amenities Button -->
+  <div class="flex justify-center mt-4 pt-4 border-b pb-4 mb-4">
+    <button
+      (click)="openModal()"
+      class="hover:bg-blue-600 bg-blue-500 text-white px-4 py-2 rounded-md flex items-center space-x-2"
+    >
+      <i class="fa fa-th-list"></i>
+      <span>Show All Amenities</span>
+    </button>
+  </div>
+  
+  
+  <!-- Modal -->
+  <div *ngIf="isModalOpen" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg w-11/12 sm:w-3/4 lg:w-1/2 relative">
+      <!-- Close Button with Font Awesome Icon -->
+      <button
+        (click)="closeModal()"
+        class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl focus:outline-none"
+        aria-label="Close"
+      >
+        <i class="fa fa-times"></i> 
+      </button>
+  
+      <h2 class="text-xl font-semibold mb-4">All Amenities</h2>
+  
+      <!-- Scrollable content section -->
+      <div class="max-h-96 overflow-y-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div *ngFor="let amenity of displayedAmenities" class="flex items-center space-x-2">
+            <i [class]="amenity.icon + ' mr-2 text-gray-600'"></i>
+            <span class="text-sm text-gray-800">{{ amenity.name }}</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Close Button -->
+      
+    </div>
+  </div>
+  
+  <!-- Operating Hours -->
+  <!-- <section class="mb-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-2">Operating Hours</h2>
+    <ul class="text-gray-600 space-y-1">
+      <li *ngFor="let day of operatingHours">
+        <strong>{{ day.name }}:</strong> {{ day.hours }}
+      </li>
+    </ul>
+  </section> -->
+
+  <!-- Services Section -->
+  <section class="mb-6">
+    <h2 class="text-2xl font-extrabold mb-6 text-gray-800">Our Metrics & Insights</h2>
+    <ul class="text-gray-600 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][18]">
+        <h3 class="font-semibold">Industry/Sector</h3>
+        <p>
+          {{ truncateText(userdetails[0][18]) }}
+          <span *ngIf="userdetails[0][18].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][18])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][26]">
+        <h3 class="font-semibold">Client Testimonials</h3>
+        <p>
+          {{ truncateText(userdetails[0][26]) }}
+          <span *ngIf="userdetails[0][26].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][26])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][24]">
+        <h3 class="font-semibold">Certifications and Accreditations</h3>
+        <p>
+          {{ truncateText(userdetails[0][24]) }}
+          <span *ngIf="userdetails[0][24].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][24])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][22]">
+        <h3 class="font-semibold">Target Market</h3>
+        <p>
+          {{ truncateText(userdetails[0][22]) }}
+          <span *ngIf="userdetails[0][22].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][22])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][28]">
+        <h3 class="font-semibold">Market Positioning</h3>
+        <p>
+          {{ truncateText(userdetails[0][28]) }}
+          <span *ngIf="userdetails[0][28].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][28])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][34]">
+        <h3 class="font-semibold">Visual Content</h3>
+        <p>
+          {{ truncateText(userdetails[0][34]) }}
+          <span *ngIf="userdetails[0][34].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][34])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][35]">
+        <h3 class="font-semibold">Community Involvement</h3>
+        <p>
+          {{ truncateText(userdetails[0][35]) }}
+          <span *ngIf="userdetails[0][35].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][35])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][38]">
+        <h3 class="font-semibold">Mobile-Friendly Features</h3>
+        <p>
+          {{ truncateText(userdetails[0][38]) }}
+          <span *ngIf="userdetails[0][38].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][38])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][29]">
+        <h3 class="font-semibold">Global Reach</h3>
+        <p>
+          {{ truncateText(userdetails[0][29]) }}
+          <span *ngIf="userdetails[0][29].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][29])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][39]">
+        <h3 class="font-semibold">Legal Information</h3>
+        <p>
+          {{ truncateText(userdetails[0][39]) }}
+          <span *ngIf="userdetails[0][39].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][39])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][40]">
+        <h3 class="font-semibold">Unique Value Proposition (UVP)</h3>
+        <p>
+          {{ truncateText(userdetails[0][40]) }}
+          <span *ngIf="userdetails[0][40].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][40])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][33]">
+        <h3 class="font-semibold">Networking Opportunities</h3>
+        <p>
+          {{ truncateText(userdetails[0][33]) }}
+          <span *ngIf="userdetails[0][33].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][33])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][14]">
+        <h3 class="font-semibold">Product/Services Offered</h3>
+        <p>
+          {{ truncateText(userdetails[0][14]) }}
+          <span *ngIf="userdetails[0][14].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][14])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][15]">
+        <h3 class="font-semibold">Pricing Information</h3>
+        <p>
+          {{ truncateText(userdetails[0][15]) }}
+          <span *ngIf="userdetails[0][15].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][15])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][19]">
+        <h3 class="font-semibold">Operating Hours</h3>
+        <p>
+          {{ truncateText(userdetails[0][19]) }}
+          <span *ngIf="userdetails[0][19].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][19])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][41]">
+        <h3 class="font-semibold">Multilingual Support</h3>
+        <p>
+          {{ truncateText(userdetails[0][41]) }}
+          <span *ngIf="userdetails[0][41].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][41])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][23]">
+        <h3 class="font-semibold">Social Media Links</h3>
+        <p>
+          {{ truncateText(userdetails[0][23]) }}
+          <span *ngIf="userdetails[0][23].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][23])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+      <li class="border p-2 rounded-lg" *ngIf="userdetails[0][21]">
+        <h3 class="font-semibold">Service Area</h3>
+        <p>
+          {{ truncateText(userdetails[0][21]) }}
+          <span *ngIf="userdetails[0][21].length > 150">
+            ... <button (click)="openModalmetrics(userdetails[0][21])" class="text-blue-500 underline">Read More</button>
+          </span>
+        </p>
+      </li>
+    </ul>
+  </section>
+  
+  <section class="mb-6">
+    <h2 class="text-2xl font-extrabold mb-6 text-gray-800">Get Location</h2>
+   
+      <div class="mb-4">
+        <google-map
+        height="400px"
+        width="100%"
+        [center]="center"
+        [zoom]="zoom"
+        (mapClick)="moveMap($event)">
+        
+        
+        <map-marker
+        *ngFor="let marker of markers"
+        #mapMarker="mapMarker"
+        [position]="marker.position"
+        [title]="marker.title"
+        [options]="marker.options"
+        (mapClick)="openInfoWindow(marker.branch, mapMarker)"
+      ></map-marker>
+      <map-info-window>
+        <h3>{{ selectedBranch()?.name }}</h3>
+        <p>{{ selectedBranch()?.address }}</p>
+        <p>{{ selectedBranch()?.city }}</p>
+        <p>{{ selectedBranch()?.state }}, {{ selectedBranch()?.postCode }}</p>
+      </map-info-window>
+      </google-map>
+      
+        
+    </div>
+  </section>
+  
+
+  <section class="mb-6" #scrollTarget>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-extrabold mb-6 text-gray-800">Reviews</h2>
+      <!-- Add Review Button -->
+      <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mt-4 mb-4 flex items-center" (click)="openModaladdreview()">
+        <i class="fa fa-pencil-alt mr-2"></i> Add Review
+      </button>
+    </div>
+  
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div *ngFor="let review of getreviewdata" class="flex items-center border-b pb-4">
+        <!-- Profile Initials -->
+        <div 
+          class="flex items-center justify-center w-10 h-10 rounded-full text-white font-semibold mr-3"
+          [style.backgroundColor]="review.profileColor">
+          {{ review.initials }}
+        </div>
+        <!-- Review Content -->
+        <div>
+          <p class="text-sm text-gray-700">“{{ review.text }}”</p>
+          <div class="text-yellow-500 text-sm mt-1">
+            <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" class="inline-block">
+              {{ i < review.rating ? '★' : '☆' }}
+            </span>
+            <span class="text-gray-600"> by {{ review.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
+
+
+  <!-- FAQ Section -->
+  <!-- <section class="mb-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-2">Our Insights & Features</h2>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <li *ngFor="let profile of businessProfiles; let i = index" class="border p-2 rounded-lg">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          
+          <div>
+            <div class="flex justify-between items-center cursor-pointer" (click)="toggle(i, 'industry')">
+              <h3 class="font-semibold text-gray-800">Industry/Sector</h3>
+              <span [class.rotate-180]="openIndex === i && openSection === 'industry'" class="transition-transform duration-300">
+                &#9660; 
+              </span>
+            </div>
+            <div *ngIf="openIndex === i && openSection === 'industry'" class="mt-2 text-gray-600">
+              <p>{{ profile.industry }}</p>
+            </div>
+          </div>
+  
+         
+          <div>
+            <div class="flex justify-between items-center cursor-pointer" (click)="toggle(i, 'details')">
+              <h3 class="font-semibold text-gray-800">Details</h3>
+              <span [class.rotate-180]="openIndex === i && openSection === 'details'" class="transition-transform duration-300">
+                &#9660; 
+              </span>
+            </div>
+            <div *ngIf="openIndex === i && openSection === 'details'" class="mt-2 text-gray-600">
+              <p>{{ profile.details }}</p>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section> -->
+  
+  
+</div>  
+
+
+<div *ngIf="isModalOpenfeedback" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-96 relative"> <!-- Added 'relative' here -->
+    <!-- Feedback Submitted Message -->
+
+    <!-- Close button inside the modal -->
+    <button
+      (click)="closeModalfeedback()"
+      class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl focus:outline-none z-10"
+      aria-label="Close"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+
+    <!-- Feedback submitted message -->
+    <div *ngIf="feedbackSubmitted" class="text-green-500 font-semibold text-sm mb-4 flex justify-center">
+      <b>Feedback submitted successfully</b>
+    </div>
+    
+    <h2 class="text-lg font-semibold mb-4">Feedback</h2>
+    
+    <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+      <!-- Name Field -->
+      <div class="mb-4">
+        <label class="block font-medium mb-1">
+          Name<span class="text-red-500 ml-1">*</span>
+        </label>
+        <input type="text" formControlName="name" class="border rounded w-full px-3 py-2" />
+        <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="text-red-500 text-sm">Name is required.</div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="mb-4">
+        <label class="block font-medium mb-1">
+          Email<span class="text-red-500 ml-1">*</span>
+        </label>
+        <input type="email" formControlName="feedback_email" class="border rounded w-full px-3 py-2" />
+        <div *ngIf="feedback_email?.invalid && (feedback_email?.dirty || feedback_email?.touched)" class="text-red-500 text-sm">
+          A valid email is required.
+        </div>
+      </div>
+
+      <!-- Address Field -->
+      <div class="mb-4">
+        <label class="block font-medium mb-1">
+          Address<span class="text-red-500 ml-1">*</span>
+        </label>
+        <input type="text" formControlName="feedback_address" class="border rounded w-full px-3 py-2" />
+        <div *ngIf="feedback_address?.invalid && (feedback_address?.dirty || feedback_address?.touched)" class="text-red-500 text-sm">
+          Address is required.
+        </div>
+      </div>
+
+      <!-- Phone Number Field -->
+      <div class="mb-4">
+        <label class="block font-medium mb-1">
+          Phone Number<span class="text-red-500 ml-1">*</span>
+        </label>
+        <input type="text" formControlName="phone" class="border rounded w-full px-3 py-2" />
+        <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="text-red-500 text-sm">
+          A valid phone number (10-15 digits) is required.
+        </div>
+      </div>
+
+      <!-- Comments Field -->
+      <div class="mb-4">
+        <label class="block font-medium mb-1">
+          Comments<span class="text-red-500 ml-1">*</span>
+        </label>
+        <textarea formControlName="comments" class="border rounded w-full px-3 py-2"></textarea>
+        <div *ngIf="comments?.invalid && (comments?.dirty || comments?.touched)" class="text-red-500 text-sm">Comments are required.</div>
+      </div>
+
+      <!-- Buttons -->
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="text-white px-4 py-2 rounded" 
+        [ngClass]="{'bg-blue-500': !feedbackForm.invalid, 'bg-gray-400': feedbackForm.invalid}" 
+        [disabled]="feedbackForm.invalid">
+        Submit
+      </button>
+
+      
+    </form>
+  </div>
+</div>
+
+
+
+<div *ngIf="isModalOpenreview" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-11/12 sm:w-3/4 lg:w-1/2">
+    <h2 class="text-xl font-semibold mb-4 text-center">All Reviews</h2>
+
+    <!-- Reviews Section -->
+    <div class="max-h-96 overflow-y-auto">
+      <div class="flex flex-col gap-4">
+        <div *ngFor="let review of getreviewdata" class="flex items-center border-b pb-4">
+          <!-- Initials Badge -->
+          <div 
+            class="w-10 h-10 rounded-full mr-3 bg-gray-500 text-white flex items-center justify-center text-sm font-semibold"
+            [style.backgroundColor]="review.profileColor" >
+            {{ review.initials }}
+          </div>
+
+          <!-- Review Content -->
+          <div>
+            <p class="text-sm text-gray-700 mb-2">“{{ review.text }}”</p>
+            <div class="text-yellow-500 text-sm mt-1">
+              <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" class="inline-block">
+                {{ i < review.rating ? '★' : '☆' }}
+              </span>
+              <span class="text-gray-600 ml-2"> by {{ review.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Close Button -->
+    <div class="mt-4 text-center">
+      <button (click)="closeModalreview()" class="bg-red-500 text-white px-4 py-2 rounded-md">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div *ngIf="isModalOpenaddreview" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-11/12 sm:w-3/4 lg:w-1/2 relative">
+    <button
+        (click)="closeModaladdreview()"
+        class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl focus:outline-none"
+        aria-label="Close"
+      >
+        <i class="fa fa-times"></i> 
+      </button>
+
+
+    <!-- Review Submitted Message -->
+    <div *ngIf="reviewSubmitted" class="text-green-500 font-semibold text-sm mb-4 flex justify-center">
+      <b>Review submitted successfully</b>
+    </div>
+
+    <!-- Modal Title -->
+    <h2 class="text-xl font-semibold mb-4">Add Review</h2>
+
+    <!-- Review Form -->
+    <form (ngSubmit)="submitReview()" #reviewForm="ngForm" class="max-w-lg">
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700">
+          Name <span class="text-red-500 ml-1">*</span>
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          [(ngModel)]="newReview.name"
+          class="border rounded w-full px-3 py-2 ng-pristine ng-invalid ng-touched"
+          required
+          #name="ngModel"
+        />
+        <p *ngIf="name.invalid && name.touched" class="text-red-500 text-sm">Name is required.</p>
+      </div>
+
+      <!-- Email Field -->
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700">
+          Email <span class="text-red-500 ml-1">*</span>
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          [(ngModel)]="newReview.email"
+          class="border rounded w-full px-3 py-2 ng-pristine ng-invalid ng-touched"
+          required
+          email
+          #email="ngModel"
+        />
+        <p *ngIf="email.invalid && email.touched" class="text-red-500 text-sm">Valid email is required.</p>
+      </div>
+
+      <!-- Comments Field -->
+      <div class="mb-4">
+        <label for="comments" class="block text-sm font-medium text-gray-700">
+          Your Comments <span class="text-red-500 ml-1">*</span>
+        </label>
+        <textarea
+          id="comments"
+          name="comments"
+          [(ngModel)]="newReview.comments"
+          rows="4"
+          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+          required
+          #comments="ngModel"
+        ></textarea>
+        <p *ngIf="comments.invalid && comments.touched" class="text-red-500 text-sm">Comments are required.</p>
+      </div>
+
+      <!-- Star Rating -->
+      <div class="mb-4 flex items-center">
+        <label for="rating" class="block text-sm font-medium text-gray-700 mr-2">
+          Rating <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="flex items-center">
+          <span
+            *ngFor="let star of [1, 2, 3, 4, 5]"
+            (click)="setRating(star)"
+            [class.text-yellow-500]="star <= newReview.rating"
+            class="cursor-pointer text-xl"
+          >
+            ★
+          </span>
+        </div>
+      </div>
+
+      <!-- Submit and Close Buttons -->
+      <div class="mt-4 flex justify-start space-x-4">
+        <button
+          type="submit"
+          [disabled]="!reviewForm.valid || !newReview.rating"
+          class="px-4 py-2 rounded-md text-white"
+          [class.bg-blue-500]="reviewForm.valid && newReview.rating"
+          [class.bg-gray-300]="!reviewForm.valid || !newReview.rating"
+        >
+          Submit Review
+        </button>
+        <!-- <button
+          (click)="closeModaladdreview()"
+          class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+        >
+          Close
+        </button> -->
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div *ngIf="isModalOpenedmetrics" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white p-4 rounded-lg shadow-lg max-w-lg relative"> <!-- Added 'relative' here -->
+    
+    <button
+      (click)="closeModalmetrics()"
+      class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl focus:outline-none z-10"
+      aria-label="Close"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+
+    
+    <h3 class="text-lg font-semibold mb-4">Detailed Information</h3>
+    <p class="text-gray-700 mb-4">{{ selectedContent }}</p>
+    
+    
+  </div>
+</div>

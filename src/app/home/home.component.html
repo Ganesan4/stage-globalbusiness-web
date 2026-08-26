@@ -1,0 +1,56 @@
+<!-- <div class="content-container px-4 md:px-8">
+  <div class="center mx-auto py-0 md:py-8">
+    <img class="img-responsive mx-auto hidden md:block" src="assets/img/logo.png" alt="Logo" />
+
+    <span class="block md:hidden text-center text-lg font-bold text-gray-700">
+      Add Your Business Now
+    </span>
+  </div>
+
+  <div class="md:mt-4 mb-8 w-full">
+    <div class="relative mt-6">
+      <div class="w-full md:w-1/2 mx-auto">
+        <div class="flex items-center border border-gray-300 rounded-full overflow-hidden bg-white shadow-md p-2.5">
+          <input type="text" id="searchBox" class="w-full px-4 py-2 text-gray-700 focus:outline-none border-none"
+            placeholder="Search" [(ngModel)]="searchQuery" (focus)="openDropdown()" (input)="performSearch()" />
+          <button class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 flex items-center justify-center"
+            (click)="performSearch()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
+            </svg>
+          </button>
+        </div>
+
+        <div
+          class="absolute w-full md:w-1/2 mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 overflow-y-auto"
+          [ngStyle]="{'max-height': '200px'}" *ngIf="isDropdownOpen && searchQuery.trim() && searchResults?.length > 0">
+          <div *ngFor="let result of searchResults"
+            class="px-4 py-3 border-b border-gray-200 hover:bg-gray-100 last:border-b-0 cursor-pointer"
+            (click)="onResultClick(result)">
+            <h3 class="text-sm font-semibold text-gray-800">
+              {{ result ? (result.length > 75 ? result.substring(0, 75) + '...' : result) : '' }}
+            </h3>
+          </div>
+        </div>
+
+        <div
+          class="absolute w-full md:w-1/2 mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 text-center py-4 text-gray-500"
+          *ngIf="isDropdownOpen && searchQuery.trim() && searchResults.length == 0">
+          No results found.
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<app-search-bar></app-search-bar>
+<app-why-choose-us></app-why-choose-us>
+<app-benefits></app-benefits>
+<app-how-customers-find></app-how-customers-find>
+<app-how-it-works></app-how-it-works>
+<app-faq></app-faq>
+
+<app-testimonial></app-testimonial>

@@ -1,0 +1,153 @@
+<div class="bg-white border rounded-xl p-4 md:p-6 shadow-lg w-full max-w-full overflow-hidden">
+
+    <!-- Business profile from myprofile API -->
+    <div *ngIf="profileLoading" class="business-profile-skeleton mb-5" aria-hidden="true">
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-lines">
+            <div class="skeleton-line skeleton-line--wide"></div>
+            <div class="skeleton-line skeleton-line--narrow"></div>
+        </div>
+    </div>
+
+    <div *ngIf="!profileLoading && profileData" class="business-profile-banner mb-5">
+        <div class="business-profile-banner__glow" aria-hidden="true"></div>
+        <div class="business-profile-banner__content">
+            <div class="business-profile-banner__avatar" [attr.aria-label]="profileData.business_name">
+                {{ getBusinessInitial() }}
+            </div>
+            <div class="business-profile-banner__details">
+                <span class="business-profile-banner__label">
+                    <i class="fa-solid fa-briefcase text-blue-600 text-xs" aria-hidden="true"></i>
+                    Your business
+                </span>
+                <h4 class="business-profile-banner__name">
+                    {{ profileData.business_name || '—' }}
+                </h4>
+            </div>
+            <span class="business-profile-banner__badge">
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                Verified
+            </span>
+            <a *ngIf="profileData.email" class="business-profile-banner__email"
+                [href]="'mailto:' + profileData.email" [title]="profileData.email">
+                <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+                <span>{{ profileData.email }}</span>
+            </a>
+        </div>
+    </div>
+
+    <h3 class="text-lg font-bold text-blue-700 mb-4">
+        Your Selected Upgrades
+    </h3>
+
+    <div *ngIf="selectedItems.length === 0" class="text-gray-500 text-sm">
+        No upgrades selected
+    </div>
+
+    <div *ngFor="let item of selectedItems" class="flex justify-between text-sm mb-2">
+        <span>{{item.name}}</span>
+        <span>${{item.price}}</span>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="flex justify-between font-bold text-lg">
+        <span>Total</span>
+        <span class="text-blue-600">${{total}}</span>
+    </div>
+
+    <!-- Payment Section -->
+    <div class="mt-6">
+        <p class="text-sm text-gray-600 mb-3 text-center">
+            Choose your payment method
+        </p>
+
+        <div class="flex justify-center gap-4 flex-wrap">
+
+            <!-- Stripe -->
+            <div class="w-[45%] sm:w-40 h-14 flex items-center justify-center border rounded-lg cursor-pointer hover:border-blue-500 hover:shadow-md transition bg-white p-2"
+                [ngClass]="{'border-blue-500 ring-2 ring-blue-200': selectedPayment === 'stripe'}"
+                (click)="openStripeModal()">
+
+                <img src="assets/img/Stripe.png" class="max-h-full max-w-full object-contain" />
+
+            </div>
+
+            <!-- PayPal -->
+            <div class="w-[45%] sm:w-40 h-14 flex items-center justify-center border rounded-lg cursor-pointer hover:border-blue-500 hover:shadow-md transition bg-white p-2"
+                [ngClass]="{'border-blue-500 ring-2 ring-blue-200': selectedPayment === 'paypal'}"
+                (click)="openPayPalModal()">
+
+                <img src="assets/img/paypay9.png" class="max-h-full max-w-full object-contain" />
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- STRIPE MODAL -->
+<div *ngIf="showStripeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white w-full md:w-1/3 p-6 rounded-xl shadow-lg">
+
+
+        <div>
+            <!-- <app-stripe [strname]="'Customer'" (onCloseEvent)="closeStripeModal()">
+            </app-stripe> -->
+            <app-stripe [strname]="'Customer'" [upgradeAmount]="total" [selectedItems]="selectedItems"
+                [isUpgradePayment]="true" [userDetails]="userdetails" (paymentResult)="handleStripeResult($event)"
+                (onCloseEvent)="handleStripeClose($event)">
+            </app-stripe>
+
+            <!-- <button (click)="closeStripeModal()"
+                class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 mr-2 mt-4 rgt">
+                Cancel
+            </button> -->
+        </div>
+    </div>
+</div>
+
+<!-- PAYPAL MODAL -->
+<div *ngIf="showPayPalModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+
+    <div class="bg-white w-full md:w-1/3 p-6 rounded-xl shadow-lg text-center">
+
+        <h3 class="text-lg font-bold mb-4">
+            <ng-container [ngSwitch]="paymentStatus">
+
+                <span *ngSwitchCase="'success'" class="text-green-600">Payment Successful</span>
+
+                <span *ngSwitchCase="'error'" class="text-red-500">Payment Failed</span>
+
+                <span *ngSwitchDefault>Pay with PayPal</span>
+
+            </ng-container>
+        </h3>
+
+        <!-- SUCCESS MESSAGE -->
+        <div *ngIf="paymentStatus === 'success'" class="font-semibold mb-4">
+            {{ paymentMessage }}
+        </div>
+
+        <!-- ERROR MESSAGE -->
+        <div *ngIf="paymentStatus === 'error'" class="font-semibold mb-4">
+            {{ paymentMessage }}
+        </div>
+
+        <!-- PAYPAL BUTTON -->
+        <div *ngIf="paymentStatus === 'idle'" id="paypal-button-container" class="mb-4"></div>
+
+        <!-- ACTION BUTTON -->
+        <div class="flex justify-center">
+            <button (click)="closePayPalModal()"
+                class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+
+                {{ paymentStatus === 'success' ? 'Close' : 'Cancel' }}
+
+            </button>
+        </div>
+
+    </div>
+
+</div>

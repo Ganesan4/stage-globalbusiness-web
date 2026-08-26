@@ -1,0 +1,140 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+
+@layer base {
+
+  .no-tailwindcss-base h1,
+  .no-tailwindcss-base h2,
+  .no-tailwindcss-base h3,
+  .no-tailwindcss-base h4,
+  .no-tailwindcss-base h5,
+  .no-tailwindcss-base h6 {
+    font-size: revert;
+    font-weight: revert;
+  }
+
+  .no-tailwindcss-base ol,
+  .no-tailwindcss-base ul {
+    list-style: revert;
+    margin: revert;
+    padding: revert;
+  }
+}
+.custom-select {
+  border: none;
+  outline: none;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+.custom-selectwrap {
+  text-overflow: ellipsis; /* Ensures text is truncated */
+  overflow: hidden;        /* Prevents overflow of text */
+  white-space: nowrap;     /* Keeps text in a single line */
+  width: 150px;            /* Sets a fixed width for the dropdown */
+}
+
+.custom-selectwrap option {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 150px; /* Matches the select element width */
+}
+
+.loader {
+  // border-top-color: #3490dc;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border: 4px solid transparent;
+  border-top-color: #3490dc;
+  animation: spin 1s linear infinite;
+}
+
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  // font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: DM Sans;
+}
+
+
+
+/* Remove Google default inline look */
+#google_translate_element .goog-te-gadget-simple {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+/* Style the select dropdown */
+.goog-te-combo {
+  padding: 12px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  width: 150px;
+}
+
+.goog-te-combo:focus {
+  outline: none;
+  border-color: #2563eb;
+  /* blue border like Tailwind */
+  box-shadow: 0 0 4px rgba(37, 99, 235, 0.5);
+}
+
+// .goog-logo-link,
+// .goog-te-gadget span {
+//   display: none !important;
+// }
+
+/* Hide "Powered by Google Translate" text and link */
+.goog-te-gadget>span,
+.goog-te-gadget>a,
+.goog-te-gadget img,
+.goog-te-gadget::after,
+.goog-te-gadget::before {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  font-size: 0 !important;
+  /* kills the raw "Powered by" text node */
+  line-height: 0 !important;
+}
+
+/* restore dropdown font size */
+.goog-te-combo {
+  font-size: 14px !important;
+  line-height: normal !important;
+  margin: 0 !important;
+}
+
+
+.no-scroll {
+  overflow: hidden;
+}
+
+
+// -----------------------------------------------
+
+html {
+  scroll-behavior: smooth;
+}

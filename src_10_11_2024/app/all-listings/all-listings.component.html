@@ -1,0 +1,288 @@
+<div class="content-container pl-24 pr-24">
+  <!-- <img class="center img-responsive mx-auto" src="assets/img/logo.png" alt="Logo" /> -->
+
+
+
+  <div class="mt-4 mb-8 w-full justify-between items-center">
+    <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-center items-center">
+      <div
+        class="flex flex-wrap items-center bg-white border border-gray-300 md:rounded-full rounded-lg shadow-md px-4 py-2 w-full max-w-4xl space-y-4 md:space-y-0">
+        <!-- Country -->
+        <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="country" class="text-sm text-left font-medium text-gray-500 mb-1">Country</label>
+          <div class="relative">
+            <select id="country"
+              class="text-xs text-gray-500 custom-select cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+              (change)="onCountryChange($event)">
+              <option value="">Select a Country</option>
+              <option *ngFor="let country of filteredCountries" [value]="country">{{ country }}</option>
+            </select>
+            <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+
+        <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+        <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="state" class="text-sm text-left font-medium text-gray-500">State</label>
+          <div class="relative w-full">
+            <select id="state"
+              class="text-xs text-gray-500 custom-select cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onStateChange($event)">
+              <option value="">Select a state</option>
+              <option *ngFor="let state of filteredStates" [value]="state">{{ state }}</option>
+            </select>
+            <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+
+        <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+        <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="city" class="text-sm text-left font-medium text-gray-500">City</label>
+          <div class="relative">
+            <select id="city"
+              class="text-xs text-gray-500 custom-select cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onCityChange($event)">
+              <option value="">Select a city</option>
+              <option *ngFor="let city of filteredCities" [value]="city">{{ city }}</option>
+            </select>
+            <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+
+        <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+        <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="zip" class="text-sm text-left font-medium text-gray-500">Zip</label>
+          <div class="relative w-full">
+            <select id="zip"
+              class="text-xs text-gray-500 custom-select cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8">
+              <option value="">Select a zip</option>
+              <option *ngFor="let zip of filteredZips" [value]="zip">{{ zip }}</option>
+            </select>
+            <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+
+        <!-- Search Button -->
+        <button
+          class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 ml-4 flex items-center justify-center shadow-md w-full md:w-auto"
+          (click)="performSearch()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white"
+            class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
+          </svg>
+        </button>
+      </div>
+
+      <button
+        class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 ml-4 flex items-center justify-center shadow-md"
+        (click)="toggleSidebar()">
+        <i class="fas fa-filter mr-2"></i>
+        Filter
+      </button>
+
+
+    </div>
+
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" id="loadingSpinner"
+      class="fixed inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center z-50">
+      <div class="loader border-t-4 border-b-4 border-blue-500 rounded-full w-16 h-16 animate-spin"></div>
+    </div>
+
+    <div class="results-container mt-6">
+      <!-- Search Results -->
+      <div id="productPlaceholder"></div>
+      <!-- class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" -->
+
+
+      <!-- Pagination -->
+      <!-- <div
+        id="paginate"
+        class="flex justify-center items-center mt-8 space-x-2 mb-8"
+      ></div> -->
+    </div>
+
+
+
+    <div class="mt-4 mb-8 w-full" id="oldBusinessCards">
+      <div class="grid grid-cols-1 gap-6">
+        <!-- First Business Card -->
+
+        <div *ngFor="let business of businessData"
+          class="bg-white border border-gray-200 rounded-lg shadow p-4 flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-4 hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+          (click)="redirectToListing(business.id, business.title, business.industry,business.country,business.state,business.city,business.zip_code)">
+
+          <div class="w-full md:w-1/4">
+            <ngx-slick-carousel class="carousel relative" #slickModal="slick-carousel" [config]="slideConfig"
+              (init)="slickInit($event)" (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)"
+              (beforeChange)="beforeChange($event)">
+              <!-- Loop through slides of each business -->
+              <div ngxSlickItem *ngFor="let slide of business.slides" class="slide relative">
+                <!-- Slide Image -->
+
+                <img
+                  [src]="slide.img ? slide.img.replace('data:image/png;base64,data:image/png;base64,', 'data:image/png;base64,') : 'assets/img/no_preview.png'"
+                  [alt]="slide.altText || 'Slide Image'" style="height: 200px;" />
+
+              </div>
+            </ngx-slick-carousel>
+          </div>
+
+
+
+          <div class="flex-1 md:ml-[30px]">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-semibold">{{ business.title || business.company_name || 'N/A' }}</h3>
+            </div>
+            <p class="text-sm text-gray-500">{{ business.sic_description || business.category }}</p>
+            <div class="mt-2 flex space-x-2">
+              <span *ngIf="business.industry || business.description"
+                class="text-xs bg-gray-200 rounded-full px-3 py-1">
+                {{ business.industry || business.description}}
+              </span>
+            </div>
+
+            <div class="mt-4 flex items-center space-x-2">
+              <i class="fas fa-map-marker-alt text-gray-500"></i>
+              <span class="text-sm">
+                {{ business.region }}, {{ business.city }}, {{ business.state }}, {{ business.country }}
+                <span *ngIf="business.distance"> - {{ business.distance | number:'1.1-1' }} km</span>
+              </span>
+            </div>
+
+
+
+            <div class="mt-4 flex space-x-4">
+              <a href="tel:{{ business.phone }}">
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center space-x-2">
+                  <i class="fas fa-phone-alt"></i>
+                  <span>Contact</span>
+                </button>
+              </a>
+
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    
+    
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Pagination -->
+    <div id="paginate" class="flex justify-center items-center mt-8 space-x-2 mb-8"></div>
+
+
+  </div>
+
+
+  <!-- Overlay -->
+  <div *ngIf="isSidebarOpen" class="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-40"
+    (click)="toggleSidebar()"></div>
+
+  <!-- sidebar -->
+  <div class="fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50"
+    [ngClass]="{ 'translate-x-0': isSidebarOpen, 'translate-x-full': !isSidebarOpen }">
+    <div class="relative h-full">
+      <!-- Header -->
+      <div class="flex justify-between items-center p-4 border-b border-gray-300">
+        <h4 class="text-lg font-semibold">Filter Options</h4>
+        <button class="text-gray-500 hover:text-gray-800" (click)="toggleSidebar()">
+          &times;
+        </button>
+      </div>
+
+      <!-- Input Field -->
+      <div class="relative">
+        <div class="flex items-center border-b border-gray-300">
+          <span class="text-gray-400 p-4">
+            <i class="fa fa-map-marker-alt text-blue-400"></i> <!-- Location Icon -->
+          </span>
+          <input type="text" [value]="locationInput" placeholder="Select Location" class="w-full p-4 outline-none"
+            (focus)="showDropdown = true" (blur)="hideDropdownAfterDelay()" />
+        </div>
+
+        <!-- Dropdown -->
+        <ul class="absolute left-0 right-0 bg-white shadow-lg border mt-1 z-10" *ngIf="showDropdown">
+          <li class="flex items-center p-2 hover:bg-gray-200 cursor-pointer text-gray-400" (click)="detectLocation()">
+            <span class="text-blue-500 mr-2">
+              <i class="fa fa-crosshairs"></i> <!-- Detect Location Icon -->
+            </span>
+            Detect Location
+          </li>
+          <div *ngIf="locationPermissionDenied" class="text-red-500 mt-2">
+            Location access is denied. Please enable location services in your browser settings.
+          </div>
+        </ul>
+      </div>
+
+      <!-- Filter content -->
+      <div class="p-4">
+        <button class="w-full py-2 text-sm font-medium rounded-lg border" [ngClass]="{
+          'bg-blue-500 text-white': isDistanceSelected,
+          'bg-gray-200 text-gray-800': !isDistanceSelected
+        }" (click)="DistanceSelection()">
+          Distance
+        </button>
+      </div>
+
+      <!-- Bottom Buttons -->
+      <div class="flex justify-between p-4 border-t border-gray-300 absolute bottom-0 left-0 w-full">
+        <button [disabled]="!isDistanceSelected" class="w-full mr-2 py-2 text-sm font-medium rounded-lg" [ngClass]="{
+          'bg-gray-200 text-gray-700 hover:bg-gray-300': !isDistanceSelected,
+          'bg-blue-500 text-white hover:bg-blue-600': isDistanceSelected
+        }" (click)="resetFilters()">
+          Reset Filters
+        </button>
+        <button [disabled]="!isDistanceSelected" class="w-full mr-2 py-2 text-sm font-medium rounded-lg" [ngClass]="{
+          'bg-gray-200 text-gray-700 hover:bg-gray-300': !isDistanceSelected,
+          'bg-blue-500 text-white hover:bg-blue-600': isDistanceSelected
+        }" (click)="applyFilters()">
+          Apply Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Scan to Download</h4>
+      </div>
+      <div class="modal-body">
+        <img src="assets/img/appqr.svg" class="img-responsive mx-auto" style="width: 250px; margin: auto;"
+          alt="QR Code" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

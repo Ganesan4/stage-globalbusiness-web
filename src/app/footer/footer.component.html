@@ -1,0 +1,117 @@
+<footer class="bg-blue-600 text-white py-12">
+  <div class="max-w-7xl mx-auto px-4">
+    <!-- Main Content Area -->
+    <div class="flex flex-col md:flex-row justify-between items-start border-b border-white/20 pb-10">
+      <!-- Left Content -->
+      <div class="md:w-1/2 mb-8 md:mb-0">
+        <div class="flex items-center mb-4">
+          <a routerLink="/">
+            <img src="assets/img/logo.png" alt="Global Business Pages Logo" class="w-40" />
+          </a>
+        </div>
+        <p class="text-white text-3xl mb-6 max-w-md">
+       The affordable local business directory with worldwide reach helping businesses get discovered since 2000
+
+        </p>
+
+        <!-- Newsletter -->
+        <div class="max-w-md">
+          <form [formGroup]="newsletterForm" (ngSubmit)="sendEmailNewsletter()"
+            class="flex items-center bg-white rounded-lg overflow-hidden shadow-md mb-3">
+
+            <input type="email" formControlName="email" placeholder="Enter your email"
+              class="flex-1 px-4 py-3 text-gray-700 focus:outline-none" />
+
+            <button type="submit"
+              class="bg-yellow-400 text-gray-900 font-semibold px-5 py-3 hover:bg-yellow-500 transition-colors">
+              Subscribe
+            </button>
+          </form>
+
+          <p class="text-xs text-white/70">
+            We value your privacy.
+            <a routerLink="/privacy" class="underline text-yellow-300 transition">
+              Read our Privacy Policy
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Content - Links and Social Media at bottom right -->
+      <div class="md:w-1/2 flex flex-col items-end">
+        <div class="grid grid-cols-2 gap-8 md:gap-16">
+          <!-- Links Column -->
+          <div>
+            <h3 class="font-semibold text-lg mb-4">Links</h3>
+            <ul class="space-y-3 text-white/90">
+              <li>
+                <a href="https://globalbusinesspages.com/business-directory-registered/united-states/va/richmond/23225/global-business-pages/313"
+                  target="_blank" class="flex items-center hover:text-yellow-300 transition-colors">
+                  <span class="flex items-center space-x-2 mr-2">
+                    Sample Listing
+                  </span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7"></path>
+                    <path d="M7 7h10v10"></path>
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/termsandconditions" class="hover:text-yellow-300 transition-colors">Terms &
+                  Conditions</a>
+              </li>
+              <li>
+                <a routerLink="/privacy" class="hover:text-yellow-300 transition-colors">Privacy Policy</a>
+              </li>
+              <li>
+                <a routerLink="/about-us" class="hover:text-yellow-300 transition-colors">About Us</a>
+              </li>
+              <li>
+                <a routerLink="/gdpr-compliance" class="hover:text-yellow-300 transition-colors">GDPR</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Social Media Column -->
+          <div>
+            <h3 class="font-semibold text-lg mb-4">Follow Us</h3>
+            <ul class="space-y-3 text-white/90">
+              <li>
+                <a href="https://www.instagram.com/globalbusines__" target="_blank" rel="noopener"
+                  class="hover:text-yellow-300 transition-colors">Instagram</a>
+              </li>
+              <li>
+                <a href="https://x.com/globalbusines__" target="_blank" rel="noopener"
+                  class="hover:text-yellow-300 transition-colors">Twitter</a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/p/Global-Business-Pages-100066891979493/" target="_blank"
+                  rel="noopener" class="hover:text-yellow-300 transition-colors">Facebook</a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/gbpnet/" target="_blank" rel="noopener"
+                  class="hover:text-yellow-300 transition-colors">LinkedIn</a>
+              </li>
+              <li>
+                <a href="https://www.youtube.com/watch?v=HilwDgiomT0&list=PLttosrWvA1depALMBwKjcVdUSAHu9Sd6D"
+                  target="_blank" rel="noopener" class="hover:text-yellow-300 transition-colors">YouTube</a>
+              </li>
+              <li>
+                <a href="https://www.tiktok.com/@globalbusines__" target="_blank" rel="noopener"
+                  class="hover:text-yellow-300 transition-colors">TikTok</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Copyright -->
+    <div class="mt-8 text-center text-white/70 text-sm">
+      © 2025
+      <span class="font-medium text-white">Global Business Pages®.</span> All
+      rights reserved.
+    </div>
+  </div>
+</footer>

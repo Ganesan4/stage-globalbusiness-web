@@ -1,0 +1,708 @@
+<div class="content-container pl-12 pr-12 sm:pl-24 sm:pr-24">
+  <!-- <img class="center img-responsive mx-auto" src="assets/img/logo.png" alt="Logo" /> -->
+
+
+
+  <div class="mt-4 mb-8 w-full justify-between items-center">
+    <div class="w-full md:flex justify-center mb-4">
+      <div class="relative md:w-6/12">
+        <!-- Search Input -->
+        <div class="w-full mx-auto mb-4 md:mb-0">
+          <div class="flex items-center border border-gray-300 rounded-full overflow-hidden bg-white shadow-md p-2.5">
+            <input type="text" id="searchBox" class="w-full px-4 py-2 text-gray-700 focus:outline-none border-none"
+              placeholder="Search" [(ngModel)]="searchQuery" (focus)="openDropdown()"
+              (input)="performelasticSearch()" />
+            <button class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 flex items-center justify-center"
+              (click)="performelasticSearch()">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Search Results Dropdown -->
+          <!-- Dropdown Results -->
+          <div
+            class="absolute w-full mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 overflow-y-auto"
+            [ngStyle]="{'max-height': '200px'}"
+            *ngIf="isDropdownOpen && searchQuery.trim() && searchResults?.length > 0">
+            <div *ngFor="let result of searchResults"
+              class="px-4 py-3 border-b border-gray-200 hover:bg-gray-100 last:border-b-0 cursor-pointer"
+              (click)="onResultClick(result)">
+              <h3 class="text-sm font-semibold text-gray-800">
+                {{ result ? (result.length > 75 ? result.substring(0, 75) + '...' : result) : '' }}
+              </h3>
+            </div>
+          </div>
+
+
+          <!-- No Results Message -->
+          <div
+            class="absolute w-full mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 text-center py-4 text-gray-500"
+            *ngIf="isDropdownOpen && searchQuery.trim() && searchResults.length == 0">
+            No results found.
+          </div>
+
+        </div>
+      </div>
+
+      <!-- <span
+        class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 flex items-center justify-center shadow-md">
+        Total listings: {{formattedCount}}
+      </span> -->
+    </div>
+    <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-center items-center">
+      <div
+        class="flex flex-wrap items-center bg-white border border-gray-300 md:rounded-full rounded-lg shadow-md px-4 py-2 md:space-y-0">
+        <!-- Country -->
+        <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="country" class="text-sm text-left font-medium text-gray-500 mb-1">Country
+
+            <ng-container *ngIf="isCountryLoading; else countryCount">
+              <span class="inline-block w-6 h-4 bg-gray-300 rounded animate-pulse"></span>
+            </ng-container>
+
+            <ng-template #countryCount>
+              ({{ filteredCountries?.length || 0 }})
+            </ng-template>
+          </label>
+          <div class="relative">
+            <!-- <select id="country"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+              (change)="onCountryChange($event)" [(ngModel)]="searchcountry">
+              <option value="" [defaultSelected]="true" disabled>Select a Country</option>
+              <option *ngFor="let country of filteredCountries" [value]="country">{{ country }}</option>
+            </select> -->
+            <select id="country"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+              (change)="onCountryChange($event)" [(ngModel)]="selectedCountry">
+              <option value="" disabled>Select a Country</option>
+              <option *ngFor="let country of filteredCountries" [value]="country">{{ country }}</option>
+            </select>
+            <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+
+        <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+        <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <div class="flex justify-between items-center">
+            <label for="state" class="text-sm text-left font-medium text-gray-500">
+              State
+              <ng-container *ngIf="isStatesLoading; else stateCount">
+                <span
+                  class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+              </ng-container>
+
+              <ng-template #stateCount>
+                ({{ filteredStates?.length || 0 }})
+              </ng-template>
+            </label>
+          </div>
+          <div class="relative w-full">
+            <!-- <select id="state"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onStateChange($event)" [(ngModel)]="searchstate">
+              <option value="" [defaultSelected]="true" disabled>Select a state</option>
+              <option *ngFor="let state of filteredStates" [value]="state">{{ state }}</option>
+            </select> -->
+            <select id="state"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onStateChange($event)" [(ngModel)]="selectedState">
+              <option value="" disabled>Select a state</option>
+              <option *ngFor="let state of filteredStates" [value]="state">{{ state }}</option>
+            </select>
+
+            <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+
+        <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+        <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="city" class="text-sm text-left font-medium text-gray-500">City
+
+            <ng-container *ngIf="isCitiesLoading; else cityCount">
+              <span
+                class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+            </ng-container>
+
+
+            <ng-template #cityCount>
+              ({{ filteredCities?.length || 0 }})
+            </ng-template>
+
+
+          </label>
+          <div class="relative">
+            <!-- <select id="city"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onCityChange($event)" [(ngModel)]="searchcity">
+              <option value="" [defaultSelected]="true" disabled>Select a city</option>
+              <option *ngFor="let city of filteredCities" [value]="city">{{ city }}</option>
+            </select> -->
+            <select id="city"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onCityChange($event)" [(ngModel)]="searchcity">
+              <option value="" disabled>Select a city</option>
+              <option *ngFor="let city of filteredCities" [value]="city">{{ city }}</option>
+            </select>
+            <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+
+        <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+        <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+          <label for="zip" class="text-sm text-left font-medium text-gray-500">Zip
+
+            <ng-container *ngIf="isZipsLoading; else zipCount">
+              <span
+                class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+            </ng-container>
+            <ng-template #zipCount>
+              ({{ filteredZips?.length || 0 }})
+            </ng-template>
+          </label>
+          <div class="relative w-full">
+            <select id="zip"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+              [(ngModel)]="searchzip">
+              <option value="" [defaultSelected]="true" disabled>Select a zip</option>
+              <option *ngFor="let zip of filteredZips" [value]="zip">{{ zip }}</option>
+            </select>
+            <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+
+        <!-- Search Button -->
+        <button
+          class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 ml-4 flex items-center justify-center shadow-md w-full md:w-auto"
+          (click)="performSearch()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white"
+            class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
+          </svg>
+        </button>
+      </div>
+
+      <button
+        class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 ml-4 flex items-center justify-center shadow-md"
+        (click)="toggleSidebar()">
+        <i class="fas fa-filter"></i>
+      </button>
+    </div>
+
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" id="loadingSpinner"
+      class="fixed inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center z-50">
+      <div class="loader border-t-4 border-b-4 border-blue-500 rounded-full w-16 h-16 animate-spin"></div>
+    </div>
+    <div class="mb-6">
+
+      <!-- <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> -->
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center py-3 text-sm">
+        <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">Home</a>
+
+        <!-- Country -->
+        <ng-container *ngIf="routeCountry">
+          <span class="mx-2 text-gray-500">></span>
+          <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">{{ routeCountry }}</a>
+        </ng-container>
+
+        <!-- State -->
+        <ng-container *ngIf="routeState">
+          <span class="mx-2 text-gray-500">></span>
+          <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">{{ routeState }}</a>
+        </ng-container>
+
+        <!-- City -->
+        <ng-container *ngIf="routeCity">
+          <span class="mx-2 text-gray-500">></span>
+          <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">{{ routeCity }}</a>
+        </ng-container>
+
+        <!-- Zip -->
+        <ng-container *ngIf="routeZip">
+          <span class="mx-2 text-gray-500">></span>
+          <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">{{ routeZip }}</a>
+        </ng-container>
+
+        <!-- Category -->
+        <ng-container *ngIf="routeCategory">
+          <span class="mx-2 text-gray-500">></span>
+          <span class="text-gray-900 font-medium">{{ routeCategory }}</span>
+        </ng-container>
+      </nav>
+      <!-- </div> -->
+      <ng-container *ngIf="routeCity">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">{{routeCategory}} in {{routeCity}}, {{routeState}}</h1>
+      </ng-container>
+    </div>
+    <div class="results-container mt-6">
+      <!-- Search Results -->
+      <div id="productPlaceholder"></div>
+      <!-- class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" -->
+
+
+      <!-- Pagination -->
+      <!-- <div
+        id="paginate"
+        class="flex justify-center items-center mt-8 space-x-2 mb-8"
+      ></div> -->
+    </div>
+
+
+
+    <div class="mt-4 mb-8 w-full" id="oldBusinessCards">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- First Business Card -->
+
+        <div class="lg:col-span-3">
+          <ng-container *ngIf="businessData && businessData.length > 0; else noResults">
+            <div *ngFor="let business of businessData; let i = index"
+              class="relative bg-white border border-gray-200 rounded-lg shadow p-4 flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-4 hover:shadow-lg transition-shadow duration-200 cursor-pointer mb-6">
+              <!-- Overlay for hover effect -->
+              <div style="backdrop-filter: blur(1px);"
+                class="absolute inset-0 bg-black bg-opacity-50 text-white flex items-center justify-center text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity duration-200"
+                (click)="redirectToListing(business.id, business.title, business.industry, business.country, business.state, business.city, business.zip_code, business.sic_description, business.slug_url, business)">
+                Click for more info
+              </div>
+
+              <div class="w-full md:w-1/4">
+                <ngx-slick-carousel class="carousel relative" #slickModal="slick-carousel" [config]="slideConfig"
+                  (init)="slickInit($event)" (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)"
+                  (beforeChange)="beforeChange($event)">
+                  <!-- Loop through slides of each business -->
+                  <div ngxSlickItem *ngFor="let slide of business.slides" class="service-image">
+                    <!-- Slide Image -->
+                    <img [src]="slide.img ? processImage(slide.img) : getFallbackImage(i)" loading="lazy"
+                      [alt]="slide.altText || 'Slide Image'"
+                      (click)="$event.stopPropagation(); redirectToListing(business.id, business.title, business.industry, business.country, business.state, business.city, business.zip_code, business.sic_description, business.slug_url, business)" />
+                  </div>
+                </ngx-slick-carousel>
+              </div>
+
+              <div class="flex flex-col md:flex-row items-center md:items-start justify-between w-full">
+                <div class="flex-1 md:mr-[30px] flex flex-col items-center md:items-start mb-2 md:mb-0"
+                  (click)="redirectToListing(business.id, business.title, business.industry, business.country, business.state, business.city, business.zip_code, business.sic_description, business.slug_url, business)">
+                  <div class="flex flex-col items-center md:items-start">
+                    <div class="flex justify-center items-center w-full md:justify-start">
+                      <h3 class="text-lg font-semibold text-center break-words px-3">
+                        {{ formatTitle(business.title || business.company_name || business.business_name) }}
+                      </h3>
+                    </div>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                      {{ truncateText(business.sic_description || business.category) }}
+                    </p>
+
+                    <div class="mt-2 flex space-x-2">
+                      <span *ngIf="business.industry || business.description"
+                        class="text-xs bg-gray-200 rounded-full px-3 py-1">
+                        {{ truncateText(business.industry || business.description) }}
+                      </span>
+                    </div>
+
+                    <div class="mt-2 flex flex-col sm:flex-row sm:items-center sm:space-x-1 space-y-1 sm:space-y-0">
+                      <!-- Stars -->
+                      <div class="flex justify-center">
+                        <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" class="text-xl" [ngClass]="{
+                          'text-yellow-500': i < (business.averageRating || 0),
+                          'text-gray-300': i >= (business.averageRating || 0),
+                        }">
+                          ★
+                        </span>
+                      </div>
+
+                      <!-- Review Text -->
+                      <div class="text-center sm:text-left">
+                        <span class="text-sm text-gray-500">
+                          ({{ business.averageRating || 0 }} • {{ business.totalReviews || 0 }} Reviews)
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 flex items-center space-x-2 justify-center md:justify-start">
+                      <i class="fas fa-map-marker-alt text-gray-500"></i>
+                      <span class="text-sm">
+                        {{ business.region }}, {{ business.city }}, {{ business.state }},
+                        {{ business.country }}
+                        <span *ngIf="business.distance">
+                          - {{ business.distance | number: '1.1-1' }} km</span>
+                      </span>
+                    </div>
+
+                    <div class="mt-4 flex space-x-4 relative">
+                      <a href="tel:{{ business.phone }}">
+                        <button
+                          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center space-x-2 transition duration-200"
+                          (click)="$event.stopPropagation()">
+                          <i class="fas fa-phone-alt"></i>
+                          <span>Contact</span>
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Image Section -->
+                <!-- Image Section -->
+                <div class="w-full md:w-1/3 flex md:justify-end justify-center">
+                  <ng-container *ngIf="business.image_path">
+                    <ng-container *ngIf="business.image_path.includes(','); else singleImage">
+                      <!-- Two Images -->
+                      <div>
+                        <div *ngFor="let img of business.image_path.split(','); let last = last"
+                          class="w-full mb-2 border border-gray-500">
+
+                          <img [src]="processImage(img.trim())" alt="Business Image" class="w-full h-24 object-cover" />
+
+                        </div>
+
+                      </div>
+                    </ng-container>
+
+                    <ng-template #singleImage>
+                      <!-- Single Image -->
+                      <img [src]="processImage(business.image_path.trim())" alt="Business Image"
+                        class="w-1/2 h-24 object-cover" />
+                    </ng-template>
+                  </ng-container>
+                </div>
+
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-8 mt-12 mb-8">
+            <div class="max-w-4xl mx-auto">
+              <div class="text-center mb-8">
+                <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
+                  Why Choose Local Listings?
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto"> 
+                  Choosing a local {{routeCategory}} in {{routeCity || routeCountry}}, {{routeState}} gives you faster service, better
+                  local knowledge, and access to businesses that actively serve your area. Local providers
+                  understand city-specific needs, regulations, and customer expectations—helping you make
+                  confident decisions quickly.
+                </p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Feature 1 -->
+                <div class="text-center">
+                  <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i class="fa-solid fa-check text-white text-lg"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Verified Details</h3>
+                    <p class="text-sm text-gray-600">
+                      All business information is verified and regularly updated for accuracy
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="text-center">
+                  <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i class="fa-solid fa-star text-white text-lg"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Real Reviews</h3>
+                    <p class="text-sm text-gray-600">
+                      Authentic customer reviews help you make informed decisions
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="text-center">
+                  <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i class="fa-solid fa-clock text-white text-lg"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Up-to-Date Info</h3>
+                    <p class="text-sm text-gray-600">
+                      Current contact information ensures you can reach businesses instantly
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="text-center">
+                  <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div class="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i class="fa-solid fa-bolt text-white text-lg"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Find Services Faster</h3>
+                    <p class="text-sm text-gray-600">
+                      Quickly locate right services in your local area
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom CTA -->
+              <div class="text-center mt-8">
+                <p class="text-lg text-gray-700 mb-4">
+                  Global Business Pages helps you discover, compare, and connect with verified
+                  {{routeCategory}} providers in {{routeCity}}, {{routeState}} all in one place.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="paginate" class="flex justify-center items-center mt-8 space-x-2 mb-8"></div>
+
+          <div *ngIf="nearbyCities !== null"
+            class="bg-white border border-gray-200 rounded-lg p-6 mb-4 border-l-4 border-l-blue-600">
+
+            <h3 class="text-lg font-semibold text-gray-800 mb-1">
+              Places Near {{ routeCity }}, {{ routeState }} with {{ routeCategory }}
+            </h3>
+
+            <div *ngIf="isLoadingNearbyCities" class="animate-pulse mt-3">
+              <div class="space-y-2">
+                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+              </div>
+            </div>
+
+            <ng-container *ngIf="!isLoadingNearbyCities">
+
+              <ul *ngIf="nearbyCities?.length > 0; else noLocation" class="mt-3 space-y-2">
+                <li *ngFor="let place of nearbyCities" class="text-blue-600 cursor-pointer hover:underline"
+                  (click)="navigateToNearbyCity(place)">
+                  {{ place }}
+                </li>
+              </ul>
+
+              <ng-template #noLocation>
+                <div class="mt-3 text-sm text-gray-500">
+                  No Location Found
+                </div>
+              </ng-template>
+
+            </ng-container>
+          </div>
+
+
+
+          <div class="bg-white border border-gray-200 rounded-lg p-6 mb-4 border-l-4 border-l-blue-600">
+
+            <h3 class="text-lg font-semibold text-gray-800 mb-1">
+              Popular Categories in {{ routeState || 'AK' }}
+            </h3>
+
+            <!-- Loading State -->
+            <div *ngIf="popularCategoriesLoading" class="mt-3">
+              <div class="animate-pulse space-y-2">
+                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+              </div>
+            </div>
+
+            <!-- Categories List -->
+            <ul *ngIf="!popularCategoriesLoading && popularCategories?.length > 0" class="mt-3 space-y-2">
+              <li *ngFor="let category of popularCategories"
+                class="text-blue-700 cursor-pointer hover:underline hover:text-blue-900 transition-colors duration-200"
+                (click)="navigateToCategory(category)">
+                {{ category }}
+              </li>
+            </ul>
+
+            <!-- Empty State -->
+            <div *ngIf="!popularCategoriesLoading && popularCategories?.length === 0" class="mt-3 text-gray-500 italic">
+              {{ popularCategoriesError || 'No Categories Found' }}
+            </div>
+          </div>
+
+
+        </div>
+
+        <!-- Why Choose Local Listings Section -->
+
+
+        <div class="w-full lg:w-80 lg:flex-shrink-0 self-start lg:sticky lg:top-24">
+          <div *ngIf="!loading" class="relative">
+            <div class="lg:col-span-1">
+              <div class="bg-white border border-gray-200 rounded-lg p-6">
+                <h2 class="text-lg font-bold text-gray-900 mb-4">
+                  Manage your free listing
+                </h2>
+
+                <p class="text-sm text-gray-600 mb-4">
+                  Update your business information in a few steps.
+                </p>
+
+                <button
+                  class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors mb-3"
+                  (click)="redirectregister()">
+                  Claim Your Listing
+                </button>
+
+                <!-- <p class="text-sm text-gray-600 text-center">
+                  or call
+                  <a href="tel:1-866-794-0889" class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
+                    1-866-794-0889
+                  </a>
+                </p> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <!-- Popular Categories Section -->
+
+
+        <ng-template #noResults>
+          <div class="text-center text-gray-500 mt-6">
+            <p class="text-lg font-semibold">Searching & if no results found,</p>
+            <p class="text-sm">try a different search criteria</p>
+          </div>
+        </ng-template>
+
+
+
+
+
+      </div>
+
+      <!-- Why Choose Local Listings Section -->
+
+
+
+
+
+    </div>
+    <!-- Pagination -->
+
+
+  </div>
+
+
+  <!-- Overlay -->
+  <div *ngIf="isSidebarOpen" class="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-40"
+    (click)="toggleSidebar()"></div>
+
+  <!-- sidebar -->
+  <div class="fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50"
+    [ngClass]="{ 'translate-x-0': isSidebarOpen, 'translate-x-full': !isSidebarOpen }">
+    <div class="relative h-full">
+      <!-- Header -->
+      <div class="flex justify-between items-center p-4 border-b border-gray-300">
+        <h4 class="text-lg font-semibold">Filter Options</h4>
+        <button class="text-gray-500 hover:text-gray-800" (click)="toggleSidebar()">
+          &times;
+        </button>
+      </div>
+
+      <div class="p-4">
+        <h5 class="text-lg font-medium mb-2">Rating</h5>
+        <span *ngFor="let star of [1, 2, 3, 4, 5]" class="text-xl cursor-pointer" (click)="setRating(star)" [ngClass]="{
+          'text-yellow-500': star <= newReview.rating,
+          'text-gray-300': star > newReview.rating
+        }" [class.cursor-not-allowed]="isDistanceSelected" [class.opacity-50]="isDistanceSelected"
+          [style.pointerEvents]="isDistanceSelected ? 'none' : 'auto'">
+          ★
+        </span>
+      </div>
+
+
+
+      <!-- Input Field -->
+      <div class="relative">
+        <div class="flex items-center border-b border-gray-300">
+          <span class="text-gray-400 p-4">
+            <i class="fa fa-map-marker-alt text-blue-400"></i> <!-- Location Icon -->
+          </span>
+          <input type="text" [value]="locationInput" placeholder="Select Location" class="w-full p-4 outline-none"
+            (focus)="showDropdown = true" (blur)="hideDropdownAfterDelay()" />
+        </div>
+
+        <!-- Dropdown -->
+        <ul class="absolute left-0 right-0 bg-white shadow-lg border mt-1 z-10" *ngIf="showDropdown">
+          <li class="flex items-center p-2 hover:bg-gray-200 cursor-pointer text-gray-400" (click)="detectLocation()">
+            <span class="text-blue-500 mr-2">
+              <i class="fa fa-crosshairs"></i> <!-- Detect Location Icon -->
+            </span>
+            Detect Location
+          </li>
+          <div *ngIf="locationPermissionDenied" class="text-red-500 mt-2">
+            Location access is denied. Please enable location services in your browser settings.
+          </div>
+        </ul>
+      </div>
+
+      <!-- Filter content -->
+      <div class="p-4">
+        <button class="w-full py-2 text-sm font-medium rounded-lg border" [disabled]="newReview.rating > 0" [ngClass]="{
+          'bg-blue-500 text-white': isDistanceSelected,
+          'bg-gray-200 text-gray-800': !isDistanceSelected
+        }" (click)="DistanceSelection()">
+          Distance
+        </button>
+      </div>
+
+      <!-- Bottom Buttons -->
+      <div class="flex justify-between p-4 border-t border-gray-300 absolute bottom-0 left-0 w-full">
+        <button [disabled]="newReview.rating === 0 && !isDistanceSelected"
+          class="w-full mr-2 py-2 text-sm font-medium rounded-lg" [ngClass]="{
+          'bg-gray-200 text-gray-700 hover:bg-gray-300': newReview.rating === 0 && !isDistanceSelected,
+          'bg-blue-500 text-white hover:bg-blue-600': newReview.rating > 0 || isDistanceSelected
+        }" (click)="resetFilters()">
+          Reset Filters
+        </button>
+        <button [disabled]="newReview.rating === 0 && !isDistanceSelected"
+          class="w-full mr-2 py-2 text-sm font-medium rounded-lg" [ngClass]="{
+    'bg-gray-200 text-gray-700 hover:bg-gray-300': newReview.rating === 0 && !isDistanceSelected,
+    'bg-blue-500 text-white hover:bg-blue-600': (isDistanceSelected && newReview.rating > 0) || newReview.rating > 0
+  }" (click)="applyFilters()">
+          Apply Filters
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Scan to Download</h4>
+      </div>
+      <div class="modal-body">
+        <img src="assets/img/appqr.svg" class="img-responsive mx-auto" style="width: 250px; margin: auto;"
+          alt="QR Code" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

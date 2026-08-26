@@ -1,0 +1,717 @@
+<!-- <section id="search-bar" class="py-12 bg-gray-50">
+    <div class="content-container px-4 md:px-8">
+        <div class="center mx-auto py-0 md:py-8">
+            <img class="img-responsive mx-auto hidden md:block" src="assets/img/logo.png" alt="Logo" />
+
+            <span class="block md:hidden text-center text-lg font-bold text-gray-700">
+                Add Your Business Now
+            </span>
+        </div>
+
+        <div class="md:mt-4 mb-8 w-full">
+            <div class="relative mt-6">
+                <div class="w-full md:w-1/2 mx-auto">
+                    <div
+                        class="flex items-center border border-gray-300 rounded-full overflow-hidden bg-white shadow-md p-2.5">
+                        <input type="text" id="searchBox"
+                            class="w-full px-4 py-2 text-gray-700 focus:outline-none border-none" placeholder="Search"
+                            [(ngModel)]="searchQuery" (focus)="openDropdown()" (input)="performSearch()" />
+                        <button
+                            class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 flex items-center justify-center"
+                            (click)="performSearch()">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="absolute w-full md:w-1/2 mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 overflow-y-auto"
+                        [ngStyle]="{'max-height': '200px'}"
+                        *ngIf="isDropdownOpen && searchQuery.trim() && searchResults?.length > 0">
+                        <div *ngFor="let result of searchResults"
+                            class="px-4 py-3 border-b border-gray-200 hover:bg-gray-100 last:border-b-0 cursor-pointer"
+                            (click)="onResultClick(result)">
+                            <h3 class="text-sm font-semibold text-gray-800">
+                                {{ result ? (result.length > 75 ? result.substring(0, 75) + '...' : result) : '' }}
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="absolute w-full md:w-1/2 mx-auto bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-50 text-center py-4 text-gray-500"
+                        *ngIf="isDropdownOpen && searchQuery.trim() && searchResults.length == 0">
+                        No results found.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section> -->
+
+<!-- <section id="search-bar"
+    class="relative flex flex-col items-center justify-center text-center overflow-hidden min-h-[700px] py-20">
+
+    <img src="assets/img/world-map-bg.png" alt="World Map Background"
+        class="absolute inset-0 w-full h-full object-contain object-center" />
+
+    <div class="max-w-4xl mx-auto px-6 relative z-10">
+        <div class="flex justify-center mb-4 text-center">
+            <span
+                class="bg-white border border-gray-300 text-gray-700 px-4 rounded-full text-sm font-medium shadow-sm flex flex-wrap justify-center items-center gap-2">
+                Local customers
+                <span class="text-yellow-500 text-lg">✦</span>
+                Global visibility
+                <span class="text-yellow-500 text-lg">✦</span>
+                Complete business profile
+            </span>
+        </div>
+
+
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
+            List Your Business Globally.<br />
+            Reach Customers Locally.
+        </h1>
+
+        <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+            Subheadline: Join thousands of businesses from around the world on the most affordable business directory —
+            just<span class="text-blue-600 font-semibold"> $1.30 per year.</span>
+        </p>
+
+        <div class="w-full max-w-2xl mx-auto flex justify-center items-center gap-3 px-4">
+            <div class="flex items-center w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 shadow-sm">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 text-lg"></i>
+                <input type="text" id="searchBox"
+                    class="w-full px-3 py-1.5 text-gray-700 focus:outline-none border-none bg-transparent"
+                    placeholder="Search Business ..." [(ngModel)]="searchQuery" (focus)="openDropdown()"
+                    (input)="performSearch()" />
+            </div>
+
+            <button
+                class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg shadow-sm transition-all"
+                (click)="performSearch()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Search
+            </button>
+
+            <div class="absolute top-full left-0 right-0 mx-auto w-full max-w-2xl bg-white border border-gray-200 rounded-lg shadow-lg mt-2 z-20 overflow-y-auto"
+                [ngStyle]="{ 'max-height': '200px' }"
+                *ngIf="isDropdownOpen && searchQuery.trim() && searchResults?.length > 0">
+                <div *ngFor="let result of searchResults"
+                    class="px-4 py-3 border-b border-gray-100 hover:bg-gray-50 last:border-b-0 cursor-pointer text-left transition-colors"
+                    (click)="onResultClick(result)">
+                    <h3 class="text-sm font-medium text-gray-800">
+                        {{ result ? (result.length > 75 ? result.substring(0, 75) + '...' : result) : '' }}
+                    </h3>
+                </div>
+            </div>
+
+            <div class="absolute left-0 right-0 mx-auto w-full max-w-2xl bg-white border border-gray-200 rounded-lg shadow-lg mt-3 z-50 text-center py-4 text-gray-500"
+                *ngIf="isDropdownOpen && searchQuery.trim() && searchResults.length == 0">
+                No results found.
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<section id="search-bar" class="banner-section relative w-full text-center">
+    <div class="banner-media relative w-full">
+        <!-- Background Image Skeleton -->
+        <ngx-skeleton-loader *ngIf="!contentLoaded"
+            [theme]="{ 'border-radius': '0', height: 'clamp(200px, 35vw, 420px)', width: '100%' }"
+            class="banner-image banner-image--skeleton block w-full z-0">
+        </ngx-skeleton-loader>
+
+        <img *ngIf="contentLoaded && homeData?.image" [src]="httpUrl + 'uploads/homepage-banner/' + homeData.image"
+            alt="Global Business Pages banner"
+            class="banner-image block w-full h-auto max-w-full object-contain object-center z-0" />
+
+        <div *ngIf="contentLoaded && homeData?.image"
+            class="banner-overlay absolute inset-0 z-[1] bg-black/10 pointer-events-none" aria-hidden="true">
+        </div>
+    </div>
+
+    <!-- <div class="banner-content max-w-4xl mx-auto relative z-10 w-full flex flex-col items-center justify-center">
+
+        <ngx-skeleton-loader *ngIf="!contentLoaded" count="3"
+            [theme]="{ height: '20px', width: '80%', margin: '10px auto' }">
+        </ngx-skeleton-loader>
+
+        <div *ngIf="contentLoaded" [innerHTML]="safeContent"></div>
+
+         <h1
+            class="text-2xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 mb-3 sm:mb-4 leading-snug sm:leading-tight">
+            List Your Business Globally.<br class="hidden sm:block" />
+            Reach Customers Locally.
+        </h1>
+
+        <p class="text-gray-600 text-base sm:text-lg mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
+            Join thousands of businesses from around the world on the most affordable business directory —
+            just <span class="text-blue-600 font-semibold">$1.30 per year.</span>
+        </p> 
+        
+        <section class="mb-8 sm:mb-12">
+            <div class="max-w-4xl mx-auto px-6">
+
+                <div class="flex flex-wrap justify-center items-center gap-6 md:gap-8">
+
+                   
+                    <div class="flex items-center gap-2 text-gray-800">
+                        <i class="fa-regular fa-circle-check text-green-500 text-xl"></i>
+                        <span class="font-medium text-sm md:text-base">No contracts</span>
+                    </div>
+
+                   
+                    <div class="hidden md:block w-px h-6 bg-gray-300"></div>
+
+                    
+                    <div class="flex items-center gap-2 text-gray-800">
+                        <i class="fa-regular fa-circle-check text-green-500 text-xl"></i>
+                        <span class="font-medium text-sm md:text-base">No hidden fees</span>
+                    </div>
+
+                 
+                    <div class="hidden md:block w-px h-6 bg-gray-300"></div>
+
+                    
+                    <div class="flex items-center gap-2 text-gray-800">
+                        <i class="fa-regular fa-circle-check text-green-500 text-xl"></i>
+                        <span class="font-medium text-sm md:text-base">No technical skills required</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </section> 
+
+    </div> -->
+</section>
+
+<section class="post-banner-section px-4 mb-6 sm:mb-8 pt-4 sm:pt-6 mt-20">
+    <div class="max-w-4xl mx-auto w-full text-center">
+
+        <!-- Search Section -->
+        <div *ngIf="notificationMessage"
+            [ngClass]="{'success': notificationType === 'success', 'error': notificationType === 'error'}"
+            class="notification fixed top-4 right-4 p-4 rounded-lg shadow-lg">
+            {{ notificationMessage }}
+        </div>
+        <div
+            class="w-full max-w-2xl mx-auto flex flex-col sm:flex-row justify-center items-stretch gap-3 px-2 sm:px-4 relative">
+            <!-- Input Field -->
+            <!-- <div
+                class="flex items-center w-full bg-white border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-2.5 shadow-sm">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 text-base sm:text-lg"></i>
+                <input type="text" id="searchBox"
+                    class="w-full px-2 sm:px-3 py-1.5 text-gray-700 focus:outline-none border-none bg-transparent text-sm sm:text-base"
+                    placeholder="Search Business ..." [(ngModel)]="searchQuery" (focus)="openDropdown()"
+                    (input)="performSearch()" />
+            </div>  -->
+
+            <div class="flex items-center border border-gray-300 rounded-full 
+       overflow-hidden bg-white shadow-md p-2 
+       w-full max-w-[600px]">
+
+
+                <div class="flex items-center flex-1 px-3 sm:px-4 py-2 sm:py-2.5">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400 text-base sm:text-lg"></i>
+                    <input type="text" id="searchBox" class="w-full px-2 sm:px-3 py-1.5 text-gray-700 focus:outline-none border-none bg-transparent 
+         text-sm sm:text-base placeholder:text-base sm:placeholder:text-lg placeholder:text-gray-500" placeholder="Find Local Businesses Near You"
+                        [(ngModel)]="searchQuery" (focus)="openDropdown()" (input)="performelasticSearch()" />
+                </div>
+
+
+                <div class="w-px bg-gray-300"></div>
+
+
+                <!-- <div class="flex items-center flex-1 px-3 sm:px-4 py-2 sm:py-2.5">
+                    <i class="fa-solid fa-location-dot text-gray-400 text-base sm:text-lg"></i>
+                    <input type="text"
+                        class="w-full px-2 sm:px-3 py-1.5 text-gray-700 focus:outline-none border-none bg-transparent text-sm sm:text-base placeholder:text-[12px]"
+                        placeholder="Los Angeles, CA" [(ngModel)]="locationQuery" (input)="performLocationSearch()"
+                        (focus)="isLocationDropdownOpen = true" />
+
+
+                </div> -->
+            </div>
+            <!--    <div class="relative w-full">
+
+               
+                <div
+                    class="flex items-center w-full bg-white border border-gray-300 rounded-lg shadow-sm overflow-hidden">
+                    <div class="flex items-center flex-1 px-3 sm:px-4 py-2 sm:py-2.5">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 text-base sm:text-lg"></i>
+
+                        <input type="text" id="searchBox" class="w-full px-2 sm:px-3 py-1.5 text-gray-700 focus:outline-none border-none bg-transparent 
+               text-sm sm:text-base placeholder:text-[12px]" placeholder="Search Businesses Worldwide"
+                            [(ngModel)]="searchQuery" (focus)="openDropdown()" (input)="performSearch()" />
+                    </div>
+                    <button (click)="toggleLocationDropdown($event)"
+                        class="flex items-center justify-center gap-2 text-white font-medium px-5 py-6 sm:px-6 sm:py-4 shadow-sm transition-all text-sm sm:text-base"
+                        style="background-color: rgba(79, 129, 240, 1);">
+
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span class="hidden sm:inline">Location</span>
+                    </button>
+                </div>
+
+               
+                <div *ngIf="isLocationDropdownOpen" id="locationDropdown" (click)="$event.stopPropagation()"
+                    class="absolute left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg mt-2 z-50 max-h-80 overflow-y-auto">
+
+               
+                    <div class="p-3 border-b">
+                        <input type="text" [(ngModel)]="locationFilter" placeholder="Search location..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none" />
+                    </div>
+
+                    
+                    <div *ngFor="let location of filteredLocations()" (click)="selectLocation(location)"
+                        class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm flex items-center">
+
+                        <i class="fa-solid fa-location-dot text-gray-400 mr-2"></i>
+                        <span class="text-left w-full">
+                            {{ location }}
+                        </span>
+                    </div>
+
+                    <div *ngIf="filteredLocations().length === 0" class="px-4 py-3 text-gray-400 text-sm">
+                        No locations found
+                    </div>
+
+                </div>
+
+            </div> -->
+            <!-- Search Button -->
+
+
+
+
+            <!-- Dropdown Results -->
+            <div class="absolute top-full left-0 w-1/2 bg-white border border-gray-200 
+            rounded-lg shadow-lg mt-2 z-20 overflow-y-auto" [ngStyle]="{ 'max-height': '200px' }"
+                *ngIf="isDropdownOpen && searchQuery.trim() && searchResults?.length > 0">
+
+                <!-- 🔵 SIMPLE COUNT HEADER -->
+                <div class="bg-gray-100 border-b border-gray-200">
+                    <h3 class="text-xs font-semibold text-gray-800 px-4 py-2">
+                        {{ searchResults.length }} Related Categories Found
+                    </h3>
+                </div>
+
+
+                <div *ngFor="let result of searchResults" class="px-4 py-3 border-b border-gray-100 hover:bg-gray-50 
+                last:border-b-0 cursor-pointer text-left transition-colors" (click)="onResultClick(result)">
+
+                    <h3 class="text-sm font-medium text-gray-800">
+                        {{ result ? (result.length > 75 ? result.substring(0, 75) + '...' : result) : '' }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <!-- No Results -->
+            <div class="absolute top-full left-0 w-1/2 bg-white border border-gray-200 rounded-lg shadow-lg mt-3 z-50 text-center py-4 text-gray-500"
+                *ngIf="isDropdownOpen && searchQuery.trim() && searchResults.length == 0">
+                No results found.
+            </div>
+
+            <!-- Location Results Dropdown -->
+            <div class="absolute top-full right-0 w-1/2 bg-white border border-gray-200 rounded-lg shadow-lg mt-2 z-20 overflow-y-auto"
+                [ngStyle]="{ 'max-height': '200px' }"
+                *ngIf="isLocationDropdownOpen && locationQuery.trim() && locationResults?.length > 0">
+
+                <div *ngFor="let result of locationResults"
+                    class="px-4 py-3 border-b border-gray-100 hover:bg-gray-50 last:border-b-0 cursor-pointer text-left transition-colors"
+                    (click)="selectLocation(result)">
+                    <h3 class="text-sm font-medium text-gray-800">
+                        {{ result ? (result.length > 75 ? result.substring(0, 75) + '...' : result) : '' }}
+                    </h3>
+                </div>
+
+            </div>
+
+            <!-- No Location Results -->
+            <div class="absolute top-full left-0 w-1/2 bg-white border border-gray-200 rounded-lg shadow-lg mt-3 z-50 text-center py-4 text-gray-500"
+                *ngIf="isLocationDropdownOpen && locationQuery.trim() && locationResults.length == 0">
+                No results found.
+            </div>
+
+
+
+        </div>
+
+        <div class="flex flex-wrap justify-center items-center gap-3 sm:gap-4 mb-8 sm:mb-12 mt-6 sm:mt-8">
+            <a routerLink="/upgrade"
+                class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-full font-semibold shadow-md flex items-center gap-2 text-sm sm:text-base">
+                <i class="fa-solid fa-crown"></i>
+                Upgrade
+            </a>
+
+            <!-- Divider -->
+            <div class="hidden sm:block w-px h-8 bg-gray-300"></div>
+
+            <button (click)="onBecomeAffiliate()"
+                class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold shadow-md flex items-center gap-2 text-sm sm:text-base transition-all">
+                <i class="fa-solid fa-handshake"></i>
+                Become an Affiliate
+            </button>
+        </div>
+
+        <div *ngIf="!loading && businessData?.length > 0"
+            class="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-center items-center mt-12">
+            <div
+                class="flex flex-wrap items-center bg-white border border-gray-300 md:rounded-full rounded-lg shadow-md px-4 py-2 md:space-y-0">
+                <!-- Country -->
+                <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="country" class="text-sm text-left font-medium text-gray-500 mb-1">Country
+
+                        <ng-container *ngIf="isCountryLoading; else countryCount">
+                            <span class="inline-block w-6 h-4 bg-gray-300 rounded animate-pulse"></span>
+                        </ng-container>
+
+                        <ng-template #countryCount>
+                            ({{ filteredCountries?.length || 0 }})
+                        </ng-template>
+                    </label>
+                    <div class="relative">
+                        <!-- <select id="country"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+              (change)="onCountryChange($event)" [(ngModel)]="searchcountry">
+              <option value="" [defaultSelected]="true" disabled>Select a Country</option>
+              <option *ngFor="let country of filteredCountries" [value]="country">{{ country }}</option>
+            </select> -->
+                        <select id="country"
+                            class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+                            (change)="onCountryChange($event)" [(ngModel)]="selectedCountry">
+                            <option value="" disabled>Select a Country</option>
+                            <option *ngFor="let country of filteredCountries" [value]="country">{{ country }}</option>
+                        </select>
+                        <span
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+                            ▼
+                        </span>
+                    </div>
+                </div>
+
+                <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+                <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <div class="flex justify-between items-center">
+                        <label for="state" class="text-sm text-left font-medium text-gray-500">
+                            State
+                            <ng-container *ngIf="isStatesLoading; else stateCount">
+                                <span
+                                    class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+                            </ng-container>
+
+                            <ng-template #stateCount>
+                                ({{ filteredStates?.length || 0 }})
+                            </ng-template>
+                        </label>
+                    </div>
+                    <div class="relative w-full">
+                        <!-- <select id="state"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onStateChange($event)" [(ngModel)]="searchstate">
+              <option value="" [defaultSelected]="true" disabled>Select a state</option>
+              <option *ngFor="let state of filteredStates" [value]="state">{{ state }}</option>
+            </select> -->
+                        <select id="state"
+                            class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+                            (change)="onStateChange($event)" [(ngModel)]="selectedState">
+                            <option value="" disabled>Select a state</option>
+                            <option *ngFor="let state of filteredStates" [value]="state">{{ state }}</option>
+                        </select>
+
+                        <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+                            ▼
+                        </span>
+                    </div>
+                </div>
+
+                <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+                <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="city" class="text-sm text-left font-medium text-gray-500">City
+
+                        <ng-container *ngIf="isCitiesLoading; else cityCount">
+                            <span
+                                class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+                        </ng-container>
+
+
+                        <ng-template #cityCount>
+                            ({{ filteredCities?.length || 0 }})
+                        </ng-template>
+
+
+                    </label>
+                    <div class="relative">
+                        <!-- <select id="city"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onCityChange($event)" [(ngModel)]="searchcity">
+              <option value="" [defaultSelected]="true" disabled>Select a city</option>
+              <option *ngFor="let city of filteredCities" [value]="city">{{ city }}</option>
+            </select> -->
+                        <select id="city"
+                            class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+                            (change)="onCityChange($event)" [(ngModel)]="searchcity">
+                            <option value="" disabled>Select a city</option>
+                            <option *ngFor="let city of filteredCities" [value]="city">{{ city }}</option>
+                        </select>
+                        <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+                            ▼
+                        </span>
+                    </div>
+                </div>
+
+                <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+                <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="zip" class="text-sm text-left font-medium text-gray-500">Zip
+
+                        <ng-container *ngIf="isZipsLoading; else zipCount">
+                            <span
+                                class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+                        </ng-container>
+                        <ng-template #zipCount>
+                            ({{ filteredZips?.length || 0 }})
+                        </ng-template>
+                    </label>
+                    <div class="relative w-full">
+                        <select id="zip"
+                            class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+                            [(ngModel)]="searchzip">
+                            <option value="" [defaultSelected]="true" disabled>Select a zip</option>
+                            <option *ngFor="let zip of filteredZips" [value]="zip">{{ zip }}</option>
+                        </select>
+                        <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+                            ▼
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <button
+                    class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 ml-4 flex items-center justify-center shadow-md w-full md:w-auto"
+                    (click)="performSearch()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="white" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- 🔹 Skeleton Loader -->
+        <div *ngIf="loading" class="flex justify-center items-center py-6">
+            <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        <!-- 🔹 Actual Business Data -->
+        <!-- Show only when data exists -->
+        <div *ngIf="!loading && businessData?.length > 0" class="space-y-6">
+
+            <!-- Header Row -->
+            <div class="items-center justify-between">
+
+
+
+                <div class="inline-flex items-center px-4 py-1.5 mt-8 mb-2
+            bg-blue-600 text-white text-sm font-semibold 
+            rounded-full shadow-md">
+                    {{ totalRecords }} Business Listings
+                </div>
+
+            </div>
+            <!-- Business List -->
+            <div class="space-y-4" *ngFor="let business of businessData">
+                <div class="max-w-[43rem] mx-auto space-y-4" (click)="onBusinessClick(business)">
+
+                    <div class="bg-white border border-blue-200 rounded-xl px-6 py-5
+       shadow-sm hover:shadow-lg hover:-translate-y-1
+       hover:border-blue-500
+       transition-all duration-300 ease-in-out
+       cursor-pointer group">
+
+                        <h3 class="text-lg font-semibold text-gray-800 
+               group-hover:text-blue-600 transition-colors duration-300">
+                            {{ formatTitle(business.title || business.company_name || business.business_name) }}
+                        </h3>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div id="paginate" class="flex justify-center items-center mt-8 space-x-2 mb-8"></div>
+        <!-- Categories Section -->
+        <app-category-section [locationData]="locationData"
+            (categorySelected)="receiveCategory($event)"></app-category-section>
+
+        <div id="homepage-location-filters" *ngIf="!loading && isTopCategoryLocation"
+            class="flex flex-col space-y-3 justify-center items-center mt-12 max-w-4xl mx-auto">
+            <!-- <p class="text-sm text-gray-600 text-center px-2">
+              Zip is optional. After choosing location, tap <span class="font-medium text-gray-800">Search</span> to open listings.
+            </p> -->
+            <div
+                class="flex flex-wrap items-center bg-white border border-gray-300 md:rounded-full rounded-lg shadow-md px-4 py-2 md:space-y-0 w-full justify-center">
+                <!-- Country -->
+                <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="country" class="text-sm text-left font-medium text-gray-500 mb-1">
+                        Country
+
+                        <ng-container *ngIf="isCountryLoading; else countryCount">
+                            <span
+                                class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin ml-1">
+                            </span>
+                        </ng-container>
+
+                        <ng-template #countryCount>
+                            ({{ filteredCountries?.length || 0 }})
+                        </ng-template>
+                    </label>
+                    <div class="relative">
+                        <!-- <select id="country"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+              (change)="onCountryChangePartial($event)" [(ngModel)]="searchcountry">
+              <option value="" [defaultSelected]="true" disabled>Select a Country</option>
+              <option *ngFor="let country of filteredCountries" [value]="country">{{ country }}</option>
+            </select> -->
+                        <select id="country"
+                            class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+                            (change)="onCountryChangePartial($event)" [(ngModel)]="selectedCountry">
+                            <option value="" disabled>Select a Country</option>
+                            <option *ngFor="let country of filteredCountries" [value]="country">{{ country }}</option>
+                        </select>
+                        <span
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+                            ▼
+                        </span>
+                    </div>
+                </div>
+
+                <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+                <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <div class="flex justify-between items-center">
+                        <label for="state" class="text-sm text-left font-medium text-gray-500">
+                            State
+                            <ng-container *ngIf="isStatesLoading; else stateCount">
+                                <span
+                                    class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+                            </ng-container>
+
+                            <ng-template #stateCount>
+                                ({{ filteredStates?.length || 0 }})
+                            </ng-template>
+                        </label>
+                    </div>
+                    <div class="relative w-full">
+                        <!-- <select id="state"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onStateChange($event)" [(ngModel)]="searchstate">
+              <option value="" [defaultSelected]="true" disabled>Select a state</option>
+              <option *ngFor="let state of filteredStates" [value]="state">{{ state }}</option>
+            </select> -->
+                        <select id="state"
+                            class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+                            (change)="onStateChangePartial($event)" [(ngModel)]="selectedState">
+                            <option value="" disabled>Select a state</option>
+                            <option *ngFor="let state of filteredStates" [value]="state">{{ state }}</option>
+                        </select>
+
+                        <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+                            ▼
+                        </span>
+                    </div>
+                </div>
+
+                <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+                <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="city" class="text-sm text-left font-medium text-gray-500">City
+
+                        <ng-container *ngIf="isCitiesLoading; else cityCount">
+                            <span
+                                class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+                        </ng-container>
+
+
+                        <ng-template #cityCount>
+                            ({{ filteredCities?.length || 0 }})
+                        </ng-template>
+
+
+                    </label>
+                    <div class="relative">
+                        <!-- <select id="city"
+              class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+              (change)="onCityChange($event)" [(ngModel)]="searchcity">
+              <option value="" [defaultSelected]="true" disabled>Select a city</option>
+              <option *ngFor="let city of filteredCities" [value]="city">{{ city }}</option>
+            </select> -->
+                        <select id="city"
+                            class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-10"
+                            (change)="onCityChangePartial($event)" [(ngModel)]="searchcity">
+                            <option value="" disabled>Select a city</option>
+                            <option *ngFor="let city of filteredCities" [value]="city">{{ city }}</option>
+                        </select>
+                        <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+                            ▼
+                        </span>
+                    </div>
+                </div>
+
+                <div class="hidden md:block h-8 border-l border-gray-300 mr-4"></div>
+
+                <div class="relative flex flex-col w-full md:w-auto flex-grow mb-2 md:mb-0 md:mr-4">
+                    <label for="zip" class="text-sm text-left font-medium text-gray-500">ZIP
+
+                        <ng-container *ngIf="isZipsLoading; else zipCount">
+                            <span
+                                class="inline-block w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+                        </ng-container>
+                        <ng-template #zipCount>
+                            ({{ filteredZips?.length || 0 }})
+                        </ng-template>
+                    </label>
+                    <div class="relative w-full">
+                        <select id="zip"
+                            class="text-xs text-gray-500 custom-select custom-selectwrap cursor-pointer w-full appearance-none bg-white border border-gray-300 rounded px-3 py-2 pr-8"
+                            [(ngModel)]="searchzip">
+                            <option value="" [defaultSelected]="true" disabled>Select a zip</option>
+                            <option *ngFor="let zip of filteredZips" [value]="zip">{{ zip }}</option>
+                        </select>
+                        <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 pointer-events-none">
+                            ▼
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Search Button: carousel + geo → business-directory layers or `/usa` for US locality -->
+                <button
+                    class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 ml-4 flex items-center justify-center shadow-md w-full md:w-auto"
+                    (click)="performSearch()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="white" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Affiliate Slider Popup -->
+<app-affiliate-popup 
+    [showPopup]="showAffiliatePopup" 
+    (closePopup)="closeAffiliatePopup()">
+</app-affiliate-popup>

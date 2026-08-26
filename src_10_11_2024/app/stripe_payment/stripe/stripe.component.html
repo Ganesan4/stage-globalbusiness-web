@@ -1,0 +1,23 @@
+<ngx-stripe-card-group [formGroup]="stripeTest" [elementsOptions]="elementsOptions" class="card-group-container">
+  
+  <div *ngIf="success.code == true" class="success-message">
+    {{success.message}}
+  </div>
+  <ngx-stripe-card-number [options]="cardOptions" class="stripe-input"></ngx-stripe-card-number>
+  <div *ngIf="error.code === 'incomplete_number'" class="error-message">
+   {{error.message}}
+  </div>
+
+  <ngx-stripe-card-expiry [options]="cardOptions" class="stripe-input"></ngx-stripe-card-expiry>
+  <div *ngIf="error.code === 'incomplete_expiry'" class="error-message">
+    {{error.message}}
+  </div>
+
+  <ngx-stripe-card-cvc [options]="cardOptions" class="stripe-input"></ngx-stripe-card-cvc>
+  <div *ngIf="error.code === 'incomplete_cvc'" class="error-message">
+    {{error.message}}
+  </div>
+
+</ngx-stripe-card-group>
+
+<button type="submit" (click)="pay()" class="pay-btn bg-blue-500 text-white rounded-md hover:bg-blue-600">Pay now</button>

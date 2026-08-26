@@ -1,0 +1,209 @@
+<!-- registration.component.html -->
+<div *ngIf="notificationMessage" [ngClass]="{'success': notificationType === 'success', 'error': notificationType === 'error'}" 
+class="notification fixed top-4 right-4 p-4 rounded-lg shadow-lg">
+{{ notificationMessage }}
+</div>
+<div
+  class="container">
+  <!-- <div class="flex justify-between mb-8">
+    <div class="relative flex-1 text-center" *ngFor="let s of [1, 2, 3, 4]; let i = index">
+      <div [class]="step >= s ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'"
+        class="w-10 h-10 rounded-full mx-auto flex items-center justify-center">{{ s }}</div>
+      <p class="mt-2 text-sm" [class.text-blue-500]="step >= s">{{ stepLabels[i] }}</p>
+
+      <div *ngIf="i < 3" class="absolute right-[-15px] top-[50%] transform -translate-y-[50%] arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-head"></div>
+      </div>
+    </div>
+  </div> -->
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Step 1: Basic Information -->
+    <!-- <div *ngIf="step === 1"> -->
+      <h2 class="text-base sm:text-2xl font-extrabold mb-6 text-gray-800">
+        Basic Business Information 
+        <!-- <span class="text-sm text-gray-600 ml-4" *ngIf="lastUpdatedOn">
+          Last Updated: {{ lastUpdatedOn }}
+        </span> -->
+      </h2>
+      
+        <div class="col-span-2 flex items-center justify-left gap-6">
+          <!-- Image Preview Section -->
+          <div class="w-24 h-24 bg-gray-200 rounded-md overflow-hidden flex items-center justify-center" [ngClass]="{ 'animate-pulse': !logoUrl }">
+            <img *ngIf="logoUrl" [src]="logoUrl" loading="lazy" class="object-cover w-full h-full" />
+          </div>
+          
+          <!-- File Input Section -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Logo</label>
+            <input 
+              type="file" 
+              (change)="onFileChange($event)" 
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-md cursor-pointer bg-gray-50 focus:outline-none"
+            />
+            <!-- <p class="mt-1 text-xs text-gray-500">{{ selectedFileName }}</p> -->
+            <!-- <p class="mt-1 text-xs text-gray-500">{{ logoUrl }}</p> -->
+            <!-- <p class="mt-1 text-xs text-gray-500">Maximum size: 5MB (JPG or PNG format)</p> -->
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6 mt-6">
+        <div>
+          <label>Business Name <span class="text-red-500">*</span></label>
+          <input formControlName="business_name" type="text" class="w-full p-2 border rounded-md" />
+          <div *ngIf="registerForm.get('business_name')?.invalid && registerForm.get('business_name')?.touched">
+            <small class="text-red-500">Business Name is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Tagline</label>
+          <input formControlName="tagline" type="text" class="w-full p-2 border rounded-md" placeholder="Enter your tagline" />
+        </div>
+        <div>
+          <label>Country <span class="text-red-500">*</span></label>
+          <select formControlName="country" (change)="onCountryChange($event)" class="w-full p-2 border rounded-md">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countries" [value]="country.iso3">{{ country.name }}</option>
+          </select>
+          <div *ngIf="registerForm.get('country')?.invalid && registerForm.get('country')?.touched">
+            <small class="text-red-500">Country is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Region <span class="text-red-500">*</span></label>
+          <input formControlName="region" type="text" class="w-full p-2 border rounded-md" />
+          <div *ngIf="registerForm.get('region')?.invalid && registerForm.get('region')?.touched">
+            <small class="text-red-500">Region is required</small>
+          </div>
+        </div>
+        <div>
+          <label>State <span class="text-red-500">*</span></label>
+          <select formControlName="state" class="w-full p-2 border rounded-md">
+            <option value="">Select State</option>
+            <option *ngFor="let state of states" [value]="state.state_code">{{ state.name }}</option>
+          </select>
+          <div *ngIf="registerForm.get('state')?.invalid && registerForm.get('state')?.touched">
+            <small class="text-red-500">State is required</small>
+          </div>
+        </div>
+        <div>
+          <label>City <span class="text-red-500">*</span></label>
+          <input formControlName="city" type="text" class="w-full p-2 border rounded-md" />
+          <div *ngIf="registerForm.get('city')?.invalid && registerForm.get('city')?.touched">
+            <small class="text-red-500">City is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Zip/Post Code <span class="text-red-500">*</span></label>
+          <input formControlName="zip_code" type="text" class="w-full p-2 border rounded-md" />
+          <div *ngIf="registerForm.get('zip_code')?.invalid && registerForm.get('zip_code')?.touched">
+            <small class="text-red-500">Zip/Post Code is required</small>
+          </div>
+        </div>
+        <div>
+          <label>Phone Number(s) <span class="text-red-500">*</span></label>
+          <input 
+            formControlName="phone" 
+            type="text" 
+            class="w-full p-2 border rounded-md" 
+            placeholder="Enter phone numbers separated by commas" 
+            pattern="^(\+?1[-. ]?)?(\(?\d{3}\)?[-. ]?)?\d{3}[-. ]?\d{4}(,\s*(\+?1[-. ]?)?(\(?\d{3}\)?[-. ]?)?\d{3}[-. ]?\d{4})*$" 
+          />
+          <div *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+            <small class="text-red-500">Please enter valid phone numbers (e.g., 123-456-7890, 987-654-3210)</small>
+          </div>
+        </div>
+        <div>
+          <label>Email Address <span class="text-red-500">*</span></label>
+          <input 
+            formControlName="email" 
+            type="email" 
+            class="w-full p-2 border rounded-md"
+            readonly 
+          />
+          <!-- <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            <small *ngIf="registerForm.get('email')?.errors?.['required']" class="text-red-500">Email is required</small>
+            <small *ngIf="registerForm.get('email')?.errors?.['email']" class="text-red-500">Please provide a valid email address</small>
+            <small *ngIf="registerForm.get('email')?.errors?.['emailExists']" class="text-red-500">Email id already exists</small>
+          </div> -->
+        </div>
+      </div>
+    <!-- </div> -->
+
+    <div class="flex justify-between mt-4">
+      <button type="submit"
+  class="mb-6 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center space-x-2">
+  Save Changes
+</button>
+    </div>
+  </form>
+
+  <!-- Referral Section -->
+  <div *ngIf="userReferralCode" class="mt-10 p-6 bg-gradient-to-r from-blue-50 to-blue-50 border-2 border-blue-300 rounded-lg">
+    <h3 class="text-2xl font-bold text-gray-800 mb-6"> Your Referral Program</h3>
+    
+    <!-- Referred By Section (Optional) -->
+    <!-- <div *ngIf="referredBy" class="mb-6 p-4 bg-white rounded-md border-l-4 border-blue-500">
+      <p class="text-blue-700">
+        <span class="font-semibold">Referred by:</span> <span class="text-blue-600">{{ referredBy }}</span>
+      </p>
+    </div> -->
+
+    <!-- Your Referral Code -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-white p-4 rounded-md shadow-sm">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Your Referral Code</label>
+        <div class="flex items-center gap-2">
+          <input 
+            type="text" 
+            [value]="userReferralCode" 
+            readonly
+            class="flex-1 p-2 border border-gray-300 rounded-md bg-gray-100 font-mono"
+          />
+          <button 
+            type="button"
+            (click)="copyReferralCode()"
+            class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors">
+            Copy Code
+          </button>
+        </div>
+        <div *ngIf="showReferralCopyMessage" class="mt-2 text-blue-600 text-sm font-semibold">
+          ✅ Copied!
+        </div>
+      </div>
+
+      <!-- Referral Link -->
+      <div class="bg-white p-4 rounded-md shadow-sm">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Referral Link</label>
+        <div class="flex items-center gap-2">
+          <input 
+            type="text" 
+            [value]="referralLink" 
+            readonly
+            class="flex-1 p-2 border border-gray-300 rounded-md bg-gray-100 text-xs truncate"
+          />
+          <button 
+            type="button"
+            (click)="copyReferralLink()"
+            class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors whitespace-nowrap">
+            Copy Link
+          </button>
+        </div>
+        <div *ngIf="showLinkCopyMessage" class="mt-2 text-blue-600 text-sm font-semibold">
+          ✅ Copied!
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="bg-white p-4 rounded-md border-l-4 border-blue-500">
+      <h4 class="font-semibold text-gray-800 mb-2">How It Works</h4>
+      <ul class="text-sm text-gray-700 space-y-1">
+        <li>📌 Share your referral code or link with friends and colleagues</li>
+        <li>🎯 When someone uses your code to sign up, they'll be associated with your account</li>
+        <li>💰 Earn commissions and rewards based on referrals </li>
+      </ul>
+    </div>
+  </div>
+
+</div>

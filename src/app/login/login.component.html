@@ -1,0 +1,129 @@
+<div class="content-container col-span-12 md:col-span-6 flex flex-col items-center" *ngIf="!otpEnabled">
+  <div class="w-full max-w-md p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
+    <!-- Tabs Section -->
+    <div class="flex justify-center mb-6">
+      <button class="px-4 py-2 mr-2 rounded-t-lg focus:outline-none"
+        [ngClass]="{'bg-blue-500 text-white': selectedTab === 'emailUser', 'bg-gray-200 text-gray-700': selectedTab !== 'emailUser'}"
+        (click)="switchTab('emailUser')">
+        Email User
+      </button>
+      <button class="px-4 py-2 rounded-t-lg focus:outline-none"
+        [ngClass]="{'bg-blue-500 text-white': selectedTab === 'phoneUser', 'bg-gray-200 text-gray-700': selectedTab !== 'phoneUser'}"
+        (click)="switchTab('phoneUser')">
+        Phone Number User
+      </button>
+    </div>
+
+    <!-- New User Form -->
+    <div *ngIf="selectedTab === 'emailUser'">
+      <div class="flex justify-center items-center h-full">
+        <h2 class="text-2xl text-left text-gray-800 mb-6">Login as Email User</h2>
+      </div>
+
+      <form [formGroup]="emailUserForm" (ngSubmit)="onEmailSubmit()">
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 font-medium mb-2">Email:</label>
+          <input formControlName="email" type="email" id="email" name="email" placeholder="Enter email"
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+          <!-- <div *ngIf="emailUserForm.get('email')?.touched && emailUserForm.get('email')?.invalid" class="text-red-500 text-sm">
+            Email is required and must be valid.
+          </div> -->
+        </div>
+
+<div class="mb-4">
+          <label for="password" class="block text-gray-700 font-medium mb-2">Password:</label>
+          <input formControlName="password" type="password" id="password" name="password" placeholder="Enter password"
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+          <!-- <div *ngIf="emailUserForm.get('password')?.touched && emailUserForm.get('password')?.invalid" class="text-red-500 text-sm">
+            Password is required.
+          </div> -->
+        </div>
+
+        <div class="flex justify-end mb-4">
+          <a routerLink="/forgot-password" class="text-sm text-blue-600 hover:underline">
+            Forgot Password?
+          </a>
+        </div>
+
+        <div class="flex justify-center items-center h-full">
+          <button type="submit"
+            class="border border-blue-500 w-full text-white py-2 px-4 rounded bg-blue-500 hover:bg-blue-600 hover:text-white">
+            Login
+          </button>
+          <!-- Register Link -->
+        </div>
+<p class="text-sm text-gray-600 mt-3">
+          Don't have an account?
+          <a routerLink="/register" class="text-blue-600 font-medium hover:underline">
+            Register here
+          </a>
+        </p>
+      </form>
+    </div>
+
+
+    <!-- Already Exists Form -->
+    <div *ngIf="selectedTab === 'phoneUser'">
+      <div class="flex justify-center items-center h-full">
+        <h2 class="text-2xl text-left text-gray-800 mb-6">Login as Phone Number User</h2>
+      </div>
+
+      <form [formGroup]="phoneUserForm" (ngSubmit)="onPhoneUserLogin()">
+        <div class="mb-4">
+          <label for="companyName" class="block text-gray-700 font-medium mb-2">Company Name:</label>
+          <input formControlName="companyName" type="text" id="companyName" name="companyName"
+            placeholder="Enter company name"
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+          <!-- <div *ngIf="phoneUserForm.get('companyName')?.touched && phoneUserForm.get('companyName')?.invalid" class="text-red-500 text-sm">
+            Company name is required.
+          </div> -->
+        </div>
+
+        <div class="mb-4">
+          <label for="phoneNumber" class="block text-gray-700 font-medium mb-2">Phone Number:</label>
+          <input formControlName="phoneNumber" type="tel" id="phoneNumber" name="phoneNumber"
+            placeholder="Enter phone number"
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" />
+          <!-- <div *ngIf="phoneUserForm.get('phoneNumber')?.touched && phoneUserForm.get('phoneNumber')?.invalid" class="text-red-500 text-sm">
+            Phone number is required.
+          </div> -->
+        </div>
+        <div id="recaptcha-container"></div>
+
+        <div class="flex justify-center items-center h-full">
+          <button type="submit"
+            class="border border-blue-500 w-full text-white py-2 px-4 rounded bg-blue-500 hover:bg-blue-600 hover:text-white">
+            Get OTP
+          </button>
+          <!-- Register Link -->
+        </div>
+        <p class="text-sm text-gray-600 mt-3">
+          Don’t have an account?
+          <a routerLink="/register" class="text-blue-600 font-medium hover:underline">
+            Register here
+          </a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="otpEnabled" class="flex flex-col justify-center items-center min-h-screen bg-gray-100 px-4">
+  <div class="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+    <!-- Heading -->
+    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">
+      Verify OTP
+    </h2>
+
+    <!-- OTP Input -->
+    <div class="flex justify-center mb-6 space-x-2">
+      <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="configuration" class="otp-input"></ng-otp-input>
+    </div>
+
+    <!-- Verify Button -->
+    <button (click)="handleClick()"
+      class="w-full py-3 bg-blue-500 text-white font-medium text-lg rounded-md hover:bg-blue-600 focus:ring focus:ring-blue-300 focus:outline-none transition-all">
+      Verify
+    </button>
+  </div>
+</div>

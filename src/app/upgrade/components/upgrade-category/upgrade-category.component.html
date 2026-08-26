@@ -1,0 +1,40 @@
+<div>
+
+<h2 class="text-xl font-bold text-blue-600 mb-8">
+{{category.category}}
+</h2>
+
+<div class="grid md:grid-cols-2 gap-4">
+
+<div
+*ngFor="let item of category.items"
+class="border rounded-lg p-4 hover:shadow-md transition cursor-pointer">
+
+<label class="flex gap-3">
+
+<!-- <input type="checkbox"
+(change)="selectItem(item)"
+class="mt-1"> -->
+<input type="checkbox"
+ [checked]="isSelected(item)"
+  (change)="selectItem(item)"
+  class="mt-1">
+<div>
+
+<p class="font-semibold">
+{{item.name}} – ${{item.price}} / year
+</p>
+
+<p class="text-sm text-gray-500">
+{{item.description}}
+</p>
+
+</div>
+
+</label>
+
+</div>
+
+</div>
+
+</div>

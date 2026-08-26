@@ -1,0 +1,206 @@
+<nav class="top-0 w-full z-10 bg-white">
+  <div class="flex justify-between items-center p-3.5">
+    <!-- Logo -->
+      <a href="#">
+        <img class="max-w-64" src="assets/img/logo.png" alt="Logo" />
+      </a>
+
+    <!-- Hamburger Menu Icon -->
+    <button class="block md:hidden focus:outline-none" (click)="toggleMenu()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+      </svg>
+    </button>
+
+    <!-- Menu Items for Desktop -->
+    <ul class="hidden md:flex text-gray-800 space-x-4">
+      <!-- <li>
+        <a routerLink="/" 
+           routerLinkActive="bg-blue-500 text-white fill-white" 
+           [routerLinkActiveOptions]="{exact: true}"
+           class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-3.5">
+           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+          </svg>            
+          <span>Home</span>
+        </a>
+      </li> -->
+      <li *ngIf="!isLoggedIn;">
+        <a routerLink="/register" 
+           routerLinkActive="bg-blue-500 text-white fill-white" 
+           [routerLinkActiveOptions]="{exact: true}"
+           class="hover:bg-gray-100 hover:text-black hover:fill-black flex items-center space-x-2 p-3.5 text-sm text-gray-500">
+           <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>             -->
+          <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-62 -62 434.00 434.00" xml:space="preserve" class="h-6 w-6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M300.606,159.727l-45.333-45.333c-5.857-5.858-15.355-5.858-21.213,0L225,123.454V15c0-8.284-6.716-15-15-15H20 C11.716,0,5,6.716,5,15v240.002c0,8.284,6.716,15,15,15h85V295c0,8.284,6.716,15,15,15h45.333c3.979,0,7.794-1.581,10.607-4.394 l124.667-124.667C306.465,175.081,306.465,165.585,300.606,159.727z M35,30h160v123.454l-85.606,85.605 c-0.302,0.301-0.581,0.619-0.854,0.942H35V30z M159.12,280H135v-24.121l109.667-109.666l24.12,24.12L159.12,280z"></path> </g></svg>
+          <span>Register</span>
+        </a>
+      </li> 
+      <li *ngIf="!isLoggedIn; else loggedInContent">
+        <a routerLink="/login" 
+           routerLinkActive="bg-blue-500 text-white fill-white" 
+           [routerLinkActiveOptions]="{exact: true}"
+           class="hover:bg-gray-100 hover:text-black hover:fill-black flex items-center space-x-2 p-3.5 text-sm text-gray-500">
+           <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>             -->
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-59.4 -59.4 415.80 415.80" xml:space="preserve" class="w-6 h-6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M255.75,0h-148.5c-5.522,0-10,4.478-10,10v112h-39.5c-14.612,0-26.5,11.888-26.5,26.5S43.138,175,57.75,175h39.5v112 c0,5.522,4.478,10,10,10h148.5c5.522,0,10-4.478,10-10V10C265.75,4.478,261.272,0,255.75,0z M57.75,155 c-3.584,0-6.5-2.916-6.5-6.5s2.916-6.5,6.5-6.5h104.5c3.687,0,7.076-2.03,8.816-5.281c1.74-3.252,1.55-7.197-0.496-10.266 L158.936,109h19.963l26.333,39.5L178.898,188h-19.963l11.635-17.453c2.046-3.068,2.236-7.014,0.496-10.266 c-1.74-3.251-5.129-5.281-8.816-5.281H57.75z M245.75,277h-128.5V175h26.314l-11.635,17.453 c-2.046,3.068-2.236,7.014-0.496,10.266c1.74,3.251,5.129,5.281,8.816,5.281h44c3.344,0,6.466-1.671,8.32-4.453l33-49.5 c2.239-3.358,2.239-7.735,0-11.094l-33-49.5c-1.854-2.782-4.977-4.453-8.32-4.453h-44c-3.688,0-7.076,2.03-8.816,5.281 c-1.74,3.252-1.55,7.197,0.496,10.266L143.564,122H117.25V20h128.5V277z"></path> </g> </g> </g></svg>
+          <span>Login</span>
+        </a>
+      </li>
+      <ng-template #loggedInContent>
+        <li>
+          <a routerLink="/account" 
+             routerLinkActive="bg-blue-500 text-white fill-white" 
+             class="hover:bg-gray-100 hover:text-black hover:fill-black flex items-center space-x-2 p-3.5 text-sm text-gray-500">
+             <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg> -->
+            <svg viewBox="-4 -4 28.00 28.00" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" class="h-6 w-6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>profile_round [#1342]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -2159.000000)" fill="#000000"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M100.562548,2016.99998 L87.4381713,2016.99998 C86.7317804,2016.99998 86.2101535,2016.30298 86.4765813,2015.66198 C87.7127655,2012.69798 90.6169306,2010.99998 93.9998492,2010.99998 C97.3837885,2010.99998 100.287954,2012.69798 101.524138,2015.66198 C101.790566,2016.30298 101.268939,2016.99998 100.562548,2016.99998 M89.9166645,2004.99998 C89.9166645,2002.79398 91.7489936,2000.99998 93.9998492,2000.99998 C96.2517256,2000.99998 98.0830339,2002.79398 98.0830339,2004.99998 C98.0830339,2007.20598 96.2517256,2008.99998 93.9998492,2008.99998 C91.7489936,2008.99998 89.9166645,2007.20598 89.9166645,2004.99998 M103.955674,2016.63598 C103.213556,2013.27698 100.892265,2010.79798 97.837022,2009.67298 C99.4560048,2008.39598 100.400241,2006.33098 100.053171,2004.06998 C99.6509769,2001.44698 97.4235996,1999.34798 94.7348224,1999.04198 C91.0232075,1998.61898 87.8750721,2001.44898 87.8750721,2004.99998 C87.8750721,2006.88998 88.7692896,2008.57398 90.1636971,2009.67298 C87.1074334,2010.79798 84.7871636,2013.27698 84.044024,2016.63598 C83.7745338,2017.85698 84.7789973,2018.99998 86.0539717,2018.99998 L101.945727,2018.99998 C103.221722,2018.99998 104.226185,2017.85698 103.955674,2016.63598" id="profile_round-[#1342]"> </path> </g> </g> </g> </g></svg>
+            <span>My Account</span>
+          </a>
+        </li>
+      </ng-template>     
+      <li class="relative">
+        <a (click)="opendropmenu()"
+          aria-controls="dropdown-example" data-collapse-toggle="dropdown-example"
+          routerLinkActive="bg-blue-500 text-white fill-white"
+          [routerLinkActiveOptions]="{exact: true}"
+          class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-3.5 cursor-pointer">
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg> -->
+          <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-97.46 -97.46 682.22 682.22" xml:space="preserve" class="h-6 w-6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M487.2,69.7c0,12.9-10.5,23.4-23.4,23.4h-322c-12.9,0-23.4-10.5-23.4-23.4s10.5-23.4,23.4-23.4h322.1 C476.8,46.4,487.2,56.8,487.2,69.7z M463.9,162.3H141.8c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h322.1 c12.9,0,23.4-10.5,23.4-23.4C487.2,172.8,476.8,162.3,463.9,162.3z M463.9,278.3H141.8c-12.9,0-23.4,10.5-23.4,23.4 s10.5,23.4,23.4,23.4h322.1c12.9,0,23.4-10.5,23.4-23.4C487.2,288.8,476.8,278.3,463.9,278.3z M463.9,394.3H141.8 c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h322.1c12.9,0,23.4-10.5,23.4-23.4C487.2,404.8,476.8,394.3,463.9,394.3z M38.9,30.8C17.4,30.8,0,48.2,0,69.7s17.4,39,38.9,39s38.9-17.5,38.9-39S60.4,30.8,38.9,30.8z M38.9,146.8 C17.4,146.8,0,164.2,0,185.7s17.4,38.9,38.9,38.9s38.9-17.4,38.9-38.9S60.4,146.8,38.9,146.8z M38.9,262.8 C17.4,262.8,0,280.2,0,301.7s17.4,38.9,38.9,38.9s38.9-17.4,38.9-38.9S60.4,262.8,38.9,262.8z M38.9,378.7 C17.4,378.7,0,396.1,0,417.6s17.4,38.9,38.9,38.9s38.9-17.4,38.9-38.9C77.8,396.2,60.4,378.7,38.9,378.7z"></path> </g> </g> </g></svg>
+          <span class="text-sm text-gray-500">All Listings</span>
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+          </svg>
+        </a>
+      
+        <!-- Dropdown -->
+        <ul *ngIf="dropMenu" id="dropdown-example" class="py-2 space-y-2">
+          <li>
+            <a (click)="selectDropdownValue('US')"
+               class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 cursor-pointer text-sm">
+              US
+            </a>
+          </li>
+          <!-- <li>
+            <a (click)="selectDropdownValue('Canada')"
+               class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 cursor-pointer text-sm">
+              Canada
+            </a>
+          </li> -->
+        </ul>
+      </li>
+        <!-- <li class="cursor-pointer" (click)="logout()">
+          <a 
+             routerLinkActive="bg-blue-500 text-white fill-white" 
+             [routerLinkActiveOptions]="{exact: true}"
+             class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-3.5">
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>            
+            <span>Logout</span>
+          </a>
+        </li> -->
+      <li *ngIf="this.currentRoute == '/'">
+        <a class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-3.5 cursor-pointer text-sm text-gray-500" (click)="openModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+          </svg>
+          Mobile App
+        </a>
+      </li>
+    </ul>
+  </div>
+  <hr class="h-0 border-t-5 border-inherit" />
+
+
+  <!-- Mobile Menu Items -->
+  <ul [ngClass]="{'block': isMenuOpen, 'hidden': !isMenuOpen}" class="md:hidden text-gray-800 bg-white shadow-lg">
+    <!-- <li>
+      <a routerLink="/" 
+         routerLinkActive="bg-blue-500 text-white fill-white" 
+         [routerLinkActiveOptions]="{exact: true}"
+         class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-3.5">
+         <span>Home</span>
+      </a>
+    </li> -->
+    <li *ngIf="!isLoggedIn;">
+      <a routerLink="/register" 
+         routerLinkActive="bg-blue-500 text-white fill-white" 
+         [routerLinkActiveOptions]="{exact: true}"
+         class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-3.5">
+         <span>Register</span>
+      </a>
+    </li> 
+    <li *ngIf="!isLoggedIn;">
+      <a routerLink="/login" 
+         routerLinkActive="bg-blue-500 text-white fill-white" 
+         [routerLinkActiveOptions]="{exact: true}"
+         class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-3.5">
+         <span>Login</span>
+      </a>
+    </li>
+    <li *ngIf="userId">
+      <a routerLink="/account" 
+         routerLinkActive="bg-blue-500 text-white fill-white" 
+         [routerLinkActiveOptions]="{exact: true}"
+         class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-3.5">
+         <span>Dashboard</span>
+      </a>
+    </li>
+    <li class="relative">
+      <a (click)="opendropmenu()" 
+        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example"
+        class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-3.5">
+        <span>All Listings</span>
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+        </svg>
+      </a>
+    </li>
+
+    <li *ngIf="dropMenu">
+      <a (click)="selectDropdownValue('US')"
+         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 cursor-pointer text-sm">
+        US
+      </a>
+    </li>
+    <!-- <li *ngIf="dropMenu">
+      <a (click)="selectDropdownValue('Canada')"
+         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 cursor-pointer text-sm">
+        Canada
+      </a>
+    </li> -->
+  </ul>
+</nav>
+
+<!-- Modal -->
+<div *ngIf="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+    <div class="flex justify-between items-center p-4 border-b">
+      <h5 class="text-lg font-semibold">Scan to Download</h5>
+      <button type="button" class="text-gray-400 hover:text-gray-600" (click)="closeModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="p-6 text-center">
+      <img src="assets/img/appqr.svg" alt="QR Code" class="mx-auto w-64" />
+    </div>
+    <div class="flex justify-end p-4 border-t">
+      <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-700" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- <ul *ngIf="dropMenu" id="dropdown-example" class="py-2 space-y-2">
+  <li>
+     <a class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">USA</a>
+  </li>
+</ul>   -->
+

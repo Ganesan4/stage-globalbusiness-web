@@ -1,0 +1,12 @@
+#dropdown-example {
+    position: absolute;
+    top: 100%; /* Places it right below the trigger element */
+    left: 0; /* Aligns the dropdown with the trigger */
+    background-color: white; /* Background for the dropdown */
+    border: 1px solid #ddd; /* Optional: Adds a border for clarity */
+    z-index: 1000; /* Ensures it appears above other elements */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a shadow for better visibility */
+    padding: 0.5rem;
+    min-width: 150px; /* Ensures a minimum width for the dropdown */
+  }
+  

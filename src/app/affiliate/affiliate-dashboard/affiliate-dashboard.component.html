@@ -1,0 +1,251 @@
+<div class="w-full h-screen overflow-hidden">
+  <div class="grid grid-cols-12 gap-4 h-full">
+      <!-- Column 1: Sidebar -->
+      <div [ngClass]="{ 'sm:col-span-3 col-span-12 md:col-span-4 lg:col-span-3': isSidebarOpen, 'sm:col-span-1': !isSidebarOpen }">
+      
+      <!-- Menu button when sidebar is closed -->
+<div *ngIf="!isSidebarOpen" class="mt-4 ml-4">
+        <button (click)="toggleSidebar()" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium text-sm px-4 py-2 rounded-lg">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sidebar -->
+      <div *ngIf="isSidebarOpen" id="drawer-navigation" class="noscroll pl-4 w-64 h-full py-4 overflow-y-auto bg-white dark:bg-gray-800" tabindex="-1">
+         <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Menu</h5>
+         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 end-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" (click)="toggleSidebar_close()">
+             <svg fill="#1e3a8a" class="w-5 h-5" viewBox="0 0 330 330">
+               <path d="M165,0C74.019,0,0,74.019,0,165s74.019,165,165,165s165-74.019,165-165S255.981,0,165,0z M205.606,234.394 c5.858,5.857,5.858,15.355,0,21.213C202.678,258.535,198.839,260,195,260s-7.678-1.464-10.606-4.394l-80-79.998 c-2.813-2.813-4.394-6.628-4.394-10.606c0-3.978,1.58-7.794,4.394-10.607l80-80.002c5.857-5.858,15.355-5.858,21.213,0 c5.858,5.857,5.858,15.355,0,21.213l-69.393,69.396L205.606,234.394z"/>
+             </svg>
+             <span class="sr-only">Close menu</span>
+         </button>
+         
+         <div class="py-4 overflow-y-auto mt-6">
+           <ul class="space-y-2 font-medium">
+              <li>
+                 <a href="javascript:void(0)" (click)="setActiveTab('profile')" [class.active]="activeTab === 'profile'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                       <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
+                       <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
+                    </svg>
+                    <span class="ms-3">My Profile</span>
+                 </a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" (click)="setActiveTab('password')" [class.active]="activeTab === 'password'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C9.243 2 7 4.243 7 7v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7c0-2.757-2.243-5-5-5zm0 2c1.654 0 3 1.346 3 3v3H9V7c0-1.654 1.346-3 3-3z"/>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Change Password</span>
+                </a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" (click)="setActiveTab('referrals')" [class.active]="activeTab === 'referrals'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Referral Link</span>
+                </a>
+              </li>
+              <li>
+                 <a href="javascript:void(0)" (click)="logout()" class="flex items-center cursor-pointer p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
+                 </a>
+              </li>
+           </ul>
+         </div>
+      </div>
+    </div>
+    
+    <!-- Column 2: Main Content -->
+    <div class="p-4 text-black centercont overflow-y-auto" [ngClass]="{ 'sm:col-span-9 md:col-span-8 lg:col-span-8': isSidebarOpen, 'col-span-11': !isSidebarOpen }" style=" height: 100vh;">
+      
+      <!-- Profile Tab -->
+      <div *ngIf="activeTab === 'profile'" class="mt-4">
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="text-center mb-6">
+            <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fa-solid fa-user text-blue-600 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">My Profile</h3>
+            <p class="text-gray-500 mt-1 text-sm">Manage your personal information</p>
+          </div>
+          
+          <form (ngSubmit)="updateProfile()" novalidate class="max-w-lg mx-auto">
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+              <input type="text" [(ngModel)]="profileForm.name" name="name"
+                [class.border-red-500]="profileSubmitted && !profileForm.name.trim()"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
+                placeholder="Enter your full name">
+              <p *ngIf="profileSubmitted && !profileForm.name.trim()" class="text-red-600 text-sm mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i> Full name is required
+              </p>
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number <span class="text-red-500">*</span></label>
+              <input type="tel" [(ngModel)]="profileForm.phone" name="phone"
+                [class.border-red-500]="profileSubmitted && !profileForm.phone.trim()"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
+                placeholder="Enter your phone number">
+              <p *ngIf="profileSubmitted && !profileForm.phone.trim()" class="text-red-600 text-sm mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i> Phone number is required
+              </p>
+            </div>
+            
+            <div class="mb-5">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+              <input type="email" [(ngModel)]="profileForm.email" name="email" readonly
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm bg-gray-100 cursor-not-allowed"
+                placeholder="Enter your email">
+            </div>
+            
+            <div *ngIf="successMessage" class="mb-4 p-3 bg-blue-100 border border-blue-300 text-blue-700 rounded-lg text-sm flex items-center gap-2">
+              <i class="fa-solid fa-check-circle"></i> {{ successMessage }}
+            </div>
+            
+            <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-sm flex items-center gap-2">
+            {{ errorMessage }}
+            </div>
+            
+            <button type="submit" [disabled]="isLoading" 
+              class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 px-8 rounded-lg shadow-md transition-all text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+              <i *ngIf="!isLoading" class="fa-solid fa-save"></i>
+              <i *ngIf="isLoading" class="fa-solid fa-spinner fa-spin"></i>
+              {{ isLoading ? 'Updating...' : 'Update Profile' }}
+            </button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Password Tab -->
+      <div *ngIf="activeTab === 'password'" class="mt-4">
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="text-center mb-6">
+            <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fa-solid fa-lock text-blue-600 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Change Password</h3>
+            <p class="text-gray-500 mt-1 text-sm">Update your password to keep your account secure</p>
+          </div>
+          
+          <div *ngIf="successMessage" class="mb-4 p-3 bg-blue-100 border border-blue-300 text-blue-700 rounded-lg text-sm flex items-center gap-2">
+            <i class="fa-solid fa-check-circle"></i> {{ successMessage }}
+          </div>
+          
+          <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-sm flex items-center gap-2">
+          {{ errorMessage }}
+          </div>
+          
+          <form (ngSubmit)="changePassword()" class="max-w-lg mx-auto">
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                Current Password <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input [type]="showCurrentPassword ? 'text' : 'password'" 
+                       [(ngModel)]="passwordForm.currentPassword" name="currentPassword"
+                       [class.border-red-500]="passwordSubmitted && !passwordForm.currentPassword"
+                       class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm pr-10">
+                <button type="button" (click)="toggleCurrentPassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  <i [class]="showCurrentPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+                </button>
+              </div>
+              <p *ngIf="passwordSubmitted && !passwordForm.currentPassword" class="text-red-600 text-sm mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i> Current password is required
+              </p>
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                New Password <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input [type]="showNewPassword ? 'text' : 'password'" 
+                       [(ngModel)]="passwordForm.newPassword" name="newPassword"
+                       [class.border-red-500]="passwordSubmitted && !isNewPasswordValid()"
+                       class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm pr-10">
+                <button type="button" (click)="toggleNewPassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  <i [class]="showNewPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+                </button>
+              </div>
+              <p *ngIf="passwordSubmitted && !passwordForm.newPassword" class="text-red-600 text-sm mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i> New password is required
+              </p>
+              <p *ngIf="passwordSubmitted && passwordForm.newPassword && passwordForm.newPassword.length < 8" class="text-red-600 text-sm mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i> Password must be at least 8 characters
+              </p>
+            </div>
+            
+            <div class="mb-5">
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                Confirm Password <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" 
+                       [(ngModel)]="passwordForm.confirmPassword" name="confirmPassword"
+                       [class.border-red-500]="passwordSubmitted && !isConfirmPasswordValid()"
+                       class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm pr-10">
+                <button type="button" (click)="toggleConfirmPassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  <i [class]="showConfirmPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+                </button>
+              </div>
+              <p *ngIf="passwordSubmitted && !passwordForm.confirmPassword" class="text-red-600 text-sm mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i> Please confirm your password
+              </p>
+              <p *ngIf="passwordSubmitted && passwordForm.confirmPassword && passwordForm.newPassword !== passwordForm.confirmPassword" class="text-red-600 text-sm mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i> Passwords do not match
+              </p>
+            </div>
+            
+            <button type="submit" [disabled]="isPasswordLoading" 
+              class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 px-8 rounded-lg shadow-md transition-all text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+              <i *ngIf="!isPasswordLoading" class="fa-solid fa-key"></i>
+              <i *ngIf="isPasswordLoading" class="fa-solid fa-spinner fa-spin"></i>
+              {{ isPasswordLoading ? 'Changing...' : 'Change Password' }}
+            </button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Referral Tab -->
+      <div *ngIf="activeTab === 'referrals'" class="mt-4">
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="text-center mb-6">
+            <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fa-solid fa-link text-blue-600 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Your Referral Link</h3>
+            <p class="text-gray-500 mt-1 text-sm">Share your referral code with friends and earn commissions</p>
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Your Referral Code</label>
+            <div class="flex items-center gap-2 p-3 bg-gray-100 border border-gray-200 rounded-lg">
+              <span class="font-mono text-lg flex-1">{{ affiliateData.referralCode }}</span>
+              <button (click)="copyCode()" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-1.5 px-3 rounded-lg flex items-center gap-1">
+                <i class="fa-solid fa-copy"></i> Copy
+              </button>
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Your Referral Link</label>
+            <div class="flex items-center gap-2 p-3 bg-gray-100 border border-gray-200 rounded-lg">
+              <span class="font-mono text-sm flex-1 break-all">{{ getReferralLink() }}</span>
+              <button (click)="copyLink()" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-1.5 px-3 rounded-lg flex items-center gap-1">
+                <i class="fa-solid fa-copy"></i> Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

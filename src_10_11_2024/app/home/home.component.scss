@@ -1,0 +1,121 @@
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh; 
+}
+
+.nav-column {
+  display: flex;
+  gap: 2%;
+  justify-content: end;
+  list-style-type: none;
+}
+
+.searchIcon {
+  position: relative;
+  left: -30px; 
+  cursor: pointer;
+}
+
+.terms-bottom {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 14px;
+}
+
+#myModal {
+  display: none;
+}
+
+.modal.show {
+  display: block !important; 
+}
+
+.modal-body img {
+  display: block;
+  margin: 0 auto;
+}
+
+.custom-select {
+border: none; 
+outline: none; 
+background: none; 
+appearance: none; 
+-webkit-appearance: none; 
+-moz-appearance: none; 
+}
+
+.custom-select::after {
+content: ''; 
+}
+
+.loader {
+border-top-color: #3490dc;
+border-radius: 50%;
+width: 40px;
+height: 40px;
+border: 4px solid transparent;
+border-top-color: #3490dc;
+animation: spin 1s linear infinite;
+}
+
+.carousel-container {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.carousel .slide img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+::ng-deep .slick-prev::before, 
+::ng-deep .slick-next::before {
+  color: rgb(255, 255, 255);
+}
+
+::ng-deep .slick-prev {
+  left: 5px;
+  z-index: 1;
+}
+
+::ng-deep .slick-next {
+  right: 5px;
+  z-index: 1;
+}
+
+::ng-deep .slick-dots {
+  top:85%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex !important;
+  justify-content: center;
+  z-index: 1;
+}
+
+::ng-deep .slick-dots li {
+  margin: 0 5px;
+}
+
+::ng-deep .slick-dots li button:before {
+  color: white; 
+  font-size:6px; 
+  opacity: 0.7; 
+}
+
+::ng-deep .slick-dots li.slick-active button:before {
+  color: white; 
+  opacity: 1; 
+}
+
+@keyframes spin {
+to {
+  transform: rotate(360deg);
+}
+} 
