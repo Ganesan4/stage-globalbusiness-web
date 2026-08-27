@@ -36,11 +36,12 @@ export class WhyChooseUsComponent implements OnInit {
         this.whyChooseUsData = res.data[0];
 
         this.safeContent = this.sanitizer.bypassSecurityTrustHtml(this.whyChooseUsData.content);
-        setTimeout(() => {
-          this.contentLoaded = true;
-        }, 500);
       }
-    }).catch(err => console.log(err));
+      this.contentLoaded = true;
+    }).catch(err => {
+      console.log(err);
+      this.contentLoaded = true;
+    });
   }
 }
 
