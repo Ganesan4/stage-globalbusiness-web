@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-affiliate-registration',
@@ -24,7 +25,7 @@ export class AffiliateRegistrationComponent implements OnInit, OnDestroy {
     confirmPassword: ''
   };
   
-  apiUrl = 'https://api.globalbusinesspages.com/';
+  apiUrl = environment.api_url;
   
   isLoading = false;
   errorMessage = '';
