@@ -366,11 +366,8 @@ fetchStates(countryCode: string): void {
 
 
   loadPayPalScript(): void {
-    console.log('33333333333');
-
-    const scriptUrl = 'https://www.paypal.com/sdk/js?client-id=AW2ubpphZ_o87bOhdZZaBLnq5VkWlmL3Lc_Zr6gtoi8CPcuvF3_ZCC_nAmIguK_u-nxSrf5BxAzsCS3g&currency=USD';
-    // const scriptUrl = 'https://www.paypal.com/sdk/js?client-id=AQ_WLaUUYGpIZET5U09_Z8klQNqxNeELmY3nOtaaTz6I04k8TgJ9V2HeMer6VR5z0KKdkQdtQ8MKj8wL&currency=USD';
-    console.log('scriptUrl', scriptUrl);
+    const clientId = environment.paypalClientId;
+    const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
 
     if (!document.querySelector(`script[src="${scriptUrl}"]`)) {
       console.log('33333333333');

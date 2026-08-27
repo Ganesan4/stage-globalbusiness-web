@@ -160,7 +160,8 @@ handleStripeClose(status: any) {
   }
 
   loadPayPalScript(): void {
-    const scriptUrl = 'https://www.paypal.com/sdk/js?client-id=AW2ubpphZ_o87bOhdZZaBLnq5VkWlmL3Lc_Zr6gtoi8CPcuvF3_ZCC_nAmIguK_u-nxSrf5BxAzsCS3g&currency=USD';
+    const clientId = environment.paypalClientId;
+    const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
 
     if (!document.querySelector(`script[src="${scriptUrl}"]`)) {
       const script = document.createElement('script');
