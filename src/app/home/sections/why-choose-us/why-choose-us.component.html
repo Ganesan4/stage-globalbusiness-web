@@ -94,7 +94,7 @@
             [theme]="{ height: '18px', width: '80%', margin: '10px auto' }">
         </ngx-skeleton-loader>
 
-        <div *ngIf="contentLoaded" [innerHTML]="safeContent"></div>
+        <div *ngIf="contentLoaded" class="no-tailwindcss-base cms-html-content" [innerHTML]="safeContent"></div>
 
         <!-- Features Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
