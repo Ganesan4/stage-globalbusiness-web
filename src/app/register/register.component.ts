@@ -695,17 +695,19 @@ fetchStates(countryCode: string): void {
   }
 
   getAllRegister() {
-    this.http.get(`${this.apiUrl}getOverAllregister`)
+    // Bypass Angular prerender TransferState cache (build-time email list gets baked into HTML).
+    const url = `${this.apiUrl}getOverAllregister?live=${Date.now()}`;
+    this.http.get(url)
       .subscribe(
         response => {
-          // console.log('getallregisterdata', response);
-          const data = response['data'];
-          this.existingEmails = data.map((item: any) => item.email); // Extract emails
+          const data = response['data'] || [];
+          this.existingEmails = data
+            .map((item: any) => (item.email || '').trim().toLowerCase())
+            .filter((email: string) => email.length > 0);
           this.applyEmailValidator();
         },
         error => {
           console.error('Error occurred while fetching data', error);
-
         }
       );
   }
@@ -716,7 +718,8 @@ fetchStates(countryCode: string): void {
       if (!control.value) {
         return null;
       }
-      const emailExists = existingEmails.includes(control.value);
+      const email = String(control.value).trim().toLowerCase();
+      const emailExists = existingEmails.includes(email);
       return emailExists ? { 'emailExists': true } : null;
     };
   }
