@@ -170,7 +170,10 @@ export class LoginComponent implements OnInit {
           } else if (err.status === 401) {
             this.toastr.error('Incorrect password. Please try again.', 'error');
           } else if (err.status === 403) {
-            this.toastr.error('Your account is not activated by the admin.', 'error');
+            const message = environment.isStaging
+              ? 'This staging test account is not auto-activated.'
+              : 'Your account is not activated by the admin.';
+            this.toastr.error(message, 'error');
           } else if (err.status === 406) {
             this.toastr.error('Kindly verify your account by your email.', 'error');
           } else if (err.status === 410) {
