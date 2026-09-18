@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { GooglePayButtonModule } from '@google-pay/button-angular';
 import { WebService } from '../../services/web.service';
-import * as QRCode from 'qrcode';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-gpay',
@@ -57,7 +57,7 @@ export class GpayComponent {
         parameters: {
           'gateway': 'stripe',
           'stripe:version': '2025-01-27.acacia',  
-          'stripe:publishableKey': 'pk_live_51IGzLJFzZPG6EEhhIV0EPiupQMg2LNbInRT76EHRYx4dLHfLMVjJicxydvvydqCVelapqKRwJpprwYESgIMnMhTa00jZmyLKtF',
+          'stripe:publishableKey': environment.stripePublicKey,
         }
       }
     }],
