@@ -13,6 +13,10 @@
         </ng-container>
         </ul>
     </section>
+    <div *ngIf="listingdetails?.ai_visibility_hidden" class="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-4 text-gray-700">
+      This basic listing has been deactivated because a complete profile was published.
+    </div>
+    <app-ai-visibility-public [listingId]="ListingId"></app-ai-visibility-public>
     
     
     

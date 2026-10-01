@@ -11,6 +11,7 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AiVisibilityPublicComponent } from '../ai-visibility-public/ai-visibility-public.component';
 interface ReviewResponse {
   status: boolean;
   message: string;
@@ -27,7 +28,7 @@ interface ReviewResponse {
 @Component({
   selector: 'app-listingdetails',
   standalone: true,
-  imports: [GoogleMapsModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [GoogleMapsModule, CommonModule, FormsModule, ReactiveFormsModule, AiVisibilityPublicComponent],
   templateUrl: './listingdetails.component.html',
   styleUrl: './listingdetails.component.scss'
 })

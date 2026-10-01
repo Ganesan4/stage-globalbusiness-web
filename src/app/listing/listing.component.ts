@@ -16,6 +16,7 @@ import { Branch, BranchMapMarker } from './model';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { WebService } from '../services/web.service';
+import { AiVisibilityPublicComponent } from '../ai-visibility-public/ai-visibility-public.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 interface ReviewResponse {
   status: boolean;
@@ -34,7 +35,7 @@ interface ReviewResponse {
 @Component({
   selector: 'app-listing',
   standalone: true,
-  imports: [CommonModule, FormsModule, SlickCarouselModule, ReactiveFormsModule, GoogleMapsModule],
+  imports: [CommonModule, FormsModule, SlickCarouselModule, ReactiveFormsModule, GoogleMapsModule, AiVisibilityPublicComponent],
   templateUrl: './listing.component.html',
   styleUrl: './listing.component.scss'
 })
