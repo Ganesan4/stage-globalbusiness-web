@@ -51,6 +51,7 @@ export class RegisterComponent implements OnInit {
   transactionSuccessGpay: boolean = false;
   transactionSuccessStripe: boolean = false;
   data: any;
+  isExistingClaim = false;
   payments: any;
   response: any;
   card: any;
@@ -117,6 +118,10 @@ referralWarning: string | null = null;
     private router: Router,
     private dataService: ListingDataService) {
 
+    if (this.route.snapshot.queryParamMap.get('flow') === 'new') {
+      this.dataService.clearData();
+    }
+
     this.existData = this.dataService.getData();
     console.log('this.existData', this.existData);
     this.data = this.existData.source._value;
@@ -124,6 +129,7 @@ referralWarning: string | null = null;
     if (!this.data) {
       console.error('No data found!');
     }
+    this.isExistingClaim = !!(this.data && (this.data.id || this.data.company_name));
 
     this.registerForm = this.fb.group({
       businessName: [null, Validators.required],

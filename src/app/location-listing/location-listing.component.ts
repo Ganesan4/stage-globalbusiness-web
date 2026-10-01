@@ -7,6 +7,7 @@ import { WebService } from '../services/web.service';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ListingDataService } from '../services/listingData.service';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
@@ -133,7 +134,7 @@ export class LocationListingComponent implements OnInit {
   totalItems: any;
   location: any;
   activeIndex: number | null = null;
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private meta: Meta, private titleService: Title, private router: Router, private renderer: Renderer2, private activatedRoute: ActivatedRoute, private web: WebService, private http: HttpClient, private searchService: SearchService) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private meta: Meta, private titleService: Title, private router: Router, private renderer: Renderer2, private activatedRoute: ActivatedRoute, private web: WebService, private http: HttpClient, private searchService: SearchService, private listingData: ListingDataService) { }
 
   ngOnInit(): void {
     this.getRoutingParams();
@@ -488,8 +489,14 @@ export class LocationListingComponent implements OnInit {
     this.router.navigate(route);
   }
 
-  redirectregister() {
-    window.location.href = '/register';
+  redirectregister(event?: Event) {
+    event?.preventDefault();
+    this.listingData.clearData();
+    window.location.href = '/register?flow=new';
+  }
+
+  redirectclaim() {
+    this.router.navigate(['/login'], { queryParams: { tab: 'phone' } });
   }
 
   // getListingData(): void {

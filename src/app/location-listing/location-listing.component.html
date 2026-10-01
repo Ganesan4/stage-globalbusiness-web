@@ -238,7 +238,7 @@
                             class="flex flex-wrap justify-center md:justify-start items-center gap-4 mt-4 text-xs text-blue-100">
                             <div class="flex items-center gap-1">
                                 <i class="fa-solid fa-shield-halved"></i>
-                                <span>Verified Listings</span>
+                                <span>Directory listing</span>
                             </div>
                             <div class="flex items-center gap-1">
                                 <i class="fa-solid fa-globe"></i>
@@ -614,7 +614,7 @@
 
                         <button
                             class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors mb-3"
-                            (click)="redirectregister()">
+                            (click)="redirectclaim()">
                             Claim Your Listing
                         </button>
 
@@ -641,8 +641,8 @@
                             search, entity recognition, and global visibility.
                         </p>
 
-                        <a href="/register"
-                            class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors mb-6">
+                        <a href="/register?flow=new" (click)="redirectregister($event)"
+                            class="block w-full text-center bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors mb-6">
                             Add Your Business Today
                         </a>
 
@@ -711,7 +711,7 @@
                         <ul class="text-sm text-gray-600 mb-6 list-disc pl-5 space-y-1">
                             <li>Add your business</li>
                             <li>Enter your company details</li>
-                            <li>Verify your listing</li>
+                            <li>Publish your listing</li>
                             <li>Get indexed for AI search and local SEO</li>
                         </ul>
 
@@ -728,7 +728,7 @@
                             <li>✔ Global directory placement</li>
                             <li>✔ AI-search compatible structure</li>
                             <li>✔ Local SEO support</li>
-                            <li>✔ Verified business listing</li>
+                            <li>✔ Basic business listing</li>
                             <li>✔ Industry category alignment</li>
                             <li>✔ Worldwide exposure</li>
                         </ul>
@@ -750,8 +750,8 @@
                         <h3> Add your business to Global Business Pages® today and get discovered worldwide.</h3>
 
                         <p class="mb-6"></p>
-                        <a href="/register"
-                            class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors">
+                        <a href="/register?flow=new" (click)="redirectregister($event)"
+                            class="block w-full text-center bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors">
                             Add Your Business Now
                         </a>
 

@@ -216,7 +216,8 @@
                   </div>
                   <div class="flex-shrink-0">
                     <a
-                      routerLink="/register"
+                      href="/register?flow=new"
+                      (click)="startNewListing($event)"
                       class="inline-block bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-all duration-300 shadow-lg text-center"
                     >
                       Add Your Business
@@ -226,7 +227,7 @@
                 <div class="flex flex-wrap justify-center md:justify-start items-center gap-4 mt-4 text-xs text-blue-100">
                   <div class="flex items-center gap-1">
                     <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-                    <span>Verified Listings</span>
+                    <span>Directory listing</span>
                   </div>
                   <div class="flex items-center gap-1">
                     <i class="fa-solid fa-globe" aria-hidden="true"></i>
@@ -291,7 +292,8 @@
               <h2 class="text-lg font-bold text-gray-900 mb-4">Manage your free listing</h2>
               <p class="text-sm text-gray-600 mb-4">Update your business information in a few steps.</p>
               <a
-                routerLink="/register"
+                routerLink="/login"
+                [queryParams]="{ tab: 'phone' }"
                 class="block w-full text-center bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors mb-3"
               >
                 Claim Your Listing
@@ -307,7 +309,8 @@
                 engines, Google results, and local SEO queries worldwide.
               </p>
               <a
-                routerLink="/register"
+                href="/register?flow=new"
+                (click)="startNewListing($event)"
                 class="block w-full text-center bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors mb-6"
               >
                 Add Your Business Today
@@ -325,12 +328,13 @@
               <ul class="text-sm text-gray-600 mb-6 space-y-1">
                 <li>✔ Global directory placement</li>
                 <li>✔ Local SEO support</li>
-                <li>✔ Verified business listing</li>
+                <li>✔ Basic business listing</li>
                 <li>✔ Industry category alignment</li>
               </ul>
 
               <a
-                routerLink="/register"
+                href="/register?flow=new"
+                (click)="startNewListing($event)"
                 class="block w-full text-center bg-blue-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-blue-700 transition-colors"
               >
                 Add Your Business Now

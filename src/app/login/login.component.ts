@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from '../services/auth.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { NgOtpInputComponent } from 'ng-otp-input';
@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
   };
   
   selectedTab = 'emailUser';
+  claimMode = false;
   apiUrl = environment.base_url;
   emailUserForm!: FormGroup;
   phoneUserForm!: FormGroup;
@@ -76,13 +77,17 @@ export class LoginComponent implements OnInit {
   data: any;
   datas: any;
 
-  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private authService: AuthService, private toastr: ToastrService,
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private http: HttpClient, private authService: AuthService, private toastr: ToastrService,
     private DataService : ListingDataService
   ) {
     console.log('LoginComponent initialized');
   }
 
   ngOnInit() {
+    if (this.route.snapshot.queryParamMap.get('tab') === 'phone') {
+      this.selectedTab = 'phoneUser';
+      this.claimMode = true;
+    }
     firebase.initializeApp(config)
     this.emailUserForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -157,7 +162,8 @@ export class LoginComponent implements OnInit {
 
             if (res.message.includes("register")) {
               setTimeout(() => {
-                this.router.navigate(['/register']);
+                this.DataService.clearData();
+                this.router.navigate(['/register'], { queryParams: { flow: 'new' } });
               }, 2000);
             }
           }
@@ -186,6 +192,12 @@ export class LoginComponent implements OnInit {
   }
   switchTab(tab: string) {
     this.selectedTab = tab;
+  }
+
+  startNewListing(event: Event) {
+    event.preventDefault();
+    this.DataService.clearData();
+    this.router.navigate(['/register'], { queryParams: { flow: 'new' } });
   }
 
   onPhoneUserLogin() {

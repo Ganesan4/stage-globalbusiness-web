@@ -18,7 +18,7 @@
       
       <div class="flex space-x-4 justify-end">
         <li *ngIf="!isLoggedIn;">
-          <a routerLink="/register" routerLinkActive="bg-blue-500 text-white fill-white"
+          <a routerLink="/register" [queryParams]="{ flow: 'new' }" routerLinkActive="bg-blue-500 text-white fill-white"
             [routerLinkActiveOptions]="{exact: true}"
             class="hover:bg-gray-100 hover:text-black hover:fill-black flex items-center space-x-2 p-2.5 text-sm text-gray-500 rounded-lg">
             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -177,7 +177,7 @@
       </a>
     </li>
     <li *ngIf="!isLoggedIn;">
-      <a routerLink="/register" routerLinkActive="bg-blue-500 text-white fill-white"
+      <a routerLink="/register" [queryParams]="{ flow: 'new' }" routerLinkActive="bg-blue-500 text-white fill-white"
         [routerLinkActiveOptions]="{exact: true}"
         class="hover:bg-gray-100 hover:text-black flex items-center space-x-2 p-2.5">
         <span>Register</span>

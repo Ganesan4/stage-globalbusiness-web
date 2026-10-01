@@ -5,6 +5,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { AuthService } from '../services/auth.service';
 import { WebService } from '../services/web.service';
 import { CountService } from '../services/count.service';
+import { ListingDataService } from '../services/listingData.service';
 
 @Component({
   selector: 'app-header',
@@ -27,7 +28,8 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
     private web: WebService,
-    private countService: CountService
+    private countService: CountService,
+    private listingData: ListingDataService
   ) { }
 
 
@@ -161,7 +163,8 @@ export class HeaderComponent implements OnInit {
   }
 
   forceReload() {
-    window.location.href = '/register';
+    this.listingData.clearData();
+    window.location.href = '/register?flow=new';
   }
 
   getTotalCount() {

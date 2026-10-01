@@ -14,6 +14,7 @@ import { InternalLinkGroup, SeoLandingResponse } from '../../models';
 import { SeoLandingService } from '../../services/seo-landing.service';
 import { SeoMetaService, groupsFromResponse } from '../../services/seo-meta.service';
 import { WebService } from '../../../services/web.service';
+import { ListingDataService } from '../../../services/listingData.service';
 
 /** Rows from `GET /topcategory` (same shape as location-listing carousel). */
 export interface TopCategoryRow {
@@ -78,7 +79,8 @@ export class SeoLandingPageComponent implements OnInit, OnDestroy {
     private seoApi: SeoLandingService,
     private seoMeta: SeoMetaService,
     private cdr: ChangeDetectorRef,
-    private web: WebService
+    private web: WebService,
+    private listingData: ListingDataService
   ) {}
 
   ngOnInit(): void {
@@ -253,7 +255,8 @@ export class SeoLandingPageComponent implements OnInit, OnDestroy {
   }
 
   goRegister(): void {
-    void this.router.navigate(['/register']);
+    this.listingData.clearData();
+    void this.router.navigate(['/register'], { queryParams: { flow: 'new' } });
   }
 
   readonly trackByTopCategory = (_: number, row: TopCategoryRow): string =>
@@ -406,6 +409,12 @@ export class SeoLandingPageComponent implements OnInit, OnDestroy {
       r = r.parent;
     }
     return { categorySlug, citySlug, stateSlug, subcategorySlug };
+  }
+
+  startNewListing(event?: Event): void {
+    event?.preventDefault();
+    this.listingData.clearData();
+    this.router.navigate(['/register'], { queryParams: { flow: 'new' } });
   }
 
   private read(map: ParamMap, key: string): string {

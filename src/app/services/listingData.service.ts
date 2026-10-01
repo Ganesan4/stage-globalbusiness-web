@@ -23,6 +23,12 @@ export class ListingDataService {
     localStorage.setItem('existData', JSON.stringify(value));
   }
 
+  /** Drop a previously loaded directory listing so a new $1.30 signup stays blank. */
+  clearData(): void {
+    localStorage.removeItem('existData');
+    this.dataSubject.next(undefined);
+  }
+
   getData(): Observable<any> {
     console.log("data",this.data$);
       return this.data$;

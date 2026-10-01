@@ -12,7 +12,7 @@ import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/
 import { Subject, Subscription, throwError } from 'rxjs';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ChangeDetectorRef } from '@angular/core';
-// import { ListingDataService } from '../services/listingData.service';
+import { ListingDataService } from '../services/listingData.service';
 import { CountDataService } from '../services/countData.service';
 import { SearchService } from '../services/search.service';
 
@@ -116,7 +116,8 @@ export class AllListingsComponent {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private dataService: CountDataService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private listingData: ListingDataService
   ) {
     this.ReviewForm = this.fb.group({
       review: [''], // Add form controls as needed
@@ -1767,7 +1768,12 @@ this.updateCanonicalUrl();
   }
 
   redirectregister() {
-    this.router.navigate(['/register']);
+    this.listingData.clearData();
+    this.router.navigate(['/register'], { queryParams: { flow: 'new' } });
+  }
+
+  redirectclaim() {
+    this.router.navigate(['/login'], { queryParams: { tab: 'phone' } });
   }
   redirectToListing(listingId: string, businessName: string, industry: string, business_country: string, business_state: string, business_city: string, business_zip_code: string, sic_description: string, slugUrl?: string, business?: any): void {
     console.log("Listing ID:", listingId);
