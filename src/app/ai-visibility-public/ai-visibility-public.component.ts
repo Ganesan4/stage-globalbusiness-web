@@ -11,10 +11,21 @@ import { environment } from '../../environments/environment';
     <section *ngIf="profile" class="mb-6">
       <p class="mb-4 inline-block rounded-md border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700">{{ profile.badge }}</p>
       <h2 class="mb-4 text-2xl font-extrabold text-gray-800">About this business</h2>
-      <p *ngIf="profile.one_sentence_description" class="mb-2 text-gray-700">{{ profile.one_sentence_description }}</p>
-      <p *ngIf="profile.short_summary" class="mb-2 text-gray-700">{{ profile.short_summary }}</p>
-      <p *ngIf="profile.ai_business_summary" class="mb-3 whitespace-pre-line text-gray-700">{{ profile.ai_business_summary }}</p>
-      <p *ngIf="profile.full_description && profile.full_description !== profile.ai_business_summary" class="mb-3 whitespace-pre-line text-gray-700">{{ profile.full_description }}</p>
+      <p *ngIf="profile.one_sentence_description" class="mb-4 font-semibold text-gray-700">{{ profile.one_sentence_description }}</p>
+      <ul class="grid grid-cols-1 gap-4">
+        <li *ngIf="profile.short_summary" class="rounded-lg border p-2">
+          <h3 class="font-semibold text-gray-800">Summary</h3>
+          <p class="whitespace-pre-line text-gray-600">{{ profile.short_summary }}</p>
+        </li>
+        <li *ngIf="profile.full_description" class="rounded-lg border p-2">
+          <h3 class="font-semibold text-gray-800">Full description</h3>
+          <p class="whitespace-pre-line text-gray-600">{{ profile.full_description }}</p>
+        </li>
+        <li *ngIf="profile.ai_business_summary" class="rounded-lg border p-2">
+          <h3 class="font-semibold text-gray-800">Business summary</h3>
+          <p class="whitespace-pre-line text-gray-600">{{ profile.ai_business_summary }}</p>
+        </li>
+      </ul>
       <ul class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <li *ngIf="profile.service_areas" class="rounded-lg border p-2">
           <h3 class="font-semibold text-gray-800">Service areas</h3>
@@ -48,7 +59,7 @@ import { environment } from '../../environments/environment';
             <h3 class="font-semibold text-gray-800">{{ row.name }}</h3>
             <p *ngIf="row.category" class="text-gray-600">Category: {{ row.category }}</p>
             <p *ngIf="row.description" class="text-gray-600">{{ row.description }}</p>
-            <p *ngIf="row.price_range" class="text-gray-600">{{ row.price_range }}</p>
+            <p *ngIf="row.price_range" class="text-gray-600">Price range: {{ row.price_range }}</p>
           </li>
         </ul>
       </div>
@@ -59,7 +70,7 @@ import { environment } from '../../environments/environment';
             <h3 class="font-semibold text-gray-800">{{ row.name }}</h3>
             <p *ngIf="row.brand" class="text-gray-600">Brand: {{ row.brand }}</p>
             <p *ngIf="row.description" class="text-gray-600">{{ row.description }}</p>
-            <p *ngIf="row.price_range" class="text-gray-600">{{ row.price_range }}</p>
+            <p *ngIf="row.price_range" class="text-gray-600">Price range: {{ row.price_range }}</p>
           </li>
         </ul>
       </div>
