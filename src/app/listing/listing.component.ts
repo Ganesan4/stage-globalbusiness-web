@@ -297,7 +297,7 @@ console.log("cleanUrl",cleanUrl);
     const navigation = this.router.getCurrentNavigation();
     const state = (navigation?.extras.state || history.state) as { id?: string; source?: string; data?: any };
 
-    if (state) {
+    if (state?.id) {
       this.listingId = state.id;
       console.log('Listing ID new:', this.listingId);
       console.log('Source:', state.source);
@@ -354,7 +354,7 @@ console.log("cleanUrl",cleanUrl);
     const navigation = this.router.getCurrentNavigation();
     const state = (navigation?.extras.state || history.state) as { id?: string; source?: string; data?: any };
 
-    if (state) {
+    if (state?.id) {
       this.listingId = state.id;
       console.log('Listing ID new:', this.listingId);
       console.log('Source:', state.source);
@@ -457,7 +457,7 @@ console.log("cleanUrl",cleanUrl);
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as { id?: string; source?: string; data?: any };
 
-    if (state) {
+    if (state?.id) {
       this.listingId = state.id;
       console.log('Listing ID new:', this.listingId);
       console.log('Source:', state.source);
@@ -537,7 +537,7 @@ console.log("cleanUrl",cleanUrl);
       const navigation = this.router.getCurrentNavigation();
       const state = navigation?.extras.state as { id?: string; source?: string; data?: any };
 
-      if (state) {
+      if (state?.id) {
         this.listingId = state.id;
         console.log('Listing ID new:', this.listingId);
         console.log('Source:', state.source);
