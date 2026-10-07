@@ -46,6 +46,7 @@ import { environment } from '../../environments/environment';
         <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <li *ngFor="let row of profile.services" class="rounded-lg border p-2">
             <h3 class="font-semibold text-gray-800">{{ row.name }}</h3>
+            <p *ngIf="row.category" class="text-gray-600">Category: {{ row.category }}</p>
             <p *ngIf="row.description" class="text-gray-600">{{ row.description }}</p>
             <p *ngIf="row.price_range" class="text-gray-600">{{ row.price_range }}</p>
           </li>
@@ -56,6 +57,7 @@ import { environment } from '../../environments/environment';
         <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <li *ngFor="let row of profile.products" class="rounded-lg border p-2">
             <h3 class="font-semibold text-gray-800">{{ row.name }}</h3>
+            <p *ngIf="row.brand" class="text-gray-600">Brand: {{ row.brand }}</p>
             <p *ngIf="row.description" class="text-gray-600">{{ row.description }}</p>
             <p *ngIf="row.price_range" class="text-gray-600">{{ row.price_range }}</p>
           </li>
