@@ -1392,9 +1392,33 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.isDropdownOpen = false;
     }
   }
+  private listingSlugUrl(business: any): string {
+    const raw = `${business?.slug_url || ''}`.trim();
+    const parts = raw.split('/').filter(Boolean);
+    if (parts.length >= 3 && !raw.startsWith('//')) {
+      return raw.startsWith('/') ? raw : `/${raw}`;
+    }
+    const slug = (value: string) =>
+      `${value || ''}`
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+    const category = slug(business?.category_slug || business?.category || business?.sic_description || '');
+    const city = slug(business?.city_slug || business?.city || '');
+    const name = slug(business?.slug || business?.business_name || business?.company_name || business?.title || '');
+    if (category && city && name) {
+      return `/${category}/${city}/${name}`;
+    }
+    return '';
+  }
+
   onBusinessClick(business: any): void {
-    if (business.slug_url) {
-      this.router.navigateByUrl(business.slug_url, { state: { id: business.id, data: business } });
+    const slugUrl = this.listingSlugUrl(business);
+    if (slugUrl) {
+      this.router.navigateByUrl(slugUrl, { state: { id: business.id, data: business } });
       return;
     }
 
